@@ -1,4 +1,4 @@
-# APISuite Portal UI Extension Demo
+# API Suite Billing Extension UI
 
 ## About
 
@@ -69,7 +69,7 @@ Then, don't forget the push the repo and the tags:
 While developing the extension, you might want to test it in the APISuite portal. You can install it there with
 
 ```
-npm i --save ../../apisuite-extension-ui-demo/dev-symlink-target
+npm i --save ../../apisuite-billing-extension-ui/dev-symlink-target
 ```
 
 The reason for referencing the `dev-symlink-target` folder is because itself references only the `package.json` file and the `build` folder. It leaves the `node_modules` folder out which allows us to use the same React instance that is installed by the APISuite portal for both the portal and the extension.
@@ -83,7 +83,7 @@ You'll need to remove `build/` from `.gitignore`, build the component library (`
 You can then install your library into other projects by running:
 
 ```
-npm i --save github:Cloudoki/apisuite-extension-ui-demo#branch-name
+npm i --save github:APISuite/apisuite-billing-extension-ui#branch-name
 ```
 
 ### Supporting Image Imports
