@@ -1,9 +1,5 @@
-export type ExtensionConfig = {
-  someKey: string
-}
+export type BillingExtensionConfig = Record<string, unknown>
 
-const baseConfig: ExtensionConfig = {
-  someKey: 'Base Value',
-}
+const baseConfig: BillingExtensionConfig = {}
 
 export default baseConfig

@@ -1,11 +1,11 @@
-import baseConfig, { ExtensionConfig } from 'config'
+import baseConfig, { BillingExtensionConfig } from 'config'
 
 let values = {
   ...baseConfig,
 }
 
 interface Config {
-  (): ExtensionConfig
+  (): BillingExtensionConfig
   set: (conf: Record<string, unknown>) => void
 }
 

@@ -2,7 +2,7 @@
 
 ## About
 
-This repo contains an APISuite Portal UI Extension skeleton for demonstration purposes.
+This repo contains API Suite's Billing Extension's UI.
 
 For more high-level documentation regarding the UI Extensions, refer to the [UI Extensions documentation in Confluence](https://cloudoki.atlassian.net/wiki/spaces/AS/pages/275054593/UI+Extensions).
 
@@ -109,13 +109,13 @@ plugins:[
 You can then import and render images in your components like:
 
 ```tsx
-import logo from "./rollup.png";
+import logo from './rollup.png'
 
 export const ImageComponent = () => (
   <div>
     <img src={logo} />
   </div>
-);
+)
 ```
 
 ## Stack
@@ -128,10 +128,10 @@ export const ImageComponent = () => (
 
 The repo is based on a stripped-down version of a React Component Library project skeleton. More info:
 
-* [Repo](https://github.com/HarveyD/react-component-library)
-* [Blog post](https://blog.harveydelaney.com/creating-your-own-react-component-library/)
+- [Repo](https://github.com/HarveyD/react-component-library)
+- [Blog post](https://blog.harveydelaney.com/creating-your-own-react-component-library/)
 
 It also features:
 
 - [Jest](https://jestjs.io/) and [React Testing Library](https://github.com/testing-library/react-testing-library) enabling testing of the components
-
+# apisuite-billing-extension-ui

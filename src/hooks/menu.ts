@@ -1,43 +1,17 @@
-import { Menus, MenuEntry, HookMenu } from 'apisuite-extension-ui-types'
+import { HookMenu, MenuEntry, Menus } from '@apisuite/extension-ui-types'
+
+import { BILLING_API_URL } from 'helpers/constants'
 
 type MenuConfig = {
   [menu: string]: MenuEntry[]
 }
 
 const menuConfig: MenuConfig = {
-  [Menus.FooterDashboard]: [
-    {
-      label: 'About Extensions',
-      route: '/extensions/about',
-      title: 'About Extensions',
-    },
-  ],
-  [Menus.HeaderAnonymousMain]: [
-    {
-      label: 'About Extensions',
-      route: '/extensions/about',
-      title: 'About Extensions',
-    },
-  ],
-  [Menus.HeaderAuthenticatedMain]: [
-    {
-      label: 'Extension Authenticated',
-      route: '/extensions/authenticated',
-      title: 'Extension Authenticated',
-    },
-  ],
   [Menus.HeaderAuthenticatedDashboard]: [
     {
-      label: 'About Dashboard',
-      route: '/about-dashboard',
-      title: 'About Dashboard',
-    },
-  ],
-  [Menus.HeaderAuthenticatedProfile]: [
-    {
-      label: 'About Profile',
-      route: '/about-profile',
-      title: 'About Profile',
+      label: 'Billing',
+      route: BILLING_API_URL,
+      title: 'Billing',
     },
   ],
 }

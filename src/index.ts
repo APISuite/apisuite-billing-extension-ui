@@ -1,24 +1,39 @@
-import { Extension } from 'apisuite-extension-ui-types'
-import { ExtensionConfig } from "./config";
 import './translations'
-import hooks from './hooks'
-import configHelper from './helpers/config'
+import { BillingExtensionConfig } from './config'
+import {
+  Extension,
+  ExtensionParams,
+  protocolVersion,
+} from '@apisuite/extension-ui-types/v1'
+import { injectStuffIntoStore } from './helpers/store'
 import { name, version } from '../package.json'
+import configHelper from './helpers/config'
+import coreHelper from './helpers/core'
+import hooks from './hooks'
 
-class ExampleExtension extends Extension {
+type BillingExtensionParams = ExtensionParams & {
+  config?: BillingExtensionConfig
+}
+
+class BillingExtension extends Extension {
   static info = {
     name,
     version,
+    protocolVersion,
   }
 
-  public config: ExtensionConfig
+  public config: BillingExtensionConfig
 
   hooks = hooks
 
-  constructor(config?: ExtensionConfig) {
-    super(config)
+  constructor({ core, config }: BillingExtensionParams) {
+    super({ core, config })
+
     configHelper.set(config)
+    coreHelper.set(core)
+
+    injectStuffIntoStore(core.store)
   }
 }
 
-export default ExampleExtension
+export default BillingExtension
