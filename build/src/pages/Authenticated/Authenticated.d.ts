@@ -1,3 +1,3 @@
-import React from 'react';
-declare const Authenticated: React.FC;
-export default Authenticated;
+import React from 'react'
+declare const Authenticated: React.FC
+export default Authenticated

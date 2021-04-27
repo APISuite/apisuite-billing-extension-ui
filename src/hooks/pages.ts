@@ -1,19 +1,20 @@
-import { HookPages, PageEntry } from 'apisuite-extension-ui-types'
+import { HookPages, PageEntry } from '@apisuite/extension-ui-types'
 
-import About from 'pages/About'
-import Authenticated from 'pages/Authenticated'
+import Billing from 'pages/Billing'
+import TransactionComplete from 'pages/TransactionComplete'
 
 const pagesConfig: PageEntry[] = [
   {
-    path: '/extensions/about',
+    auth: true,
+    component: Billing,
     exact: true,
-    component: About,
+    path: '/billing',
   },
   {
     auth: true,
-    path: '/extensions/authenticated',
+    component: TransactionComplete,
     exact: true,
-    component: Authenticated,
+    path: '/billing/transactioncomplete',
   },
 ]
 

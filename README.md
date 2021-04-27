@@ -1,8 +1,8 @@
-# APISuite Portal UI Extension Demo
+# API Suite Billing Extension UI
 
 ## About
 
-This repo contains an APISuite Portal UI Extension skeleton for demonstration purposes.
+This repo contains API Suite's Billing Extension's UI.
 
 For more high-level documentation regarding the UI Extensions, refer to the [UI Extensions documentation in Confluence](https://cloudoki.atlassian.net/wiki/spaces/AS/pages/275054593/UI+Extensions).
 
@@ -69,7 +69,7 @@ Then, don't forget the push the repo and the tags:
 While developing the extension, you might want to test it in the APISuite portal. You can install it there with
 
 ```
-npm i --save ../../apisuite-extension-ui-demo/dev-symlink-target
+npm i --save ../../apisuite-billing-extension-ui/dev-symlink-target
 ```
 
 The reason for referencing the `dev-symlink-target` folder is because itself references only the `package.json` file and the `build` folder. It leaves the `node_modules` folder out which allows us to use the same React instance that is installed by the APISuite portal for both the portal and the extension.
@@ -83,7 +83,7 @@ You'll need to remove `build/` from `.gitignore`, build the component library (`
 You can then install your library into other projects by running:
 
 ```
-npm i --save github:Cloudoki/apisuite-extension-ui-demo#branch-name
+npm i --save github:APISuite/apisuite-billing-extension-ui#branch-name
 ```
 
 ### Supporting Image Imports
@@ -109,13 +109,13 @@ plugins:[
 You can then import and render images in your components like:
 
 ```tsx
-import logo from "./rollup.png";
+import logo from './rollup.png'
 
 export const ImageComponent = () => (
   <div>
     <img src={logo} />
   </div>
-);
+)
 ```
 
 ## Stack
@@ -128,10 +128,10 @@ export const ImageComponent = () => (
 
 The repo is based on a stripped-down version of a React Component Library project skeleton. More info:
 
-* [Repo](https://github.com/HarveyD/react-component-library)
-* [Blog post](https://blog.harveydelaney.com/creating-your-own-react-component-library/)
+- [Repo](https://github.com/HarveyD/react-component-library)
+- [Blog post](https://blog.harveydelaney.com/creating-your-own-react-component-library/)
 
 It also features:
 
 - [Jest](https://jestjs.io/) and [React Testing Library](https://github.com/testing-library/react-testing-library) enabling testing of the components
-
+# apisuite-billing-extension-ui

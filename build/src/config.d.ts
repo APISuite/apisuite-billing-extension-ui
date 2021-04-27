@@ -1,5 +1,3 @@
-export declare type ExtensionConfig = {
-    someKey: string;
-};
-declare const baseConfig: ExtensionConfig;
+export declare type BillingExtensionConfig = Record<string, unknown>;
+declare const baseConfig: BillingExtensionConfig;
 export default baseConfig;

@@ -4,7 +4,6 @@ about: Suggest an idea for this project
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 <!--
@@ -14,7 +13,6 @@ Make sure you have searched existing issues to avoid creating duplicates.
 
 Please fill in the following details to help us understand your request:
 -->
-
 
 **Describe the feature and the current behavior/state**
 
