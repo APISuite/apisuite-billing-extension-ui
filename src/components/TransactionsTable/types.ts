@@ -5,7 +5,7 @@ export type TransactionsTableProps = {
 export type TransactionDetails = {
   transactionAmount: string
   transactionCompleted: boolean
-  transactionCredits: string
+  transactionReference: string
   transactionDate: string
   transactionName: string
 }

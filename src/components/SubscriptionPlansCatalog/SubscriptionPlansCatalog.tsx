@@ -51,7 +51,7 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
               <div className={classes.rightDetailsContainer}>
                 <p>€ {subscriptionPlan.priceOfSubscriptionPlan}</p>
 
-                <p>/{subscriptionPlan.periodicityOfSubscriptionPlan}</p>
+                <p>{subscriptionPlan.periodicityOfSubscriptionPlan}</p>
               </div>
             </div>
           </div>

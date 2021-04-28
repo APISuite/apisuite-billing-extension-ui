@@ -1,4 +1,4 @@
-export type SubsTableProps = {
+export type SubscriptionsTableProps = {
   arrayOfSubs: SubDetails[]
 }
 

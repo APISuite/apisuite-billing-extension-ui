@@ -1,10 +1,19 @@
 import React from 'react'
-import { Button } from '@apisuite/fe-base'
 
+import { TransactionCompleteProps } from './types'
 import useStyles from './styles'
+import Link from 'components/Link'
 
-const TransactionComplete: React.FC = () => {
+const TransactionComplete: React.FC<TransactionCompleteProps> = ({
+  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+  hasPurchasedCreditsAction,
+}) => {
   const classes = useStyles()
+
+  const paymentType = window.location.pathname.split('/')[2]
+
+  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+  hasPurchasedCreditsAction()
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
@@ -16,13 +25,13 @@ const TransactionComplete: React.FC = () => {
       </p>
 
       <div className={classes.buttonsContainer}>
-        <Button className={classes.goToMarketplaceButton} href="/marketplace">
+        <Link className={classes.goToMarketplaceButton} href="/marketplace">
           Go to the Marketplace
-        </Button>
+        </Link>
 
-        <Button className={classes.goToBillingButton} href="/billing">
+        <Link className={classes.goToBillingButton} href="/billing">
           Go back to Billing
-        </Button>
+        </Link>
       </div>
 
       <hr className={classes.separator} />
@@ -31,31 +40,33 @@ const TransactionComplete: React.FC = () => {
 
       <div className={classes.allTransactionDetailsContainer}>
         <p className={classes.transactionTitle}>
-          Credit pack or Subscription plan
+          {paymentType === 'creditpayment'
+            ? 'Credit pack'
+            : 'Subscription plan'}
         </p>
 
         <div className={classes.transactionDetailContainer}>
           <p>Reference:</p>
 
-          <p>Transaction's ID</p>
+          <p>b4605542-cad0-4ca3-83e1-1d9177a92438</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
           <p>Price:</p>
 
-          <p>€ Transaction's price</p>
+          <p>€ 100</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
           <p>Credit amount:</p>
 
-          <p>Transaction's credit amount</p>
+          <p>10000 Cr</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
           <p>Transaction date:</p>
 
-          <p>Some date</p>
+          <p>30th April 2021, 09:30</p>
         </div>
       </div>
     </main>

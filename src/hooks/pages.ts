@@ -14,7 +14,7 @@ const pagesConfig: PageEntry[] = [
     auth: true,
     component: TransactionComplete,
     exact: true,
-    path: '/billing/transactioncomplete',
+    path: '/billing/creditpayment' || '/billing/subscriptionpayment',
   },
 ]
 

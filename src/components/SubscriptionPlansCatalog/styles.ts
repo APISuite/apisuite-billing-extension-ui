@@ -87,6 +87,7 @@ export default makeStyles({
 
   subscriptionPlansCatalogEntriesContainer: {
     display: 'flex',
+    marginBottom: '40px',
   },
 
   subscriptionSelectionTitle: {

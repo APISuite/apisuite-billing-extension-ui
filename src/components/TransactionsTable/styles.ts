@@ -6,7 +6,7 @@ export default makeStyles({
     backgroundColor: '#F7F8F9',
     borderTop: '1px solid #ECEDEF',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     padding: '12px 40px',
 
     '& p': {
@@ -28,7 +28,8 @@ export default makeStyles({
     color: '#FFFFFF !important',
     fontSize: '14px',
     fontWeight: 400,
-    maxWidth: '100px',
+    maxWidth: '135px',
+    marginRight: '10px',
     textAlign: 'center',
     width: '100%',
   },
@@ -39,7 +40,8 @@ export default makeStyles({
     color: '#FFFFFF !important',
     fontSize: '14px',
     fontWeight: 400,
-    maxWidth: '100px',
+    marginRight: '10px',
+    maxWidth: '135px',
     textAlign: 'center',
     width: '100%',
   },
@@ -49,7 +51,7 @@ export default makeStyles({
     backgroundColor: '#FFFFFF',
     borderTop: '1px solid #ECEDEF',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     padding: '12px 40px',
 
     '& p': {
@@ -66,7 +68,7 @@ export default makeStyles({
   },
 
   transactionAmount: {
-    maxWidth: '85px',
+    maxWidth: '65px',
     overflow: 'hidden',
     textAlign: 'right',
     textOverflow: 'ellipsis',
@@ -74,8 +76,9 @@ export default makeStyles({
     width: '100%',
   },
 
-  transactionCredits: {
-    maxWidth: '85px',
+  transactionReference: {
+    marginRight: '10px',
+    maxWidth: '150px',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
@@ -84,6 +87,7 @@ export default makeStyles({
   },
 
   transactionDate: {
+    marginRight: '10px',
     maxWidth: '175px',
     overflow: 'hidden',
     textAlign: 'left',
@@ -92,18 +96,9 @@ export default makeStyles({
     width: '100%',
   },
 
-  transactionInvoice: {
-    maxWidth: '25px',
-    width: '100%',
-  },
-
-  transactionInvoiceDownloadIcon: {
-    maxWidth: '25px',
-    width: '100%',
-  },
-
   transactionName: {
-    maxWidth: '175px',
+    maxWidth: '230px',
+    marginRight: '10px',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
@@ -112,7 +107,8 @@ export default makeStyles({
   },
 
   transactionStatus: {
-    maxWidth: '100px',
+    maxWidth: '135px',
+    marginRight: '10px',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
@@ -135,7 +131,7 @@ export default makeStyles({
     display: 'flex',
     fontSize: '16px',
     fontWeight: 500,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     padding: '12px 40px',
 
     '& p': {

@@ -1,7 +1,7 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles({
-  alternativeSubsTableEntry: {
+  alternativeSubscriptionsTableEntry: {
     alignItems: 'center',
     backgroundColor: '#F7F8F9',
     borderTop: '1px solid #ECEDEF',
@@ -28,7 +28,7 @@ export default makeStyles({
     },
   },
 
-  regularSubsTableEntry: {
+  regularSubscriptionsTableEntry: {
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderTop: '1px solid #ECEDEF',
@@ -55,7 +55,7 @@ export default makeStyles({
     },
   },
 
-  subsTable: {
+  subscriptionsTable: {
     backgroundColor: '#FFFFFF',
     border: '1px solid #BAC0C6',
     borderRadius: '4px',
@@ -64,7 +64,7 @@ export default makeStyles({
     width: '100%',
   },
 
-  subsTableHeader: {
+  subscriptionsTableHeader: {
     alignItems: 'center',
     color: '#51606E',
     display: 'flex',

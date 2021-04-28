@@ -18,6 +18,7 @@ export default makeStyles({
 
   creditPacksCatalogEntriesContainer: {
     display: 'flex',
+    marginBottom: '40px',
   },
 
   creditPacksTitle: {

@@ -3,15 +3,20 @@ import { Button } from '@apisuite/fe-base'
 
 import { BillingProps } from './types'
 import CreditPacksCatalog from 'components/CreditPacksCatalog/CreditPacksCatalog'
+import Link from 'components/Link'
 import SubscriptionPlansCatalog from 'components/SubscriptionPlansCatalog'
-import SubsTable from 'components/SubsTable'
+import SubscriptionsTable from 'components/SubscriptionsTable'
 import TransactionsTable from 'components/TransactionsTable'
 import useStyles from './styles'
+import { hasPurchasedCreditsAction } from './ducks'
 
 const Billing: React.FC<BillingProps> = ({
   allCreditPacks,
   allSubscriptionPlans,
   allUserTransactions,
+
+  hasPurchasedCredits,
+
   getAllCreditPacksAction,
   getAllSubscriptionPlansAction,
   getAllUserTransactionsAction,
@@ -139,6 +144,8 @@ const Billing: React.FC<BillingProps> = ({
         payment information.
       </p>
 
+      {/* 'Your balance' section */}
+
       <p className={classes.sectionTitle}>Your balance</p>
 
       <div
@@ -151,7 +158,7 @@ const Billing: React.FC<BillingProps> = ({
         <div className={classes.creditBalanceContainer}>
           <p>Available credits</p>
 
-          <p>10000</p>
+          <p>{hasPurchasedCredits ? '10000' : '0'}</p>
         </div>
 
         {wantsToTopUpCredits ? (
@@ -175,16 +182,16 @@ const Billing: React.FC<BillingProps> = ({
             )}
 
             <div>
-              <Button
+              <Link
                 className={
                   currentlySelectedCreditPack.idOfCreditPack !== 0
                     ? classes.enabledPurchaseCreditsButton
                     : classes.disabledPurchaseCreditsButton
                 }
-                href="/billing/transactioncomplete"
+                href="/billing/creditpayment"
               >
                 Purchase credits
-              </Button>
+              </Link>
 
               <Button
                 className={classes.cancelCreditsPurchaseButton}
@@ -204,11 +211,13 @@ const Billing: React.FC<BillingProps> = ({
         )}
       </div>
 
+      {/* 'Your subscription' section */}
+
       <p className={classes.sectionTitle}>Your subscription</p>
 
       {hasStartedSubscription ? (
         <>
-          <SubsTable
+          <SubscriptionsTable
             arrayOfSubs={[
               {
                 subName: 'Basic plan',
@@ -220,39 +229,6 @@ const Billing: React.FC<BillingProps> = ({
           <Button className={classes.editPaymentDetailsButton}>
             Edit payment information
           </Button>
-
-          <p className={classes.sectionTitle}>Transaction history</p>
-
-          <p className={classes.sectionSubtitle}>
-            See your last transaction movements in your account, and download
-            invoices.
-          </p>
-
-          <TransactionsTable
-            arrayOfTransactions={[
-              {
-                transactionAmount: '€ 40,00',
-                transactionCompleted: true,
-                transactionCredits: '5.000',
-                transactionDate: '14 August 2021, 15:30',
-                transactionName: 'Billing report 2020.08.14',
-              },
-              {
-                transactionAmount: '€ 40,00',
-                transactionCompleted: false,
-                transactionCredits: '5.000',
-                transactionDate: '14 August 2021, 15:30',
-                transactionName: 'Billing report 2020.07.14',
-              },
-              {
-                transactionAmount: '€ 40,00',
-                transactionCompleted: true,
-                transactionCredits: '5.000',
-                transactionDate: '14 August 2021, 15:30',
-                transactionName: 'Billing report 2020.06.14',
-              },
-            ]}
-          />
         </>
       ) : (
         <>
@@ -282,16 +258,40 @@ const Billing: React.FC<BillingProps> = ({
             </p>
           )}
 
-          <Button
+          <Link
             className={
               hasSelectedSubscriptionPlan
                 ? classes.enabledStartSubscriptionButton
                 : classes.disabledStartSubscriptionButton
             }
-            onClick={handleSubscriptionStart}
+            href="/billing/subscriptionpayment"
           >
             Start subscription
-          </Button>
+          </Link>
+        </>
+      )}
+
+      {/* 'Transaction history' section */}
+
+      {(hasPurchasedCredits || hasStartedSubscription) && (
+        <>
+          <p className={classes.sectionTitle}>Transaction history</p>
+
+          <p className={classes.sectionSubtitle}>
+            See your last transaction movements in your account.
+          </p>
+
+          <TransactionsTable
+            arrayOfTransactions={[
+              {
+                transactionAmount: '€ 100',
+                transactionCompleted: true,
+                transactionReference: 'b4605542-cad0-4ca3-83e1-1d9177a92438',
+                transactionDate: '30th April 2021, 09:30',
+                transactionName: 'Credit pack: 10000 credits',
+              },
+            ]}
+          />
         </>
       )}
     </main>
