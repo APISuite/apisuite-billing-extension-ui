@@ -23,6 +23,12 @@ const Billing: React.FC<BillingProps> = ({
 }) => {
   const classes = useStyles()
 
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
+
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')
   of all credit packs and subscription plans we presently offer, as well as
   all information we have on user transactions. */
@@ -137,16 +143,13 @@ const Billing: React.FC<BillingProps> = ({
 
   return (
     <main className={`page-container ${classes.billingContentContainer}`}>
-      <p className={classes.title}>Billing</p>
+      <p className={classes.title}>{t('billing.title')}</p>
 
-      <p className={classes.subtitle}>
-        Manage your subcription, top-up your credit balance, and edit your
-        payment information.
-      </p>
+      <p className={classes.subtitle}>{t('billing.title')}</p>
 
       {/* 'Your balance' section */}
 
-      <p className={classes.sectionTitle}>Your balance</p>
+      <p className={classes.sectionTitle}>{t('billing.yourBalance')}</p>
 
       <div
         className={
@@ -156,7 +159,7 @@ const Billing: React.FC<BillingProps> = ({
         }
       >
         <div className={classes.creditBalanceContainer}>
-          <p>Available credits</p>
+          <p>{t('billing.availableCredits')}</p>
 
           <p>{hasPurchasedCredits ? '10000' : '0'}</p>
         </div>
@@ -167,7 +170,9 @@ const Billing: React.FC<BillingProps> = ({
 
             {allCreditPacks.length !== 0 ? (
               <>
-                <p className={classes.creditPacksTitle}>Select a credit pack</p>
+                <p className={classes.creditPacksTitle}>
+                  {t('billing.creditPacksTitle')}
+                </p>
 
                 <CreditPacksCatalog
                   arrayOfCreditPacks={allCreditPacks}
@@ -177,7 +182,7 @@ const Billing: React.FC<BillingProps> = ({
               </>
             ) : (
               <p className={classes.retrievingAllAvailableCreditPacks}>
-                Retrieving all available credit packs...
+                {t('billing.retrievingCreditPacks')}
               </p>
             )}
 
@@ -190,14 +195,14 @@ const Billing: React.FC<BillingProps> = ({
                 }
                 href="/billing/creditpayment"
               >
-                Purchase credits
+                {t('billing.purchaseCreditsButtonLabel')}
               </Link>
 
               <Button
                 className={classes.cancelCreditsPurchaseButton}
                 onClick={handleWantsToTopUpCredits}
               >
-                Cancel
+                {t('billing.cancelCreditsPurchaseButtonLabel')}
               </Button>
             </div>
           </div>
@@ -206,14 +211,16 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.addCreditsButton}
             onClick={handleWantsToTopUpCredits}
           >
-            Add credits
+            {t('billing.addCreditsButtonLabel')}
           </Button>
         )}
       </div>
 
       {/* 'Your subscription' section */}
 
-      <p className={classes.sectionTitle}>Your subscription</p>
+      <p className={classes.sectionTitle}>
+        {t('billing.yourSubscriptionsTitle')}
+      </p>
 
       {hasStartedSubscription ? (
         <>
@@ -227,19 +234,19 @@ const Billing: React.FC<BillingProps> = ({
           />
 
           <Button className={classes.editPaymentDetailsButton}>
-            Edit payment information
+            {t('billing.editPaymentInfoButtonLabel')}
           </Button>
         </>
       ) : (
         <>
           <p className={classes.noActiveSubscriptionText}>
-            You don't have any active subscriptions.
+            {t('billing.noActiveSubscriptions')}
           </p>
 
           {allSubscriptionPlans.length !== 0 ? (
             <>
               <p className={classes.subscriptionSelectionTitle}>
-                Choose subscription
+                {t('billing.chooseSubscription')}
               </p>
 
               <SubscriptionPlansCatalog
@@ -254,7 +261,7 @@ const Billing: React.FC<BillingProps> = ({
             </>
           ) : (
             <p className={classes.retrievingAllAvailableSubscriptionPlans}>
-              Retrieving all available subscription plans...
+              {t('billing.retrievingSubscriptionPlans')}
             </p>
           )}
 
@@ -266,7 +273,7 @@ const Billing: React.FC<BillingProps> = ({
             }
             href="/billing/subscriptionpayment"
           >
-            Start subscription
+            {t('billing.startSubscriptionButtonLabel')}
           </Link>
         </>
       )}
@@ -275,10 +282,12 @@ const Billing: React.FC<BillingProps> = ({
 
       {(hasPurchasedCredits || hasStartedSubscription) && (
         <>
-          <p className={classes.sectionTitle}>Transaction history</p>
+          <p className={classes.sectionTitle}>
+            {t('billing.transactionHistoryTitle')}
+          </p>
 
           <p className={classes.sectionSubtitle}>
-            See your last transaction movements in your account.
+          {t('billing.transactionHistorySubtitle')}
           </p>
 
           <TransactionsTable

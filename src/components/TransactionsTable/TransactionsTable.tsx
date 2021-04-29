@@ -2,11 +2,18 @@ import React from 'react'
 
 import { TransactionsTableProps } from './types'
 import useStyles from './styles'
+import { useTranslation } from '@apisuite/fe-base'
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   arrayOfTransactions,
 }) => {
   const classes = useStyles()
+
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
 
   const generateTransactionsTableEntries = () => {
     const arrayOfTableEntries = arrayOfTransactions.map(
@@ -39,7 +46,9 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
                   : classes.pendingTransactionStatus
               }
             >
-              {transaction.transactionCompleted ? 'Authorized' : 'Pending'}
+              {transaction.transactionCompleted
+                ? t('billing.transactionsTable.transactionAuthorized')
+                : t('billing.transactionsTable.transactionPending')}
             </p>
 
             <p className={classes.transactionAmount}>
@@ -56,15 +65,25 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   return (
     <div className={classes.transactionsTable}>
       <div className={classes.transactionsTableHeader}>
-        <p className={classes.transactionName}>Description</p>
+        <p className={classes.transactionName}>
+          {t('billing.transactionsTable.descriptionTitle')}
+        </p>
 
-        <p className={classes.transactionReference}>Reference</p>
+        <p className={classes.transactionReference}>
+          {t('billing.transactionsTable.referenceTitle')}
+        </p>
 
-        <p className={classes.transactionDate}>Date of purchase</p>
+        <p className={classes.transactionDate}>
+          {t('billing.transactionsTable.dateOfPurchaseTitle')}
+        </p>
 
-        <p className={classes.transactionStatus}>Payment status</p>
+        <p className={classes.transactionStatus}>
+          {t('billing.transactionsTable.statusTitle')}
+        </p>
 
-        <p className={classes.transactionAmount}>Price</p>
+        <p className={classes.transactionAmount}>
+          {t('billing.transactionsTable.priceTitle')}
+        </p>
       </div>
 
       {generateTransactionsTableEntries()}

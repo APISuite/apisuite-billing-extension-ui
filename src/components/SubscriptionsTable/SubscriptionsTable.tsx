@@ -1,10 +1,17 @@
 import React from 'react'
 
 import { SubscriptionsTableProps } from './types'
+import { useTranslation } from '@apisuite/fe-base'
 import useStyles from './styles'
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({ arrayOfSubs }) => {
   const classes = useStyles()
+
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
 
   const generateSubscriptionsTableEntries = () => {
     const arrayOfTableEntries = arrayOfSubs.map((sub, index) => {
@@ -30,9 +37,9 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({ arrayOfSubs }) 
   return (
     <div className={classes.subscriptionsTable}>
       <div className={classes.subscriptionsTableHeader}>
-        <p>Subscription</p>
+        <p>{t('billing.subscriptionsTable.title')}</p>
 
-        <p>Next billing date</p>
+        <p>{t('billing.subscriptionsTable.subtitle')}</p>
       </div>
 
       {generateSubscriptionsTableEntries()}
