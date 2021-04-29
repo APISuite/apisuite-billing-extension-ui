@@ -1,11 +1,11 @@
 import { makeStyles } from '@apisuite/fe-base'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   addCreditsButton: {
-    backgroundColor: '#32C896',
-    border: `1px solid #32C896`,
+    backgroundColor: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
     borderRadius: '4px',
-    color: `#FFFFFF !important`,
+    color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '40px',
@@ -15,7 +15,7 @@ export default makeStyles({
     width: '175px',
 
     '&:hover': {
-      backgroundColor: '#32C896',
+      backgroundColor: theme.palette.primary.main,
     },
   },
 
@@ -26,10 +26,10 @@ export default makeStyles({
   },
 
   cancelCreditsPurchaseButton: {
-    backgroundColor: '#FFFFFF',
-    border: `1px solid #BAC0C6`,
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
-    color: `#51606E !important`,
+    color: `${theme.palette.text.hint} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '45px',
@@ -38,7 +38,7 @@ export default makeStyles({
     textTransform: 'none',
 
     '&:hover': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: theme.palette.background.paper,
     },
   },
 
@@ -51,24 +51,24 @@ export default makeStyles({
     },
 
     '& > :last-child': {
-      color: '#FFFFFF',
+      color: theme.palette.primary.contrastText,
       fontSize: '40px',
       fontWeight: 500,
     },
   },
 
   creditPacksTitle: {
-    color: '#FFFFFF',
+    color: theme.palette.primary.contrastText,
     fontSize: '14px',
     fontWeight: 300,
     marginBottom: '12px',
   },
 
   disabledPurchaseCreditsButton: {
-    backgroundColor: '#BAC0C6',
-    border: '1px solid #BAC0C6',
+    backgroundColor: theme.palette.grey[300],
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
-    color: `#FFFFFF !important`,
+    color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '45px',
@@ -80,15 +80,15 @@ export default makeStyles({
     width: '175px',
 
     '&:hover': {
-      backgroundColor: '#BAC0C6',
+      backgroundColor: theme.palette.grey[300],
     },
   },
 
   disabledStartSubscriptionButton: {
-    backgroundColor: '#BAC0C6',
-    border: '1px solid #BAC0C6',
+    backgroundColor: theme.palette.grey[300],
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
-    color: `#FFFFFF !important`,
+    color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '45px',
@@ -98,15 +98,15 @@ export default makeStyles({
     textTransform: 'none',
 
     '&:hover': {
-      backgroundColor: '#BAC0C6',
+      backgroundColor: theme.palette.grey[300],
     },
   },
 
   editPaymentDetailsButton: {
-    backgroundColor: '#FFFFFF',
-    border: `1px solid #BAC0C6`,
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
-    color: `#51606E !important`,
+    color: `${theme.palette.text.hint} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '40px',
@@ -116,15 +116,15 @@ export default makeStyles({
     textTransform: 'none',
 
     '&:hover': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: theme.palette.background.paper,
     },
   },
 
   enabledPurchaseCreditsButton: {
-    backgroundColor: '#32C896',
-    border: `1px solid #32C896`,
+    backgroundColor: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
     borderRadius: '4px',
-    color: `#FFFFFF !important`,
+    color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '45px',
@@ -135,15 +135,15 @@ export default makeStyles({
     width: '175px',
 
     '&:hover': {
-      backgroundColor: '#32C896',
+      backgroundColor: theme.palette.primary.main,
     },
   },
 
   enabledStartSubscriptionButton: {
-    backgroundColor: '#14283C',
-    border: `1px solid #14283C`,
+    backgroundColor: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
     borderRadius: '4px',
-    color: `#FFFFFF !important`,
+    color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '45px',
@@ -152,25 +152,25 @@ export default makeStyles({
     textTransform: 'none',
 
     '&:hover': {
-      backgroundColor: '#14283C',
+      backgroundColor: theme.palette.primary.main,
     },
   },
 
   noActiveSubscriptionText: {
-    color: '#51606E',
+    color: theme.palette.text.hint,
     fontSize: '16px',
     fontWeight: 400,
     marginBottom: '40px',
   },
 
   retrievingAllAvailableCreditPacks: {
-    color: '#FFFFFF',
+    color: theme.palette.primary.contrastText,
     fontSize: '16px',
     fontWeight: 300,
   },
 
   retrievingAllAvailableSubscriptionPlans: {
-    color: '#51606E',
+    color: theme.palette.text.hint,
     fontSize: '16px',
     fontWeight: 300,
     marginBottom: '40px',
@@ -184,7 +184,7 @@ export default makeStyles({
   },
 
   sectionTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '22px',
     fontWeight: 500,
     marginBottom: '24px',
@@ -192,28 +192,28 @@ export default makeStyles({
   },
 
   separator: {
-    border: `1px solid #FFFFFF`,
+    border: `1px solid ${theme.palette.primary.contrastText}`,
     borderRadius: '4px',
     margin: '25px 0px 15px 0px',
     width: '100%',
   },
 
   subscriptionSelectionTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '18px',
     fontWeight: 500,
     marginBottom: '24px',
   },
 
   subtitle: {
-    color: '#85909A',
+    color: theme.palette.text.secondary,
     fontSize: '16px',
     fontWeight: 300,
     marginBottom: '40px',
   },
 
   title: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '32px',
     fontWeight: 300,
     marginBottom: '12px',
@@ -221,7 +221,7 @@ export default makeStyles({
 
   yourCreditBalanceContainerWithCreditPacks: {
     alignItems: 'center',
-    backgroundColor: '#14283C',
+    backgroundColor: theme.palette.text.primary,
     borderRadius: '4px',
     display: 'block',
     justifyContent: 'space-between',
@@ -233,7 +233,7 @@ export default makeStyles({
 
   yourCreditBalanceContainerWithoutCreditPacks: {
     alignItems: 'center',
-    backgroundColor: '#14283C',
+    backgroundColor: theme.palette.text.primary,
     borderRadius: '4px',
     display: 'flex',
     justifyContent: 'space-between',
@@ -242,4 +242,4 @@ export default makeStyles({
     padding: '24px',
     width: '100%',
   },
-})
+}))

@@ -1,16 +1,16 @@
 import { makeStyles } from '@apisuite/fe-base'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   creditPackDetailsContainer: {
     '& > :first-child': {
-      color: '#14283C',
+      color: theme.palette.text.primary,
       fontSize: '16px',
       fontWeight: 500,
       marginBottom: '-10px',
     },
 
     '& > :last-child': {
-      color: '#51606E',
+      color: theme.palette.text.hint,
       fontSize: '14px',
       fontWeight: 300,
     },
@@ -22,7 +22,7 @@ export default makeStyles({
   },
 
   creditPacksTitle: {
-    color: '#FFFFFF',
+    color: theme.palette.common.white,
     fontSize: '14px',
     fontWeight: 300,
     marginBottom: '12px',
@@ -30,8 +30,8 @@ export default makeStyles({
 
   notSelectedCreditPackContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    border: '1px solid #BAC0C6',
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
     cursor: 'pointer',
     display: 'flex',
@@ -43,15 +43,15 @@ export default makeStyles({
   },
 
   notSelectedCreditPackIcon: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '24px',
     marginRight: '8px',
   },
 
   selectedCreditPackContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    border: '1px solid #19B3EE',
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.action.focus}`,
     borderRadius: '4px',
     cursor: 'pointer',
     display: 'flex',
@@ -63,8 +63,8 @@ export default makeStyles({
   },
 
   selectedCreditPackIcon: {
-    color: '#19B3EE',
+    color: theme.palette.action.focus,
     fontSize: '24px',
     marginRight: '8px',
   },
-})
+}))

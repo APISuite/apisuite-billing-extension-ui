@@ -1,23 +1,23 @@
 import { makeStyles } from '@apisuite/fe-base'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   leftDetailsContainer: {
     '& > :first-child': {
-      color: '#51606E',
+      color: theme.palette.text.hint,
       fontSize: '14px',
       fontWeight: 400,
       marginBottom: '-6px',
     },
 
     '& > :last-child': {
-      color: '#14283C',
+      color: theme.palette.text.primary,
       fontSize: '16px',
       fontWeight: 500,
     },
   },
 
   noActiveSubscriptionText: {
-    color: '#51606E',
+    color: theme.palette.text.hint,
     fontSize: '16px',
     fontWeight: 400,
     marginBottom: '40px',
@@ -25,8 +25,8 @@ export default makeStyles({
 
   notSelectedSubscriptionPlanContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    border: '1px solid #BAC0C6',
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
     cursor: 'pointer',
     display: 'flex',
@@ -38,21 +38,21 @@ export default makeStyles({
   },
 
   notSelectedSubscriptionPlanIcon: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '24px',
     marginRight: '12px',
   },
 
   rightDetailsContainer: {
     '& > :first-child': {
-      color: '#14283C',
+      color: theme.palette.text.primary,
       fontSize: '16px',
       fontWeight: 500,
       marginBottom: '-6px',
     },
 
     '& > :last-child': {
-      color: '#51606E',
+      color: theme.palette.text.hint,
       fontSize: '14px',
       fontWeight: 400,
     },
@@ -60,8 +60,8 @@ export default makeStyles({
 
   selectedSubscriptionPlanContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    border: '1px solid #19B3EE',
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.action.focus}`,
     borderRadius: '4px',
     cursor: 'pointer',
     display: 'flex',
@@ -73,7 +73,7 @@ export default makeStyles({
   },
 
   selectedSubscriptionPlanIcon: {
-    color: '#19B3EE',
+    color: theme.palette.action.focus,
     fontSize: '24px',
     marginRight: '12px',
   },
@@ -91,9 +91,9 @@ export default makeStyles({
   },
 
   subscriptionSelectionTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '18px',
     fontWeight: 500,
     marginBottom: '24px',
   },
-})
+}))

@@ -1,9 +1,9 @@
 import { makeStyles } from '@apisuite/fe-base'
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   allTransactionDetailsContainer: {
-    backgroundColor: '#FFFFFF',
-    border: '1px solid #BAC0C6',
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
     padding: '24px',
   },
@@ -13,10 +13,10 @@ export default makeStyles({
   },
 
   goToBillingButton: {
-    backgroundColor: '#FFFFFF',
-    border: `1px solid #BAC0C6`,
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: '4px',
-    color: `#51606E !important`,
+    color: `${theme.palette.text.hint} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '45px',
@@ -27,15 +27,15 @@ export default makeStyles({
     width: '180px',
 
     '&:hover': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: theme.palette.background.paper,
     },
   },
 
   goToMarketplaceButton: {
-    backgroundColor: '#32C896',
-    border: `1px solid #32C896`,
+    backgroundColor: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
     borderRadius: '4px',
-    color: `#FFFFFF !important`,
+    color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
     height: '45px',
@@ -47,7 +47,7 @@ export default makeStyles({
     width: '220px',
 
     '&:hover': {
-      backgroundColor: '#32C896',
+      backgroundColor: theme.palette.primary.main,
     },
   },
 
@@ -58,14 +58,14 @@ export default makeStyles({
   },
 
   separator: {
-    border: `1px solid #DBDEE1`,
+    border: `1px solid ${theme.palette.divider}`,
     borderRadius: '4px',
     margin: '40px 0px',
     width: '100%',
   },
 
   subtitle: {
-    color: '#85909A',
+    color: theme.palette.text.secondary,
     fontSize: '20px',
     fontWeight: 300,
     marginBottom: '40px',
@@ -77,7 +77,7 @@ export default makeStyles({
   },
 
   title: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '42px',
     fontWeight: 700,
     marginBottom: '24px',
@@ -89,7 +89,7 @@ export default makeStyles({
     marginTop: '5px',
 
     '& > :first-child': {
-      color: '#85909A',
+      color: theme.palette.text.secondary,
       fontSize: '16px',
       fontWeight: 300,
       maxWidth: '140px',
@@ -98,7 +98,7 @@ export default makeStyles({
     },
 
     '& > :last-child': {
-      color: '#51606E',
+      color: theme.palette.text.hint,
       fontSize: '14px',
       fontWeight: 400,
       maxWidth: '325px',
@@ -108,16 +108,16 @@ export default makeStyles({
   },
 
   transactionDetailsTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '22px',
     fontWeight: 400,
     marginBottom: '24px',
   },
 
   transactionTitle: {
-    color: '#14283C',
+    color: theme.palette.text.primary,
     fontSize: '18px',
     fontWeight: 500,
     marginBottom: '15px',
   },
-})
+}))
