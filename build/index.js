@@ -2782,9 +2782,8 @@ var Writable = require$$0__default['default'].Writable;
 
 
 // Create handlers that pass events from native requests
-var events = ["abort", "aborted", "connect", "error", "socket", "timeout"];
 var eventHandlers = Object.create(null);
-events.forEach(function (event) {
+["abort", "aborted", "connect", "error", "socket", "timeout"].forEach(function (event) {
   eventHandlers[event] = function (arg1, arg2, arg3) {
     this._redirectable.emit(event, arg1, arg2, arg3);
   };
@@ -2839,7 +2838,9 @@ RedirectableRequest.prototype = Object.create(Writable.prototype);
 
 RedirectableRequest.prototype.abort = function () {
   // Abort the internal request
-  abortRequest(this._currentRequest);
+  this._currentRequest.removeAllListeners();
+  this._currentRequest.on("error", noop);
+  this._currentRequest.abort();
 
   // Abort this request
   this.emit("abort");
@@ -2930,14 +2931,8 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
     this.on("timeout", callback);
   }
 
-  function destroyOnTimeout(socket) {
-    socket.setTimeout(msecs);
-    socket.removeListener("timeout", socket.destroy);
-    socket.addListener("timeout", socket.destroy);
-  }
-
   // Sets up a timer to trigger a timeout event
-  function startTimer(socket) {
+  function startTimer() {
     if (self._timeout) {
       clearTimeout(self._timeout);
     }
@@ -2945,7 +2940,6 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
       self.emit("timeout");
       clearTimer();
     }, msecs);
-    destroyOnTimeout(socket);
   }
 
   // Prevent a timeout from triggering
@@ -2961,13 +2955,12 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
 
   // Start the timer when the socket is opened
   if (this.socket) {
-    startTimer(this.socket);
+    startTimer();
   }
   else {
     this._currentRequest.once("socket", startTimer);
   }
 
-  this.on("socket", destroyOnTimeout);
   this.once("response", clearTimer);
   this.once("error", clearTimer);
 
@@ -3046,8 +3039,11 @@ RedirectableRequest.prototype._performRequest = function () {
 
   // Set up event handlers
   request._redirectable = this;
-  for (var e = 0; e < events.length; e++) {
-    request.on(events[e], eventHandlers[events[e]]);
+  for (var event in eventHandlers) {
+    /* istanbul ignore else */
+    if (event) {
+      request.on(event, eventHandlers[event]);
+    }
   }
 
   // End a redirected request
@@ -3105,7 +3101,9 @@ RedirectableRequest.prototype._processResponse = function (response) {
   if (location && this._options.followRedirects !== false &&
       statusCode >= 300 && statusCode < 400) {
     // Abort the current request
-    abortRequest(this._currentRequest);
+    this._currentRequest.removeAllListeners();
+    this._currentRequest.on("error", noop);
+    this._currentRequest.abort();
     // Discard the remainder of the response to avoid waiting for data
     response.destroy();
 
@@ -3297,20 +3295,19 @@ function createErrorType(code, defaultMessage) {
   return CustomError;
 }
 
-function abortRequest(request) {
-  for (var e = 0; e < events.length; e++) {
-    request.removeListener(events[e], eventHandlers[events[e]]);
-  }
-  request.on("error", noop);
-  request.abort();
-}
-
 // Exports
 var followRedirects = wrap({ http: http__default['default'], https: https__default['default'] });
 var wrap_1 = wrap;
 followRedirects.wrap = wrap_1;
 
-var _from = "axios";
+var _args = [
+	[
+		"axios@0.21.1",
+		"/Users/mstrk/dev/cloudoki/apisuite-billing-extension-ui"
+	]
+];
+var _development = true;
+var _from = "axios@0.21.1";
 var _id = "axios@0.21.1";
 var _inBundle = false;
 var _integrity = "sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==";
@@ -3318,23 +3315,21 @@ var _location = "/axios";
 var _phantomChildren = {
 };
 var _requested = {
-	type: "tag",
+	type: "version",
 	registry: true,
-	raw: "axios",
+	raw: "axios@0.21.1",
 	name: "axios",
 	escapedName: "axios",
-	rawSpec: "",
+	rawSpec: "0.21.1",
 	saveSpec: null,
-	fetchSpec: "latest"
+	fetchSpec: "0.21.1"
 };
 var _requiredBy = [
-	"#DEV:/",
-	"#USER"
+	"#DEV:/"
 ];
 var _resolved = "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz";
-var _shasum = "22563481962f4d6bde9a76d516ef0e5d3c09b2b8";
-var _spec = "axios";
-var _where = "/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/Billing/apisuite-billing-extension-ui";
+var _spec = "0.21.1";
+var _where = "/Users/mstrk/dev/cloudoki/apisuite-billing-extension-ui";
 var author = {
 	name: "Matt Zabriskie"
 };
@@ -3344,7 +3339,6 @@ var browser = {
 var bugs = {
 	url: "https://github.com/axios/axios/issues"
 };
-var bundleDependencies = false;
 var bundlesize = [
 	{
 		path: "./dist/axios.min.js",
@@ -3354,7 +3348,6 @@ var bundlesize = [
 var dependencies = {
 	"follow-redirects": "^1.10.0"
 };
-var deprecated = false;
 var description = "Promise based HTTP client for the browser and node.js";
 var devDependencies = {
 	bundlesize: "^0.17.0",
@@ -3424,6 +3417,8 @@ var typings = "./index.d.ts";
 var unpkg = "dist/axios.min.js";
 var version$1 = "0.21.1";
 var pkg = {
+	_args: _args,
+	_development: _development,
 	_from: _from,
 	_id: _id,
 	_inBundle: _inBundle,
@@ -3433,16 +3428,13 @@ var pkg = {
 	_requested: _requested,
 	_requiredBy: _requiredBy,
 	_resolved: _resolved,
-	_shasum: _shasum,
 	_spec: _spec,
 	_where: _where,
 	author: author,
 	browser: browser,
 	bugs: bugs,
-	bundleDependencies: bundleDependencies,
 	bundlesize: bundlesize,
 	dependencies: dependencies,
-	deprecated: deprecated,
 	description: description,
 	devDependencies: devDependencies,
 	homepage: homepage,
@@ -4463,7 +4455,7 @@ var injectStuffIntoStore = function (coreStoreProps) {
 };
 
 var name = "apisuite-billing-extension-ui";
-var version = "1.0.2";
+var version = "1.0.3";
 
 var baseConfig = {};
 
