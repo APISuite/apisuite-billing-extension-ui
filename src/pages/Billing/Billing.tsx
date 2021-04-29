@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from '@apisuite/fe-base'
+import { Button, useTranslation } from '@apisuite/fe-base'
 
 import { BillingProps } from './types'
 import CreditPacksCatalog from 'components/CreditPacksCatalog/CreditPacksCatalog'

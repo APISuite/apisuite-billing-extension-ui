@@ -1,4 +1,4 @@
-import { registerTranslations, makeStyles, Button } from '@apisuite/fe-base';
+import { registerTranslations, makeStyles, useTranslation, Button } from '@apisuite/fe-base';
 import { takeLatest, put, call } from 'redux-saga/effects';
 import http from 'http';
 import https from 'https';
@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonCheckedRounded';
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import { Link as Link$1 } from 'react-router-dom';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -56,6 +56,18 @@ var __assign = function() {
     return __assign.apply(this, arguments);
 };
 
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
 function __awaiter(thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -94,15 +106,43 @@ function __generator(thisArg, body) {
     }
 }
 
-var homepage$2 = {
-	extensionSection: {
-		title: "Extension Component",
-		paragraph: "This section was injected by an extension",
-		configValue: "Configuration value: {{ value }}"
+var billing = {
+	title: "Billing",
+	subtitle: "Manage your subcription, top-up your credit balance, and edit your payment information.",
+	yourBalance: "Your balance",
+	availableCredits: "Available credits",
+	creditPacksTitle: "Select a credit pack",
+	retrievingCreditPacks: "Retrieving all available credit packs...",
+	purchaseCreditsButtonLabel: "Purchase credits",
+	cancelCreditsPurchaseButtonLabel: "Cancel",
+	addCreditsButtonLabel: "Add credits",
+	yourSubscriptionsTitle: "Your subscription",
+	editPaymentInfoButtonLabel: "Edit payment information",
+	noActiveSubscriptions: "You don't have any active subscriptions.",
+	chooseSubscription: "Choose subscription",
+	retrievingSubscriptionPlans: "Retrieving all available subscription plans...",
+	startSubscriptionButtonLabel: "Start subscription",
+	transactionHistoryTitle: "Transaction history",
+	transactionHistorySubtitle: "See your last transaction movements in your account.",
+	generalWording: {
+		credits: "credits"
+	},
+	subscriptionsTable: {
+		title: "Subscription",
+		subtitle: "Next billing date"
+	},
+	transactionsTable: {
+		transactionAuthorized: "Authorized",
+		transactionPending: "Pending",
+		descriptionTitle: "Description",
+		referenceTitle: "Reference",
+		dateOfPurchaseTitle: "Date of purchase",
+		statusTitle: "Payment status",
+		priceTitle: "Price"
 	}
 };
 var enUS = {
-	homepage: homepage$2
+	billing: billing
 };
 
 var homepage$1 = {
@@ -556,6 +596,8 @@ var initialState = {
     allCreditPacks: [],
     allSubscriptionPlans: [],
     allUserTransactions: [],
+    // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+    hasPurchasedCredits: false,
 };
 /** Action types */
 var GET_ALL_CREDIT_PACKS_ACTION = 'Billing/GET_ALL_CREDIT_PACKS_ACTION';
@@ -564,6 +606,8 @@ var GET_ALL_SUBSCRIPTION_PLANS_ACTION = 'Billing/GET_ALL_SUBSCRIPTION_PLANS_ACTI
 var GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS = 'Billing/GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS';
 var GET_ALL_USER_TRANSACTIONS_ACTION = 'Billing/GET_ALL_USER_TRANSACTIONS_ACTION';
 var GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS = 'Billing/GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS';
+// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+var HAS_PURCHASED_CREDITS_ACTION = 'Billing/HAS_PURCHASED_CREDITS_ACTION';
 /** Reducer */
 function billingReducer(state, action) {
     if (state === void 0) { state = initialState; }
@@ -592,6 +636,12 @@ function billingReducer(state, action) {
                 allUserTransactions: { $set: action.allUserTransactions },
             });
         }
+        // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+        case HAS_PURCHASED_CREDITS_ACTION: {
+            return update(state, {
+                hasPurchasedCredits: { $set: true },
+            });
+        }
         default:
             return state;
     }
@@ -617,6 +667,10 @@ function getAllUserTransactionsAction() {
 }
 function getAllUserTransactionsActionSuccess(allUserTransactions) {
     return { type: GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions: allUserTransactions };
+}
+// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+function hasPurchasedCreditsAction() {
+    return { type: HAS_PURCHASED_CREDITS_ACTION };
 }
 
 var bind = function bind(fn, thisArg) {
@@ -2711,8 +2765,9 @@ var Writable = require$$0$1.Writable;
 
 
 // Create handlers that pass events from native requests
+var events = ["abort", "aborted", "connect", "error", "socket", "timeout"];
 var eventHandlers = Object.create(null);
-["abort", "aborted", "connect", "error", "socket", "timeout"].forEach(function (event) {
+events.forEach(function (event) {
   eventHandlers[event] = function (arg1, arg2, arg3) {
     this._redirectable.emit(event, arg1, arg2, arg3);
   };
@@ -2767,9 +2822,7 @@ RedirectableRequest.prototype = Object.create(Writable.prototype);
 
 RedirectableRequest.prototype.abort = function () {
   // Abort the internal request
-  this._currentRequest.removeAllListeners();
-  this._currentRequest.on("error", noop);
-  this._currentRequest.abort();
+  abortRequest(this._currentRequest);
 
   // Abort this request
   this.emit("abort");
@@ -2860,8 +2913,14 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
     this.on("timeout", callback);
   }
 
+  function destroyOnTimeout(socket) {
+    socket.setTimeout(msecs);
+    socket.removeListener("timeout", socket.destroy);
+    socket.addListener("timeout", socket.destroy);
+  }
+
   // Sets up a timer to trigger a timeout event
-  function startTimer() {
+  function startTimer(socket) {
     if (self._timeout) {
       clearTimeout(self._timeout);
     }
@@ -2869,6 +2928,7 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
       self.emit("timeout");
       clearTimer();
     }, msecs);
+    destroyOnTimeout(socket);
   }
 
   // Prevent a timeout from triggering
@@ -2884,12 +2944,13 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
 
   // Start the timer when the socket is opened
   if (this.socket) {
-    startTimer();
+    startTimer(this.socket);
   }
   else {
     this._currentRequest.once("socket", startTimer);
   }
 
+  this.on("socket", destroyOnTimeout);
   this.once("response", clearTimer);
   this.once("error", clearTimer);
 
@@ -2968,11 +3029,8 @@ RedirectableRequest.prototype._performRequest = function () {
 
   // Set up event handlers
   request._redirectable = this;
-  for (var event in eventHandlers) {
-    /* istanbul ignore else */
-    if (event) {
-      request.on(event, eventHandlers[event]);
-    }
+  for (var e = 0; e < events.length; e++) {
+    request.on(events[e], eventHandlers[events[e]]);
   }
 
   // End a redirected request
@@ -3030,9 +3088,7 @@ RedirectableRequest.prototype._processResponse = function (response) {
   if (location && this._options.followRedirects !== false &&
       statusCode >= 300 && statusCode < 400) {
     // Abort the current request
-    this._currentRequest.removeAllListeners();
-    this._currentRequest.on("error", noop);
-    this._currentRequest.abort();
+    abortRequest(this._currentRequest);
     // Discard the remainder of the response to avoid waiting for data
     response.destroy();
 
@@ -3224,12 +3280,20 @@ function createErrorType(code, defaultMessage) {
   return CustomError;
 }
 
+function abortRequest(request) {
+  for (var e = 0; e < events.length; e++) {
+    request.removeListener(events[e], eventHandlers[events[e]]);
+  }
+  request.on("error", noop);
+  request.abort();
+}
+
 // Exports
 var followRedirects = wrap({ http: http, https: https });
 var wrap_1 = wrap;
 followRedirects.wrap = wrap_1;
 
-var _from = "axios@^0.21.1";
+var _from = "axios";
 var _id = "axios@0.21.1";
 var _inBundle = false;
 var _integrity = "sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==";
@@ -3237,22 +3301,23 @@ var _location = "/axios";
 var _phantomChildren = {
 };
 var _requested = {
-	type: "range",
+	type: "tag",
 	registry: true,
-	raw: "axios@^0.21.1",
+	raw: "axios",
 	name: "axios",
 	escapedName: "axios",
-	rawSpec: "^0.21.1",
+	rawSpec: "",
 	saveSpec: null,
-	fetchSpec: "^0.21.1"
+	fetchSpec: "latest"
 };
 var _requiredBy = [
-	"#DEV:/"
+	"#DEV:/",
+	"#USER"
 ];
 var _resolved = "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz";
 var _shasum = "22563481962f4d6bde9a76d516ef0e5d3c09b2b8";
-var _spec = "axios@^0.21.1";
-var _where = "/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/Billing/apisuite-extension-ui-example";
+var _spec = "axios";
+var _where = "/Users/pedrocloudoki/Documents/Trabalho/API Suite Extensions/Billing/apisuite-billing-extension-ui";
 var author = {
 	name: "Matt Zabriskie"
 };
@@ -4381,7 +4446,7 @@ var injectStuffIntoStore = function (coreStoreProps) {
 };
 
 var name = "apisuite-billing-extension-ui";
-var version = "1.0.2";
+var version = "1.0.0";
 
 var baseConfig = {};
 
@@ -4413,34 +4478,35 @@ var hookMenu = function (menu) {
     return menuConfig[menu] || null;
 };
 
-var useStyles$5 = makeStyles({
+var useStyles$5 = makeStyles(function (theme) { return ({
     creditPackDetailsContainer: {
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '16px',
             fontWeight: 500,
             marginBottom: '-10px',
         },
         '& > :last-child': {
-            color: '#51606E',
+            color: theme.palette.text.hint,
             fontSize: '14px',
             fontWeight: 300,
         },
     },
     creditPacksCatalogEntriesContainer: {
         display: 'flex',
+        marginBottom: '40px',
     },
     creditPacksTitle: {
-        color: '#FFFFFF',
+        color: theme.palette.common.white,
         fontSize: '14px',
         fontWeight: 300,
         marginBottom: '12px',
     },
     notSelectedCreditPackContainer: {
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
         cursor: 'pointer',
         display: 'flex',
         height: '55px',
@@ -4450,15 +4516,15 @@ var useStyles$5 = makeStyles({
         width: '100%',
     },
     notSelectedCreditPackIcon: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '24px',
         marginRight: '8px',
     },
     selectedCreditPackContainer: {
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #19B3EE',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.action.focus,
+        borderRadius: theme.palette.dimensions.borderRadius,
         cursor: 'pointer',
         display: 'flex',
         height: '55px',
@@ -4468,11 +4534,11 @@ var useStyles$5 = makeStyles({
         width: '100%',
     },
     selectedCreditPackIcon: {
-        color: '#19B3EE',
+        color: theme.palette.action.focus,
         fontSize: '24px',
         marginRight: '8px',
     },
-});
+}); });
 
 var CreditPacksCatalog = function (_a) {
     var arrayOfCreditPacks = _a.arrayOfCreditPacks, currentlySelectedCreditPack = _a.currentlySelectedCreditPack, handleCreditPackSelection = _a.handleCreditPackSelection;
@@ -4498,31 +4564,43 @@ var CreditPacksCatalog = function (_a) {
     return (React.createElement("div", { className: classes.creditPacksCatalogEntriesContainer }, generateCatalogEntries()));
 };
 
-var useStyles$4 = makeStyles({
+var Link = React.forwardRef(function (_a, ref) {
+    var _b = _a.externalTarget, externalTarget = _b === void 0 ? '_blank' : _b, href = _a.href, to = _a.to, props = __rest(_a, ["externalTarget", "href", "to"]);
+    var destination = href || to;
+    if (typeof destination === 'string' && /^https?:\/\//.test(destination)) {
+        return (React.createElement("a", __assign({ href: destination, target: externalTarget }, props), props.children));
+    }
+    else {
+        return React.createElement(Link$1, __assign({ ref: ref, to: destination }, props));
+    }
+});
+Link.displayName = 'Link';
+
+var useStyles$4 = makeStyles(function (theme) { return ({
     leftDetailsContainer: {
         '& > :first-child': {
-            color: '#51606E',
+            color: theme.palette.text.hint,
             fontSize: '14px',
             fontWeight: 400,
             marginBottom: '-6px',
         },
         '& > :last-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '16px',
             fontWeight: 500,
         },
     },
     noActiveSubscriptionText: {
-        color: '#51606E',
+        color: theme.palette.text.hint,
         fontSize: '16px',
         fontWeight: 400,
         marginBottom: '40px',
     },
     notSelectedSubscriptionPlanContainer: {
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
         cursor: 'pointer',
         display: 'flex',
         height: '70px',
@@ -4532,28 +4610,28 @@ var useStyles$4 = makeStyles({
         width: '100%',
     },
     notSelectedSubscriptionPlanIcon: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '24px',
         marginRight: '12px',
     },
     rightDetailsContainer: {
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '16px',
             fontWeight: 500,
             marginBottom: '-6px',
         },
         '& > :last-child': {
-            color: '#51606E',
+            color: theme.palette.text.hint,
             fontSize: '14px',
             fontWeight: 400,
         },
     },
     selectedSubscriptionPlanContainer: {
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #19B3EE',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.action.focus,
+        borderRadius: theme.palette.dimensions.borderRadius,
         cursor: 'pointer',
         display: 'flex',
         height: '70px',
@@ -4563,7 +4641,7 @@ var useStyles$4 = makeStyles({
         width: '100%',
     },
     selectedSubscriptionPlanIcon: {
-        color: '#19B3EE',
+        color: theme.palette.action.focus,
         fontSize: '24px',
         marginRight: '12px',
     },
@@ -4575,14 +4653,15 @@ var useStyles$4 = makeStyles({
     },
     subscriptionPlansCatalogEntriesContainer: {
         display: 'flex',
+        marginBottom: '40px',
     },
     subscriptionSelectionTitle: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '18px',
         fontWeight: 500,
         marginBottom: '24px',
     },
-});
+}); });
 
 var SubscriptionPlansCatalog = function (_a) {
     var arrayOfSubscriptionPlans = _a.arrayOfSubscriptionPlans, currentlySelectedSubscriptionPlan = _a.currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection = _a.handleSubscriptionPlanSelection;
@@ -4607,25 +4686,23 @@ var SubscriptionPlansCatalog = function (_a) {
                         React.createElement("p", null,
                             "\u20AC ",
                             subscriptionPlan.priceOfSubscriptionPlan),
-                        React.createElement("p", null,
-                            "/",
-                            subscriptionPlan.periodicityOfSubscriptionPlan)))));
+                        React.createElement("p", null, subscriptionPlan.periodicityOfSubscriptionPlan)))));
         });
         return arrayOfCatalogEntries;
     };
     return (React.createElement("div", { className: classes.subscriptionPlansCatalogEntriesContainer }, generateCatalogEntries()));
 };
 
-var useStyles$3 = makeStyles({
-    alternativeSubsTableEntry: {
+var useStyles$3 = makeStyles(function (theme) { return ({
+    alternativeSubscriptionsTableEntry: {
         alignItems: 'center',
-        backgroundColor: '#F7F8F9',
-        borderTop: '1px solid #ECEDEF',
+        backgroundColor: theme.palette.background.default,
+        borderTop: "1px solid " + theme.palette.grey[100],
         display: 'flex',
         justifyContent: 'space-between',
         padding: '12px 40px',
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '14px',
             fontWeight: 500,
             maxWidth: '50%',
@@ -4633,7 +4710,7 @@ var useStyles$3 = makeStyles({
             width: '100%',
         },
         '& > :last-child': {
-            color: '#85909A',
+            color: theme.palette.text.secondary,
             fontSize: '14px',
             fontWeight: 400,
             maxWidth: '50%',
@@ -4641,15 +4718,15 @@ var useStyles$3 = makeStyles({
             width: '100%',
         },
     },
-    regularSubsTableEntry: {
+    regularSubscriptionsTableEntry: {
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid #ECEDEF',
+        backgroundColor: theme.palette.background.paper,
+        borderTop: "1px solid " + theme.palette.grey[100],
         display: 'flex',
         justifyContent: 'space-between',
         padding: '12px 40px',
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '14px',
             fontWeight: 500,
             maxWidth: '50%',
@@ -4657,7 +4734,7 @@ var useStyles$3 = makeStyles({
             width: '100%',
         },
         '& > :last-child': {
-            color: '#85909A',
+            color: theme.palette.text.secondary,
             fontSize: '14px',
             fontWeight: 400,
             maxWidth: '50%',
@@ -4665,24 +4742,24 @@ var useStyles$3 = makeStyles({
             width: '100%',
         },
     },
-    subsTable: {
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
+    subscriptionsTable: {
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
         marginBottom: '24px',
         maxWidth: '900px',
         width: '100%',
     },
-    subsTableHeader: {
+    subscriptionsTableHeader: {
         alignItems: 'center',
-        color: '#51606E',
+        color: theme.palette.text.hint,
         display: 'flex',
         fontSize: '16px',
         fontWeight: 500,
         justifyContent: 'space-between',
         padding: '12px 40px',
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '16px',
             fontWeight: 500,
             maxWidth: '50%',
@@ -4690,7 +4767,7 @@ var useStyles$3 = makeStyles({
             width: '100%',
         },
         '& > :last-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '16px',
             fontWeight: 500,
             maxWidth: '50%',
@@ -4698,95 +4775,102 @@ var useStyles$3 = makeStyles({
             width: '100%',
         },
     },
-});
+}); });
 
-var SubsTable = function (_a) {
+var SubscriptionsTable = function (_a) {
     var arrayOfSubs = _a.arrayOfSubs;
     var classes = useStyles$3();
-    var generateSubsTableEntries = function () {
+    var trans = useTranslation();
+    function t(str) {
+        return trans.t("extensions.Marketplace." + str);
+    }
+    var generateSubscriptionsTableEntries = function () {
         var arrayOfTableEntries = arrayOfSubs.map(function (sub, index) {
             return (React.createElement("div", { className: index % 2 === 0
-                    ? classes.regularSubsTableEntry
-                    : classes.alternativeSubsTableEntry, key: "subsTableEntry" + index },
+                    ? classes.regularSubscriptionsTableEntry
+                    : classes.alternativeSubscriptionsTableEntry, key: "subscriptionsTableEntry" + index },
                 React.createElement("p", null, sub.subName),
                 React.createElement("p", null, sub.subNextBillingDate)));
         });
         return arrayOfTableEntries;
     };
-    return (React.createElement("div", { className: classes.subsTable },
-        React.createElement("div", { className: classes.subsTableHeader },
-            React.createElement("p", null, "Subscription"),
-            React.createElement("p", null, "Next billing date")),
-        generateSubsTableEntries()));
+    return (React.createElement("div", { className: classes.subscriptionsTable },
+        React.createElement("div", { className: classes.subscriptionsTableHeader },
+            React.createElement("p", null, t('billing.subscriptionsTable.title')),
+            React.createElement("p", null, t('billing.subscriptionsTable.subtitle'))),
+        generateSubscriptionsTableEntries()));
 };
 
-var useStyles$2 = makeStyles({
+var useStyles$2 = makeStyles(function (theme) { return ({
     alternativeTransactionsTableEntry: {
         alignItems: 'center',
-        backgroundColor: '#F7F8F9',
-        borderTop: '1px solid #ECEDEF',
+        backgroundColor: theme.palette.background.default,
+        borderTop: "1px solid " + theme.palette.grey[100],
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         padding: '12px 40px',
         '& p': {
-            color: '#85909A',
+            color: theme.palette.text.secondary,
             fontSize: '14px',
             fontWeight: 400,
         },
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '14px',
             fontWeight: 400,
         },
     },
     completedTransactionStatus: {
-        backgroundColor: '#14DE2D',
-        borderRadius: '4px',
-        color: '#FFFFFF !important',
+        backgroundColor: theme.palette.success.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '14px',
         fontWeight: 400,
-        maxWidth: '100px',
+        maxWidth: '135px',
+        marginRight: '10px',
         textAlign: 'center',
         width: '100%',
     },
     pendingTransactionStatus: {
-        backgroundColor: '#F78E27',
-        borderRadius: '4px',
-        color: '#FFFFFF !important',
+        backgroundColor: theme.palette.warning.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '14px',
         fontWeight: 400,
-        maxWidth: '100px',
+        marginRight: '10px',
+        maxWidth: '135px',
         textAlign: 'center',
         width: '100%',
     },
     regularTransactionsTableEntry: {
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid #ECEDEF',
+        backgroundColor: theme.palette.background.paper,
+        borderTop: "1px solid " + theme.palette.grey[100],
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         padding: '12px 40px',
         '& p': {
-            color: '#85909A',
+            color: theme.palette.text.secondary,
             fontSize: '14px',
             fontWeight: 400,
         },
         '& > :first-child': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '14px',
             fontWeight: 400,
         },
     },
     transactionAmount: {
-        maxWidth: '85px',
+        maxWidth: '65px',
         overflow: 'hidden',
         textAlign: 'right',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         width: '100%',
     },
-    transactionCredits: {
-        maxWidth: '85px',
+    transactionReference: {
+        marginRight: '10px',
+        maxWidth: '150px',
         overflow: 'hidden',
         textAlign: 'left',
         textOverflow: 'ellipsis',
@@ -4794,6 +4878,7 @@ var useStyles$2 = makeStyles({
         width: '100%',
     },
     transactionDate: {
+        marginRight: '10px',
         maxWidth: '175px',
         overflow: 'hidden',
         textAlign: 'left',
@@ -4801,16 +4886,9 @@ var useStyles$2 = makeStyles({
         whiteSpace: 'nowrap',
         width: '100%',
     },
-    transactionInvoice: {
-        maxWidth: '25px',
-        width: '100%',
-    },
-    transactionInvoiceDownloadIcon: {
-        maxWidth: '25px',
-        width: '100%',
-    },
     transactionName: {
-        maxWidth: '175px',
+        maxWidth: '230px',
+        marginRight: '10px',
         overflow: 'hidden',
         textAlign: 'left',
         textOverflow: 'ellipsis',
@@ -4818,7 +4896,8 @@ var useStyles$2 = makeStyles({
         width: '100%',
     },
     transactionStatus: {
-        maxWidth: '100px',
+        maxWidth: '135px',
+        marginRight: '10px',
         overflow: 'hidden',
         textAlign: 'left',
         textOverflow: 'ellipsis',
@@ -4826,65 +4905,69 @@ var useStyles$2 = makeStyles({
         width: '100%',
     },
     transactionsTable: {
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
         marginBottom: '24px',
         maxWidth: '900px',
         width: '100%',
     },
     transactionsTableHeader: {
         alignItems: 'center',
-        color: '#51606E',
+        color: theme.palette.text.hint,
         display: 'flex',
         fontSize: '16px',
         fontWeight: 500,
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         padding: '12px 40px',
         '& p': {
-            color: '#14283C',
+            color: theme.palette.text.primary,
             fontSize: '16px',
             fontWeight: 500,
         },
     },
-});
+}); });
 
 var TransactionsTable = function (_a) {
     var arrayOfTransactions = _a.arrayOfTransactions;
     var classes = useStyles$2();
+    var trans = useTranslation();
+    function t(str) {
+        return trans.t("extensions.Marketplace." + str);
+    }
     var generateTransactionsTableEntries = function () {
         var arrayOfTableEntries = arrayOfTransactions.map(function (transaction, index) {
             return (React.createElement("div", { className: index % 2 === 0
                     ? classes.regularTransactionsTableEntry
                     : classes.alternativeTransactionsTableEntry, key: "transactionsTableEntry" + index },
                 React.createElement("p", { className: classes.transactionName }, transaction.transactionName),
+                React.createElement("p", { className: classes.transactionReference }, transaction.transactionReference),
                 React.createElement("p", { className: classes.transactionDate }, transaction.transactionDate),
                 React.createElement("p", { className: transaction.transactionCompleted
                         ? classes.completedTransactionStatus
-                        : classes.pendingTransactionStatus }, transaction.transactionCompleted ? 'Completed' : 'Pending'),
-                React.createElement("p", { className: classes.transactionCredits }, transaction.transactionCredits),
-                React.createElement("p", { className: classes.transactionAmount }, transaction.transactionAmount),
-                React.createElement(GetAppIcon, { className: classes.transactionInvoiceDownloadIcon })));
+                        : classes.pendingTransactionStatus }, transaction.transactionCompleted
+                    ? t('billing.transactionsTable.transactionAuthorized')
+                    : t('billing.transactionsTable.transactionPending')),
+                React.createElement("p", { className: classes.transactionAmount }, transaction.transactionAmount)));
         });
         return arrayOfTableEntries;
     };
     return (React.createElement("div", { className: classes.transactionsTable },
         React.createElement("div", { className: classes.transactionsTableHeader },
-            React.createElement("p", { className: classes.transactionName }, "Transactions"),
-            React.createElement("p", { className: classes.transactionDate }, "Transaction dates"),
-            React.createElement("p", { className: classes.transactionStatus }, "Status"),
-            React.createElement("p", { className: classes.transactionCredits }, "Credits"),
-            React.createElement("p", { className: classes.transactionAmount }, "Amount"),
-            React.createElement("p", { className: classes.transactionInvoiceDownloadIcon }, null)),
+            React.createElement("p", { className: classes.transactionName }, t('billing.transactionsTable.descriptionTitle')),
+            React.createElement("p", { className: classes.transactionReference }, t('billing.transactionsTable.referenceTitle')),
+            React.createElement("p", { className: classes.transactionDate }, t('billing.transactionsTable.dateOfPurchaseTitle')),
+            React.createElement("p", { className: classes.transactionStatus }, t('billing.transactionsTable.statusTitle')),
+            React.createElement("p", { className: classes.transactionAmount }, t('billing.transactionsTable.priceTitle'))),
         generateTransactionsTableEntries()));
 };
 
-var useStyles$1 = makeStyles({
+var useStyles$1 = makeStyles(function (theme) { return ({
     addCreditsButton: {
-        backgroundColor: '#32C896',
-        border: "1px solid #32C896",
-        borderRadius: '4px',
-        color: "#FFFFFF !important",
+        backgroundColor: theme.palette.primary.main,
+        border: "1px solid " + theme.palette.primary.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '16px',
         fontWeight: 500,
         height: '40px',
@@ -4893,7 +4976,7 @@ var useStyles$1 = makeStyles({
         textTransform: 'none',
         width: '175px',
         '&:hover': {
-            backgroundColor: '#32C896',
+            backgroundColor: theme.palette.primary.main,
         },
     },
     billingContentContainer: {
@@ -4902,19 +4985,18 @@ var useStyles$1 = makeStyles({
         width: '100%',
     },
     cancelCreditsPurchaseButton: {
-        backgroundColor: '#FFFFFF',
-        border: "1px solid #BAC0C6",
-        borderRadius: '4px',
-        color: "#51606E !important",
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.text.hint + " !important",
         fontSize: '16px',
         fontWeight: 500,
-        height: '40px',
-        marginTop: '40px',
+        height: '45px',
         padding: '12px 20px',
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: theme.palette.background.paper,
         },
     },
     creditBalanceContainer: {
@@ -4925,58 +5007,56 @@ var useStyles$1 = makeStyles({
             marginBottom: '6px',
         },
         '& > :last-child': {
-            color: '#FFFFFF',
+            color: theme.palette.primary.contrastText,
             fontSize: '40px',
             fontWeight: 500,
         },
     },
     creditPacksTitle: {
-        color: '#FFFFFF',
+        color: theme.palette.primary.contrastText,
         fontSize: '14px',
         fontWeight: 300,
         marginBottom: '12px',
     },
     disabledPurchaseCreditsButton: {
-        backgroundColor: '#BAC0C6',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
-        color: "#FFFFFF !important",
+        backgroundColor: theme.palette.grey[300],
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '16px',
         fontWeight: 500,
-        height: '40px',
+        height: '45px',
         marginRight: '12px',
-        marginTop: '40px',
         padding: '12px 20px',
         pointerEvents: 'none',
         textDecoration: 'none',
         textTransform: 'none',
         width: '175px',
         '&:hover': {
-            backgroundColor: '#BAC0C6',
+            backgroundColor: theme.palette.grey[300],
         },
     },
     disabledStartSubscriptionButton: {
-        backgroundColor: '#BAC0C6',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
-        color: "#FFFFFF !important",
+        backgroundColor: theme.palette.grey[300],
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '16px',
         fontWeight: 500,
-        height: '40px',
-        marginTop: '50px',
+        height: '45px',
         padding: '12px 20px',
         pointerEvents: 'none',
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': {
-            backgroundColor: '#BAC0C6',
+            backgroundColor: theme.palette.grey[300],
         },
     },
     editPaymentDetailsButton: {
-        backgroundColor: '#FFFFFF',
-        border: "1px solid #BAC0C6",
-        borderRadius: '4px',
-        color: "#51606E !important",
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.text.hint + " !important",
         fontSize: '16px',
         fontWeight: 500,
         height: '40px',
@@ -4985,58 +5065,57 @@ var useStyles$1 = makeStyles({
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: theme.palette.background.paper,
         },
     },
     enabledPurchaseCreditsButton: {
-        backgroundColor: '#32C896',
-        border: "1px solid #32C896",
-        borderRadius: '4px',
-        color: "#FFFFFF !important",
+        backgroundColor: theme.palette.primary.main,
+        border: "1px solid " + theme.palette.primary.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '16px',
         fontWeight: 500,
-        height: '40px',
+        height: '45px',
         marginRight: '12px',
-        marginTop: '40px',
         padding: '12px 20px',
         textDecoration: 'none',
         textTransform: 'none',
         width: '175px',
         '&:hover': {
-            backgroundColor: '#32C896',
+            backgroundColor: theme.palette.primary.main,
         },
     },
     enabledStartSubscriptionButton: {
-        backgroundColor: '#14283C',
-        border: "1px solid #14283C",
-        borderRadius: '4px',
-        color: "#FFFFFF !important",
+        backgroundColor: theme.palette.primary.main,
+        border: "1px solid " + theme.palette.primary.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '16px',
         fontWeight: 500,
-        height: '40px',
-        marginTop: '50px',
+        height: '45px',
         padding: '12px 20px',
         textDecoration: 'none',
         textTransform: 'none',
         '&:hover': {
-            backgroundColor: '#14283C',
+            backgroundColor: theme.palette.primary.main,
         },
     },
     noActiveSubscriptionText: {
-        color: '#51606E',
+        color: theme.palette.text.hint,
         fontSize: '16px',
         fontWeight: 400,
         marginBottom: '40px',
     },
     retrievingAllAvailableCreditPacks: {
-        color: '#FFFFFF',
+        color: theme.palette.primary.contrastText,
         fontSize: '16px',
         fontWeight: 300,
     },
     retrievingAllAvailableSubscriptionPlans: {
-        color: '#51606E',
+        color: theme.palette.text.hint,
         fontSize: '16px',
         fontWeight: 300,
+        marginBottom: '40px',
     },
     sectionSubtitle: {
         color: '#ACACAC',
@@ -5045,39 +5124,40 @@ var useStyles$1 = makeStyles({
         marginBottom: '40px',
     },
     sectionTitle: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '22px',
         fontWeight: 500,
         marginBottom: '24px',
+        marginTop: '40px',
     },
     separator: {
-        border: "1px solid #FFFFFF",
-        borderRadius: '4px',
+        border: "1px solid " + theme.palette.primary.contrastText,
+        borderRadius: theme.palette.dimensions.borderRadius,
         margin: '25px 0px 15px 0px',
         width: '100%',
     },
     subscriptionSelectionTitle: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '18px',
         fontWeight: 500,
         marginBottom: '24px',
     },
     subtitle: {
-        color: '#85909A',
+        color: theme.palette.text.secondary,
         fontSize: '16px',
         fontWeight: 300,
         marginBottom: '40px',
     },
     title: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '32px',
         fontWeight: 300,
         marginBottom: '12px',
     },
     yourCreditBalanceContainerWithCreditPacks: {
         alignItems: 'center',
-        backgroundColor: '#14283C',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.text.primary,
+        borderRadius: theme.palette.dimensions.borderRadius,
         display: 'block',
         justifyContent: 'space-between',
         marginBottom: '40px',
@@ -5087,8 +5167,8 @@ var useStyles$1 = makeStyles({
     },
     yourCreditBalanceContainerWithoutCreditPacks: {
         alignItems: 'center',
-        backgroundColor: '#14283C',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.text.primary,
+        borderRadius: theme.palette.dimensions.borderRadius,
         display: 'flex',
         justifyContent: 'space-between',
         marginBottom: '40px',
@@ -5096,11 +5176,15 @@ var useStyles$1 = makeStyles({
         padding: '24px',
         width: '100%',
     },
-});
+}); });
 
 var Billing$1 = function (_a) {
-    var allCreditPacks = _a.allCreditPacks, allSubscriptionPlans = _a.allSubscriptionPlans; _a.allUserTransactions; var getAllCreditPacksAction = _a.getAllCreditPacksAction, getAllSubscriptionPlansAction = _a.getAllSubscriptionPlansAction, getAllUserTransactionsAction = _a.getAllUserTransactionsAction;
+    var allCreditPacks = _a.allCreditPacks, allSubscriptionPlans = _a.allSubscriptionPlans; _a.allUserTransactions; var hasPurchasedCredits = _a.hasPurchasedCredits, getAllCreditPacksAction = _a.getAllCreditPacksAction, getAllSubscriptionPlansAction = _a.getAllSubscriptionPlansAction, getAllUserTransactionsAction = _a.getAllUserTransactionsAction;
     var classes = useStyles$1();
+    var trans = useTranslation();
+    function t(str) {
+        return trans.t("extensions.Marketplace." + str);
+    }
     /* Triggers the retrieval and storage (on the app's Store, under 'billing')
     of all credit packs and subscription plans we presently offer, as well as
     all information we have on user transactions. */
@@ -5172,71 +5256,55 @@ var Billing$1 = function (_a) {
         }
     };
     /* Temporary */
-    var _g = useState(false), hasStartedSubscription = _g[0], setHasStartedSubscription = _g[1];
-    var handleSubscriptionStart = function () {
-        setHasStartedSubscription(true);
-    };
+    var _g = useState(false), hasStartedSubscription = _g[0]; _g[1];
     return (React.createElement("main", { className: "page-container " + classes.billingContentContainer },
-        React.createElement("p", { className: classes.title }, "Billing"),
-        React.createElement("p", { className: classes.subtitle }, "Manage your subcription, top-up your credit balance, and edit your payment information."),
-        React.createElement("p", { className: classes.sectionTitle }, "Your balance"),
+        React.createElement("p", { className: classes.title }, t('billing.title')),
+        React.createElement("p", { className: classes.subtitle }, t('billing.title')),
+        React.createElement("p", { className: classes.sectionTitle }, t('billing.yourBalance')),
         React.createElement("div", { className: wantsToTopUpCredits
                 ? classes.yourCreditBalanceContainerWithCreditPacks
                 : classes.yourCreditBalanceContainerWithoutCreditPacks },
             React.createElement("div", { className: classes.creditBalanceContainer },
-                React.createElement("p", null, "Available credits"),
-                React.createElement("p", null, "10000")),
+                React.createElement("p", null, t('billing.availableCredits')),
+                React.createElement("p", null, hasPurchasedCredits ? '10000' : '0')),
             wantsToTopUpCredits ? (React.createElement("div", null,
                 React.createElement("hr", { className: classes.separator }),
                 allCreditPacks.length !== 0 ? (React.createElement(React.Fragment, null,
-                    React.createElement("p", { className: classes.creditPacksTitle }, "Select a credit pack"),
-                    React.createElement(CreditPacksCatalog, { arrayOfCreditPacks: allCreditPacks, currentlySelectedCreditPack: currentlySelectedCreditPack, handleCreditPackSelection: handleCreditPackSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableCreditPacks }, "Retrieving all available credit packs...")),
+                    React.createElement("p", { className: classes.creditPacksTitle }, t('billing.creditPacksTitle')),
+                    React.createElement(CreditPacksCatalog, { arrayOfCreditPacks: allCreditPacks, currentlySelectedCreditPack: currentlySelectedCreditPack, handleCreditPackSelection: handleCreditPackSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableCreditPacks }, t('billing.retrievingCreditPacks'))),
                 React.createElement("div", null,
-                    React.createElement(Button, { className: currentlySelectedCreditPack.idOfCreditPack !== 0
+                    React.createElement(Link, { className: currentlySelectedCreditPack.idOfCreditPack !== 0
                             ? classes.enabledPurchaseCreditsButton
-                            : classes.disabledPurchaseCreditsButton, href: "/billing/transactioncomplete" }, "Purchase credits"),
-                    React.createElement(Button, { className: classes.cancelCreditsPurchaseButton, onClick: handleWantsToTopUpCredits }, "Cancel")))) : (React.createElement(Button, { className: classes.addCreditsButton, onClick: handleWantsToTopUpCredits }, "Add credits"))),
-        React.createElement("p", { className: classes.sectionTitle }, "Your subscription"),
+                            : classes.disabledPurchaseCreditsButton, href: "/billing/creditpayment" }, t('billing.purchaseCreditsButtonLabel')),
+                    React.createElement(Button, { className: classes.cancelCreditsPurchaseButton, onClick: handleWantsToTopUpCredits }, t('billing.cancelCreditsPurchaseButtonLabel'))))) : (React.createElement(Button, { className: classes.addCreditsButton, onClick: handleWantsToTopUpCredits }, t('billing.addCreditsButtonLabel')))),
+        React.createElement("p", { className: classes.sectionTitle }, t('billing.yourSubscriptionsTitle')),
         hasStartedSubscription ? (React.createElement(React.Fragment, null,
-            React.createElement(SubsTable, { arrayOfSubs: [
+            React.createElement(SubscriptionsTable, { arrayOfSubs: [
                     {
                         subName: 'Basic plan',
                         subNextBillingDate: '13 August 2021',
                     },
                 ] }),
-            React.createElement(Button, { className: classes.editPaymentDetailsButton }, "Edit payment information"),
-            React.createElement("p", { className: classes.sectionTitle }, "Transaction history"),
-            React.createElement("p", { className: classes.sectionSubtitle }, "See your last transaction movements in your account, and download invoices."),
+            React.createElement(Button, { className: classes.editPaymentDetailsButton }, t('billing.editPaymentInfoButtonLabel')))) : (React.createElement(React.Fragment, null,
+            React.createElement("p", { className: classes.noActiveSubscriptionText }, t('billing.noActiveSubscriptions')),
+            allSubscriptionPlans.length !== 0 ? (React.createElement(React.Fragment, null,
+                React.createElement("p", { className: classes.subscriptionSelectionTitle }, t('billing.chooseSubscription')),
+                React.createElement(SubscriptionPlansCatalog, { arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableSubscriptionPlans }, t('billing.retrievingSubscriptionPlans'))),
+            React.createElement(Link, { className: hasSelectedSubscriptionPlan
+                    ? classes.enabledStartSubscriptionButton
+                    : classes.disabledStartSubscriptionButton, href: "/billing/subscriptionpayment" }, t('billing.startSubscriptionButtonLabel')))),
+        (hasPurchasedCredits || hasStartedSubscription) && (React.createElement(React.Fragment, null,
+            React.createElement("p", { className: classes.sectionTitle }, t('billing.transactionHistoryTitle')),
+            React.createElement("p", { className: classes.sectionSubtitle }, t('billing.transactionHistorySubtitle')),
             React.createElement(TransactionsTable, { arrayOfTransactions: [
                     {
-                        transactionAmount: '€ 40,00',
+                        transactionAmount: '€ 100',
                         transactionCompleted: true,
-                        transactionCredits: '5.000',
-                        transactionDate: '14 August 2021, 15:30',
-                        transactionName: 'Billing report 2020.08.14',
+                        transactionReference: 'b4605542-cad0-4ca3-83e1-1d9177a92438',
+                        transactionDate: '30th April 2021, 09:30',
+                        transactionName: 'Credit pack: 10000 credits',
                     },
-                    {
-                        transactionAmount: '€ 40,00',
-                        transactionCompleted: false,
-                        transactionCredits: '5.000',
-                        transactionDate: '14 August 2021, 15:30',
-                        transactionName: 'Billing report 2020.07.14',
-                    },
-                    {
-                        transactionAmount: '€ 40,00',
-                        transactionCompleted: true,
-                        transactionCredits: '5.000',
-                        transactionDate: '14 August 2021, 15:30',
-                        transactionName: 'Billing report 2020.06.14',
-                    },
-                ] }))) : (React.createElement(React.Fragment, null,
-            React.createElement("p", { className: classes.noActiveSubscriptionText }, "You don't have any active subscriptions."),
-            allSubscriptionPlans.length !== 0 ? (React.createElement(React.Fragment, null,
-                React.createElement("p", { className: classes.subscriptionSelectionTitle }, "Choose subscription"),
-                React.createElement(SubscriptionPlansCatalog, { arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableSubscriptionPlans }, "Retrieving all available subscription plans...")),
-            React.createElement(Button, { className: hasSelectedSubscriptionPlan
-                    ? classes.enabledStartSubscriptionButton
-                    : classes.disabledStartSubscriptionButton, onClick: handleSubscriptionStart }, "Start subscription")))));
+                ] })))));
 };
 
 var mapStateToProps = function (_a) {
@@ -5245,74 +5313,77 @@ var mapStateToProps = function (_a) {
         allCreditPacks: billing.allCreditPacks,
         allSubscriptionPlans: billing.allSubscriptionPlans,
         allUserTransactions: billing.allUserTransactions,
+        // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+        hasPurchasedCredits: billing.hasPurchasedCredits,
     });
 };
-var mapDispatchToProps = function (dispatch) {
+var mapDispatchToProps$1 = function (dispatch) {
     return bindActionCreators({
         getAllCreditPacksAction: getAllCreditPacksAction,
         getAllSubscriptionPlansAction: getAllSubscriptionPlansAction,
         getAllUserTransactionsAction: getAllUserTransactionsAction,
     }, dispatch);
 };
-var Billing = connect(mapStateToProps, mapDispatchToProps)(Billing$1);
+var Billing = connect(mapStateToProps, mapDispatchToProps$1)(Billing$1);
 
-var useStyles = makeStyles({
+var useStyles = makeStyles(function (theme) { return ({
     allTransactionDetailsContainer: {
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #BAC0C6',
-        borderRadius: '4px',
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
         padding: '24px',
     },
     buttonsContainer: {
         display: 'flex',
     },
     goToBillingButton: {
-        backgroundColor: '#FFFFFF',
-        border: "1px solid #BAC0C6",
-        borderRadius: '4px',
-        color: "#51606E !important",
+        backgroundColor: theme.palette.background.paper,
+        border: "1px solid " + theme.palette.grey[300],
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.text.hint + " !important",
         fontSize: '16px',
         fontWeight: 500,
-        height: '40px',
-        padding: '12px 20px',
+        height: '45px',
+        padding: '8px 0px',
+        textAlign: 'center',
         textDecoration: 'none',
         textTransform: 'none',
         width: '180px',
         '&:hover': {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: theme.palette.background.paper,
         },
     },
     goToMarketplaceButton: {
-        backgroundColor: '#32C896',
-        border: "1px solid #32C896",
-        borderRadius: '4px',
-        color: "#FFFFFF !important",
+        backgroundColor: theme.palette.primary.main,
+        border: "1px solid " + theme.palette.primary.main,
+        borderRadius: theme.palette.dimensions.borderRadius,
+        color: theme.palette.primary.contrastText + " !important",
         fontSize: '16px',
         fontWeight: 500,
-        height: '40px',
+        height: '45px',
         marginRight: '12px',
-        padding: '12px 20px',
+        padding: '8px 0px',
+        textAlign: 'center',
         textDecoration: 'none',
         textTransform: 'none',
         width: '220px',
         '&:hover': {
-            backgroundColor: '#32C896',
+            backgroundColor: theme.palette.primary.main,
         },
     },
     pageContentContainer: {
         margin: '0px auto',
         maxWidth: '550px',
-        padding: '50px 0px 60px 0px !important',
         width: '100%',
     },
     separator: {
-        border: "1px solid #DBDEE1",
-        borderRadius: '4px',
+        border: "1px solid " + theme.palette.grey[200],
+        borderRadius: theme.palette.dimensions.borderRadius,
         margin: '40px 0px',
         width: '100%',
     },
     subtitle: {
-        color: '#85909A',
+        color: theme.palette.text.secondary,
         fontSize: '20px',
         fontWeight: 300,
         marginBottom: '40px',
@@ -5322,7 +5393,7 @@ var useStyles = makeStyles({
         },
     },
     title: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '42px',
         fontWeight: 700,
         marginBottom: '24px',
@@ -5332,7 +5403,7 @@ var useStyles = makeStyles({
         justifyContent: 'space-between',
         marginTop: '5px',
         '& > :first-child': {
-            color: '#85909A',
+            color: theme.palette.text.secondary,
             fontSize: '16px',
             fontWeight: 300,
             maxWidth: '140px',
@@ -5340,7 +5411,7 @@ var useStyles = makeStyles({
             width: '100%',
         },
         '& > :last-child': {
-            color: '#51606E',
+            color: theme.palette.text.hint,
             fontSize: '14px',
             fontWeight: 400,
             maxWidth: '325px',
@@ -5349,46 +5420,61 @@ var useStyles = makeStyles({
         },
     },
     transactionDetailsTitle: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '22px',
         fontWeight: 400,
         marginBottom: '24px',
     },
     transactionTitle: {
-        color: '#14283C',
+        color: theme.palette.text.primary,
         fontSize: '18px',
         fontWeight: 500,
         marginBottom: '15px',
     },
-});
+}); });
 
-var TransactionComplete = function () {
+var TransactionComplete$1 = function (_a) {
+    var 
+    // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+    hasPurchasedCreditsAction = _a.hasPurchasedCreditsAction;
     var classes = useStyles();
+    var paymentType = window.location.pathname.split('/')[2];
+    // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
+    hasPurchasedCreditsAction();
     return (React.createElement("main", { className: "page-container " + classes.pageContentContainer },
         React.createElement("p", { className: classes.title }, "Thank you for your payment!"),
         React.createElement("p", { className: classes.subtitle },
             React.createElement("span", null, "Your payment is currently being proccessed."),
             "Once it is approved, your credit balance will be updated."),
         React.createElement("div", { className: classes.buttonsContainer },
-            React.createElement(Button, { className: classes.goToMarketplaceButton, href: "/marketplace" }, "Go to the Marketplace"),
-            React.createElement(Button, { className: classes.goToBillingButton, href: "/billing" }, "Go back to Billing")),
+            React.createElement(Link, { className: classes.goToMarketplaceButton, href: "/marketplace" }, "Go to the Marketplace"),
+            React.createElement(Link, { className: classes.goToBillingButton, href: "/billing" }, "Go back to Billing")),
         React.createElement("hr", { className: classes.separator }),
         React.createElement("p", { className: classes.transactionDetailsTitle }, "Transaction details"),
         React.createElement("div", { className: classes.allTransactionDetailsContainer },
-            React.createElement("p", { className: classes.transactionTitle }, "Credit pack or Subscription plan"),
+            React.createElement("p", { className: classes.transactionTitle }, paymentType === 'creditpayment'
+                ? 'Credit pack'
+                : 'Subscription plan'),
             React.createElement("div", { className: classes.transactionDetailContainer },
                 React.createElement("p", null, "Reference:"),
-                React.createElement("p", null, "Transaction's ID")),
+                React.createElement("p", null, "b4605542-cad0-4ca3-83e1-1d9177a92438")),
             React.createElement("div", { className: classes.transactionDetailContainer },
                 React.createElement("p", null, "Price:"),
-                React.createElement("p", null, "\u20AC Transaction's price")),
+                React.createElement("p", null, "\u20AC 100")),
             React.createElement("div", { className: classes.transactionDetailContainer },
                 React.createElement("p", null, "Credit amount:"),
-                React.createElement("p", null, "Transaction's credit amount")),
+                React.createElement("p", null, "10000 Cr")),
             React.createElement("div", { className: classes.transactionDetailContainer },
                 React.createElement("p", null, "Transaction date:"),
-                React.createElement("p", null, "Some date")))));
+                React.createElement("p", null, "30th April 2021, 09:30")))));
 };
+
+var mapDispatchToProps = function (dispatch) {
+    return bindActionCreators({
+        hasPurchasedCreditsAction: hasPurchasedCreditsAction,
+    }, dispatch);
+};
+var TransactionComplete = connect(null, mapDispatchToProps)(TransactionComplete$1);
 
 var pagesConfig = [
     {
@@ -5401,7 +5487,7 @@ var pagesConfig = [
         auth: true,
         component: TransactionComplete,
         exact: true,
-        path: '/billing/transactioncomplete',
+        path: '/billing/creditpayment' ,
     },
 ];
 var hookPages = function () {

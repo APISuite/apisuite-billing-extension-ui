@@ -1,3 +1,4 @@
 import React from 'react';
-declare const TransactionComplete: React.FC;
+import { TransactionCompleteProps } from './types';
+declare const TransactionComplete: React.FC<TransactionCompleteProps>;
 export default TransactionComplete;

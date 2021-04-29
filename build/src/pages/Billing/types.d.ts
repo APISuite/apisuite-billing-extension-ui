@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { GET_ALL_CREDIT_PACKS_ACTION_SUCCESS, GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, GET_ALL_USER_TRANSACTIONS_ACTION } from './ducks';
+import { GET_ALL_CREDIT_PACKS_ACTION_SUCCESS, GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, GET_ALL_USER_TRANSACTIONS_ACTION, HAS_PURCHASED_CREDITS_ACTION } from './ducks';
 export interface CreditPackDetails {
     creditsInCreditPack: number;
     idOfCreditPack: number;
@@ -27,11 +27,13 @@ export interface BillingStore {
     allCreditPacks: CreditPackDetails[];
     allSubscriptionPlans: SubscriptionPlanDetails[];
     allUserTransactions: TransactionDetails[];
+    hasPurchasedCredits: boolean;
 }
 export interface BillingProps {
     allCreditPacks: CreditPackDetails[];
     allSubscriptionPlans: SubscriptionPlanDetails[];
     allUserTransactions: TransactionDetails[];
+    hasPurchasedCredits: boolean;
     getAllCreditPacksAction: () => void;
     getAllSubscriptionPlansAction: () => void;
     getAllUserTransactionsAction: () => void;
@@ -57,4 +59,7 @@ export interface GetAllUserTransactionsActionSuccess extends Action {
     type: typeof GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS;
     allUserTransactions: TransactionDetails[];
 }
-export declare type BillingActions = GetAllCreditPacksAction | GetAllCreditPacksActionSuccess | GetAllSubscriptionPlansAction | GetAllSubscriptionPlansActionSuccess | GetAllUserTransactionsAction | GetAllUserTransactionsActionSuccess;
+export interface HasPurchasedCreditsAction extends Action {
+    type: typeof HAS_PURCHASED_CREDITS_ACTION;
+}
+export declare type BillingActions = GetAllCreditPacksAction | GetAllCreditPacksActionSuccess | GetAllSubscriptionPlansAction | GetAllSubscriptionPlansActionSuccess | GetAllUserTransactionsAction | GetAllUserTransactionsActionSuccess | HasPurchasedCreditsAction;
