@@ -4446,7 +4446,7 @@ var injectStuffIntoStore = function (coreStoreProps) {
 };
 
 var name = "apisuite-billing-extension-ui";
-var version = "1.0.0";
+var version = "1.0.1";
 
 var baseConfig = {};
 
