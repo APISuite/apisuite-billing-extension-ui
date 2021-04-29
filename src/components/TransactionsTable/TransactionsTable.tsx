@@ -1,13 +1,19 @@
 import React from 'react'
-import GetAppIcon from '@material-ui/icons/GetApp'
 
 import { TransactionsTableProps } from './types'
 import useStyles from './styles'
+import { useTranslation } from '@apisuite/fe-base'
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   arrayOfTransactions,
 }) => {
   const classes = useStyles()
+
+  const trans = useTranslation()
+
+  function t(str: string) {
+    return trans.t(`extensions.Marketplace.${str}`)
+  }
 
   const generateTransactionsTableEntries = () => {
     const arrayOfTableEntries = arrayOfTransactions.map(
@@ -25,6 +31,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
               {transaction.transactionName}
             </p>
 
+            <p className={classes.transactionReference}>
+              {transaction.transactionReference}
+            </p>
+
             <p className={classes.transactionDate}>
               {transaction.transactionDate}
             </p>
@@ -36,18 +46,14 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
                   : classes.pendingTransactionStatus
               }
             >
-              {transaction.transactionCompleted ? 'Completed' : 'Pending'}
-            </p>
-
-            <p className={classes.transactionCredits}>
-              {transaction.transactionCredits}
+              {transaction.transactionCompleted
+                ? t('billing.transactionsTable.transactionAuthorized')
+                : t('billing.transactionsTable.transactionPending')}
             </p>
 
             <p className={classes.transactionAmount}>
               {transaction.transactionAmount}
             </p>
-
-            <GetAppIcon className={classes.transactionInvoiceDownloadIcon} />
           </div>
         )
       }
@@ -59,17 +65,25 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   return (
     <div className={classes.transactionsTable}>
       <div className={classes.transactionsTableHeader}>
-        <p className={classes.transactionName}>Transactions</p>
+        <p className={classes.transactionName}>
+          {t('billing.transactionsTable.descriptionTitle')}
+        </p>
 
-        <p className={classes.transactionDate}>Transaction dates</p>
+        <p className={classes.transactionReference}>
+          {t('billing.transactionsTable.referenceTitle')}
+        </p>
 
-        <p className={classes.transactionStatus}>Status</p>
+        <p className={classes.transactionDate}>
+          {t('billing.transactionsTable.dateOfPurchaseTitle')}
+        </p>
 
-        <p className={classes.transactionCredits}>Credits</p>
+        <p className={classes.transactionStatus}>
+          {t('billing.transactionsTable.statusTitle')}
+        </p>
 
-        <p className={classes.transactionAmount}>Amount</p>
-
-        <p className={classes.transactionInvoiceDownloadIcon}>{null}</p>
+        <p className={classes.transactionAmount}>
+          {t('billing.transactionsTable.priceTitle')}
+        </p>
       </div>
 
       {generateTransactionsTableEntries()}
