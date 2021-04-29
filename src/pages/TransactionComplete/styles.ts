@@ -54,7 +54,6 @@ export default makeStyles({
   pageContentContainer: {
     margin: '0px auto',
     maxWidth: '550px',
-    padding: '50px 0px 60px 0px !important',
     width: '100%',
   },
 
