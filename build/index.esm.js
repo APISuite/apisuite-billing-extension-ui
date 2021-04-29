@@ -4446,7 +4446,7 @@ var injectStuffIntoStore = function (coreStoreProps) {
 };
 
 var name = "apisuite-billing-extension-ui";
-var version = "1.0.1";
+var version = "1.0.2";
 
 var baseConfig = {};
 
@@ -4782,7 +4782,7 @@ var SubscriptionsTable = function (_a) {
     var classes = useStyles$3();
     var trans = useTranslation();
     function t(str) {
-        return trans.t("extensions.Marketplace." + str);
+        return trans.t("extensions." + str);
     }
     var generateSubscriptionsTableEntries = function () {
         var arrayOfTableEntries = arrayOfSubs.map(function (sub, index) {
@@ -4933,7 +4933,7 @@ var TransactionsTable = function (_a) {
     var classes = useStyles$2();
     var trans = useTranslation();
     function t(str) {
-        return trans.t("extensions.Marketplace." + str);
+        return trans.t("extensions." + str);
     }
     var generateTransactionsTableEntries = function () {
         var arrayOfTableEntries = arrayOfTransactions.map(function (transaction, index) {
@@ -5183,7 +5183,7 @@ var Billing$1 = function (_a) {
     var classes = useStyles$1();
     var trans = useTranslation();
     function t(str) {
-        return trans.t("extensions.Marketplace." + str);
+        return trans.t("extensions." + str);
     }
     /* Triggers the retrieval and storage (on the app's Store, under 'billing')
     of all credit packs and subscription plans we presently offer, as well as
@@ -5259,7 +5259,7 @@ var Billing$1 = function (_a) {
     var _g = useState(false), hasStartedSubscription = _g[0]; _g[1];
     return (React.createElement("main", { className: "page-container " + classes.billingContentContainer },
         React.createElement("p", { className: classes.title }, t('billing.title')),
-        React.createElement("p", { className: classes.subtitle }, t('billing.title')),
+        React.createElement("p", { className: classes.subtitle }, t('billing.subtitle')),
         React.createElement("p", { className: classes.sectionTitle }, t('billing.yourBalance')),
         React.createElement("div", { className: wantsToTopUpCredits
                 ? classes.yourCreditBalanceContainerWithCreditPacks
