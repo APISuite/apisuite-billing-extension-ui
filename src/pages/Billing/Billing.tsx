@@ -26,7 +26,7 @@ const Billing: React.FC<BillingProps> = ({
   const trans = useTranslation()
 
   function t(str: string) {
-    return trans.t(`extensions.Marketplace.${str}`)
+    return trans.t(`extensions.${str}`)
   }
 
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')
@@ -145,7 +145,7 @@ const Billing: React.FC<BillingProps> = ({
     <main className={`page-container ${classes.billingContentContainer}`}>
       <p className={classes.title}>{t('billing.title')}</p>
 
-      <p className={classes.subtitle}>{t('billing.title')}</p>
+      <p className={classes.subtitle}>{t('billing.subtitle')}</p>
 
       {/* 'Your balance' section */}
 
