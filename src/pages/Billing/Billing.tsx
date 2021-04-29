@@ -26,7 +26,7 @@ const Billing: React.FC<BillingProps> = ({
   const trans = useTranslation()
 
   function t(str: string) {
-    return trans.t(`extensions.Marketplace.${str}`)
+    return trans.t(`extensions.billing.${str}`)
   }
 
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')

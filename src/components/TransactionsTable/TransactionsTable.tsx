@@ -12,7 +12,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   const trans = useTranslation()
 
   function t(str: string) {
-    return trans.t(`extensions.Marketplace.${str}`)
+    return trans.t(`extensions.billing.${str}`)
   }
 
   const generateTransactionsTableEntries = () => {
