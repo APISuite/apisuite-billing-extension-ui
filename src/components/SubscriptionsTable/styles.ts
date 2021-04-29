@@ -58,7 +58,7 @@ export default makeStyles((theme) => ({
   subscriptionsTable: {
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     marginBottom: '24px',
     maxWidth: '900px',
     width: '100%',

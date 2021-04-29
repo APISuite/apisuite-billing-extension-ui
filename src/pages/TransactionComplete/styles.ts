@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   allTransactionDetailsContainer: {
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     padding: '24px',
   },
 
@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
   goToBillingButton: {
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.text.hint} !important`,
     fontSize: '16px',
     fontWeight: 500,
@@ -34,7 +34,7 @@ export default makeStyles((theme) => ({
   goToMarketplaceButton: {
     backgroundColor: theme.palette.primary.main,
     border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
@@ -58,8 +58,8 @@ export default makeStyles((theme) => ({
   },
 
   separator: {
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: '4px',
+    border: `1px solid ${theme.palette.grey[200]}`,
+    borderRadius: theme.palette.dimensions.borderRadius,
     margin: '40px 0px',
     width: '100%',
   },

@@ -23,8 +23,8 @@ export default makeStyles((theme) => ({
   },
 
   completedTransactionStatus: {
-    backgroundColor: '#14DE2D',
-    borderRadius: '4px',
+    backgroundColor: theme.palette.success.main,
+    borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '14px',
     fontWeight: 400,
@@ -35,8 +35,8 @@ export default makeStyles((theme) => ({
   },
 
   pendingTransactionStatus: {
-    backgroundColor: '#F78E27',
-    borderRadius: '4px',
+    backgroundColor: theme.palette.warning.main,
+    borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '14px',
     fontWeight: 400,
@@ -119,7 +119,7 @@ export default makeStyles((theme) => ({
   transactionsTable: {
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: '4px',
+    borderRadius: theme.palette.dimensions.borderRadius,
     marginBottom: '24px',
     maxWidth: '900px',
     width: '100%',
