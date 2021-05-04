@@ -1,38 +1,39 @@
 {
-  "billing": {
-    "title": "Billing",
-    "subtitle": "Manage your subcription, top-up your credit balance, and edit your payment information.",
-    "yourBalance": "Your balance",
-    "availableCredits": "Available credits",
-    "creditPacksTitle": "Select a credit pack",
-    "retrievingCreditPacks": "Retrieving all available credit packs...",
-    "purchaseCreditsButtonLabel": "Purchase credits",
-    "cancelCreditsPurchaseButtonLabel": "Cancel",
-    "addCreditsButtonLabel": "Add credits",
-    "yourSubscriptionsTitle": "Your subscription",
-    "editPaymentInfoButtonLabel": "Edit payment information",
-    "noActiveSubscriptions": "You don't have any active subscriptions.",
-    "chooseSubscription": "Choose subscription",
-    "retrievingSubscriptionPlans": "Retrieving all available subscription plans...",
-    "startSubscriptionButtonLabel": "Start subscription",
-    "transactionHistoryTitle": "Transaction history",
-    "transactionHistorySubtitle": "See your last transaction movements in your account.",
-
-    "generalWording": {
-      "credits": "credits"
-    },
-    "subscriptionsTable": {
-      "title": "Subscription",
-      "subtitle": "Next billing date"
-    },
-    "transactionsTable": {
-      "transactionAuthorized": "Authorized",
-      "transactionPending": "Pending",
-      "descriptionTitle": "Description",
-      "referenceTitle": "Reference",
-      "dateOfPurchaseTitle": "Date of purchase",
-      "statusTitle": "Payment status",
-      "priceTitle": "Price"
+  "extensions": {
+    "billing": {
+      "title": "Billing",
+      "subtitle": "Manage your subcription, top-up your credit balance, and edit your payment information.",
+      "yourBalance": "Your balance",
+      "availableCredits": "Available credits",
+      "creditPacksTitle": "Select a credit pack",
+      "retrievingCreditPacks": "Retrieving all available credit packs...",
+      "purchaseCreditsButtonLabel": "Purchase credits",
+      "cancelCreditsPurchaseButtonLabel": "Cancel",
+      "addCreditsButtonLabel": "Add credits",
+      "yourSubscriptionsTitle": "Your subscription",
+      "editPaymentInfoButtonLabel": "Edit payment information",
+      "noActiveSubscriptions": "You don't have any active subscriptions.",
+      "chooseSubscription": "Choose subscription",
+      "retrievingSubscriptionPlans": "Retrieving all available subscription plans...",
+      "startSubscriptionButtonLabel": "Start subscription",
+      "transactionHistoryTitle": "Transaction history",
+      "transactionHistorySubtitle": "See your last transaction movements in your account.",
+      "generalWording": {
+        "credits": "credits"
+      },
+      "subscriptionsTable": {
+        "title": "Subscription",
+        "subtitle": "Next billing date"
+      },
+      "transactionsTable": {
+        "transactionAuthorized": "Authorized",
+        "transactionPending": "Pending",
+        "descriptionTitle": "Description",
+        "referenceTitle": "Reference",
+        "dateOfPurchaseTitle": "Date of purchase",
+        "statusTitle": "Payment status",
+        "priceTitle": "Price"
+      }
     }
   }
 }

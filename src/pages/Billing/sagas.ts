@@ -4,11 +4,38 @@ import request from 'util/request'
 import {
   GET_ALL_CREDIT_PACKS_ACTION,
   GET_ALL_SUBSCRIPTION_PLANS_ACTION,
+  GET_ALL_USER_DETAILS_ACTION,
   GET_ALL_USER_TRANSACTIONS_ACTION,
   getAllCreditPacksActionSuccess,
   getAllSubscriptionPlansActionSuccess,
+  getAllUserDetailsActionSuccess,
   getAllUserTransactionsActionSuccess,
 } from './ducks'
+import { GetAllUserDetailsAction } from './types'
+
+export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
+  try {
+    const getAllUserDetailsActionUrl = `https://billing.develop.apisuite.io/users/${action.userID}`
+
+    const response = yield call(request, {
+      url: getAllUserDetailsActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    const allUserDetails = {
+      subscriptionID: response.data.subscriptionId,
+      userCredits: response.data.credits,
+      userID: response.data.id,
+    }
+
+    yield put(getAllUserDetailsActionSuccess(allUserDetails))
+  } catch (error) {
+    console.log('Error fetching all user details.')
+  }
+}
 
 export function* getAllCreditPacksActionSaga() {
   try {
@@ -96,6 +123,7 @@ function* billingRootSaga() {
     GET_ALL_SUBSCRIPTION_PLANS_ACTION,
     getAllSubscriptionPlansActionSaga
   )
+  yield takeLatest(GET_ALL_USER_DETAILS_ACTION, getAllUserDetailsActionSaga)
   yield takeLatest(
     GET_ALL_USER_TRANSACTIONS_ACTION,
     getAllUserTransactionsActionSaga

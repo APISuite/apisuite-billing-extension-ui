@@ -8,18 +8,18 @@ import SubscriptionPlansCatalog from 'components/SubscriptionPlansCatalog'
 import SubscriptionsTable from 'components/SubscriptionsTable'
 import TransactionsTable from 'components/TransactionsTable'
 import useStyles from './styles'
-import { hasPurchasedCreditsAction } from './ducks'
 
 const Billing: React.FC<BillingProps> = ({
   allCreditPacks,
   allSubscriptionPlans,
+  allUserDetails,
   allUserTransactions,
-
-  hasPurchasedCredits,
-
   getAllCreditPacksAction,
   getAllSubscriptionPlansAction,
+  getAllUserDetailsAction,
   getAllUserTransactionsAction,
+  hasPurchasedCredits,
+  user,
 }) => {
   const classes = useStyles()
 
@@ -31,10 +31,11 @@ const Billing: React.FC<BillingProps> = ({
 
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')
   of all credit packs and subscription plans we presently offer, as well as
-  all information we have on user transactions. */
+  all information we have on a user and his transactions. */
   useEffect(() => {
     getAllCreditPacksAction()
     getAllSubscriptionPlansAction()
+    getAllUserDetailsAction(user.id)
     getAllUserTransactionsAction()
   }, [])
 
@@ -161,7 +162,7 @@ const Billing: React.FC<BillingProps> = ({
         <div className={classes.creditBalanceContainer}>
           <p>{t('billing.availableCredits')}</p>
 
-          <p>{hasPurchasedCredits ? '10000' : '0'}</p>
+          <p>{allUserDetails.userCredits}</p>
         </div>
 
         {wantsToTopUpCredits ? (
@@ -222,7 +223,7 @@ const Billing: React.FC<BillingProps> = ({
         {t('billing.yourSubscriptionsTitle')}
       </p>
 
-      {hasStartedSubscription ? (
+      {allUserDetails.subscriptionID ? (
         <>
           <SubscriptionsTable
             arrayOfSubs={[
@@ -287,7 +288,7 @@ const Billing: React.FC<BillingProps> = ({
           </p>
 
           <p className={classes.sectionSubtitle}>
-          {t('billing.transactionHistorySubtitle')}
+            {t('billing.transactionHistorySubtitle')}
           </p>
 
           <TransactionsTable

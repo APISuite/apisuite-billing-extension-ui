@@ -5,12 +5,30 @@ import {
   GET_ALL_CREDIT_PACKS_ACTION,
   GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
   GET_ALL_SUBSCRIPTION_PLANS_ACTION,
+  GET_ALL_USER_DETAILS_ACTION_SUCCESS,
+  GET_ALL_USER_DETAILS_ACTION,
   GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS,
   GET_ALL_USER_TRANSACTIONS_ACTION,
 
   // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
   HAS_PURCHASED_CREDITS_ACTION,
 } from './ducks'
+
+export interface User {
+  fName: string
+  id: number
+  lName: string
+  role: {
+    id: number
+    name: string
+  }
+}
+
+export interface UserDetails {
+  subscriptionID: string | null
+  userCredits: number
+  userID: number
+}
 
 export interface CreditPackDetails {
   creditsInCreditPack: number
@@ -41,6 +59,7 @@ export interface TransactionDetails {
 export interface BillingStore {
   allCreditPacks: CreditPackDetails[]
   allSubscriptionPlans: SubscriptionPlanDetails[]
+  allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
 
   // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
@@ -48,8 +67,10 @@ export interface BillingStore {
 }
 
 export interface BillingProps {
+  user: User
   allCreditPacks: CreditPackDetails[]
   allSubscriptionPlans: SubscriptionPlanDetails[]
+  allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
 
   // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
@@ -57,7 +78,18 @@ export interface BillingProps {
 
   getAllCreditPacksAction: () => void
   getAllSubscriptionPlansAction: () => void
+  getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
+}
+
+export interface GetAllUserDetailsAction extends Action {
+  type: typeof GET_ALL_USER_DETAILS_ACTION
+  userID: number
+}
+
+export interface GetAllUserDetailsActionSuccess extends Action {
+  type: typeof GET_ALL_USER_DETAILS_ACTION_SUCCESS
+  allUserDetails: UserDetails
 }
 
 export interface GetAllCreditPacksAction extends Action {
@@ -97,6 +129,8 @@ export type BillingActions =
   | GetAllCreditPacksActionSuccess
   | GetAllSubscriptionPlansAction
   | GetAllSubscriptionPlansActionSuccess
+  | GetAllUserDetailsAction
+  | GetAllUserDetailsActionSuccess
   | GetAllUserTransactionsAction
   | GetAllUserTransactionsActionSuccess
   // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
