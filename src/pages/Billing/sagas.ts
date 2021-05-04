@@ -1,3 +1,4 @@
+import { BILLING_API_URL } from 'constants/endpoints'
 import { call, put, takeLatest } from 'redux-saga/effects'
 import request from 'util/request'
 
@@ -12,8 +13,6 @@ import {
   getAllUserTransactionsActionSuccess,
 } from './ducks'
 import { GetAllUserDetailsAction } from './types'
-
-import { BILLING_API_URL } from 'helpers/constants'
 
 export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
   try {
