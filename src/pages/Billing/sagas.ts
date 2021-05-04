@@ -13,9 +13,11 @@ import {
 } from './ducks'
 import { GetAllUserDetailsAction } from './types'
 
+import { BILLING_API_URL } from 'helpers/constants'
+
 export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
   try {
-    const getAllUserDetailsActionUrl = `https://billing.develop.apisuite.io/users/${action.userID}`
+    const getAllUserDetailsActionUrl = `${BILLING_API_URL}/users/${action.userID}`
 
     const response = yield call(request, {
       url: getAllUserDetailsActionUrl,
@@ -39,7 +41,7 @@ export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
 
 export function* getAllCreditPacksActionSaga() {
   try {
-    const getAllCreditPacksActionUrl = `https://billing.develop.apisuite.io/packages`
+    const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages`
 
     const response = yield call(request, {
       url: getAllCreditPacksActionUrl,
@@ -64,7 +66,7 @@ export function* getAllCreditPacksActionSaga() {
 
 export function* getAllSubscriptionPlansActionSaga() {
   try {
-    const getAllSubscriptionPlansActionUrl = `https://billing.develop.apisuite.io/subscriptions`
+    const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions`
 
     const response = yield call(request, {
       url: getAllSubscriptionPlansActionUrl,
@@ -90,7 +92,7 @@ export function* getAllSubscriptionPlansActionSaga() {
 
 export function* getAllUserTransactionsActionSaga() {
   try {
-    const getAllUserTransactionsActionUrl = `https://billing.develop.apisuite.io/purchases`
+    const getAllUserTransactionsActionUrl = `${BILLING_API_URL}/purchases`
 
     const response = yield call(request, {
       url: getAllUserTransactionsActionUrl,
