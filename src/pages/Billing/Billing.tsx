@@ -160,7 +160,7 @@ const Billing: React.FC<BillingProps> = ({
           <div>
             <hr className={classes.separator} />
 
-            {allCreditPacks.length ? (
+            {allCreditPacks.length !== 0 ? (
               <>
                 <p className={classes.creditPacksTitle}>
                   {t('billing.creditPacksTitle')}
@@ -235,7 +235,7 @@ const Billing: React.FC<BillingProps> = ({
             {t('billing.noActiveSubscriptions')}
           </p>
 
-          {allSubscriptionPlans.length ? (
+          {allSubscriptionPlans.length !== 0 ? (
             <>
               <p className={classes.subscriptionSelectionTitle}>
                 {t('billing.chooseSubscription')}
@@ -272,7 +272,7 @@ const Billing: React.FC<BillingProps> = ({
 
       {/* 'Transaction history' section */}
 
-      {allUserTransactions.length && (
+      {allUserTransactions.length !== 0 && (
         <>
           <p className={classes.sectionTitle}>
             {t('billing.transactionHistoryTitle')}

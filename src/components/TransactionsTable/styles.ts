@@ -133,7 +133,7 @@ export default makeStyles((theme) => ({
 
   transactionIDText: {
     marginRight: '5px',
-    maxWidth: '125px',
+    maxWidth: '110px',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
