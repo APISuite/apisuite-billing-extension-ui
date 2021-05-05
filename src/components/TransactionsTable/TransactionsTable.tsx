@@ -1,8 +1,11 @@
 import React from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import clsx from 'clsx'
+import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded'
 
 import { TransactionsTableProps } from './types'
-import useStyles from './styles'
 import { useTranslation } from '@apisuite/fe-base'
+import useStyles from './styles'
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   arrayOfTransactions,
@@ -27,32 +30,43 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             }
             key={`transactionsTableEntry${index}`}
           >
-            <p className={classes.transactionName}>
-              {transaction.transactionName}
+            <p className={classes.transactionDescription}>
+              {transaction.transactionDescription}
             </p>
 
-            <p className={classes.transactionReference}>
-              {transaction.transactionReference}
-            </p>
+            <div className={classes.transactionID}>
+              <p className={classes.transactionIDText}>
+                {transaction.transactionID}
+              </p>
 
-            <p className={classes.transactionDate}>
-              {transaction.transactionDate}
-            </p>
+              <CopyToClipboard text={transaction.transactionID}>
+                <FileCopyRoundedIcon className={classes.transactionIDIcon} />
+              </CopyToClipboard>
+            </div>
+
+            <p className={classes.transactionDate}>{transaction.createdAt}</p>
 
             <p
-              className={
-                transaction.transactionCompleted
-                  ? classes.completedTransactionStatus
-                  : classes.pendingTransactionStatus
-              }
+              className={clsx({
+                [classes.completeTransactionStatus]:
+                  transaction.transactionsStatus === 'authorized' ||
+                  transaction.transactionsStatus === 'paid',
+                [classes.failedTransactionStatus]:
+                  transaction.transactionsStatus === 'failed',
+                [classes.incompleteTransactionStatus]:
+                  transaction.transactionsStatus === 'canceled' ||
+                  transaction.transactionsStatus === 'expired',
+                [classes.openTransactionStatus]:
+                  transaction.transactionsStatus === 'open',
+                [classes.pendingTransactionStatus]:
+                  transaction.transactionsStatus === 'pending',
+              })}
             >
-              {transaction.transactionCompleted
-                ? t('billing.transactionsTable.transactionAuthorized')
-                : t('billing.transactionsTable.transactionPending')}
+              {transaction.transactionsStatus}
             </p>
 
             <p className={classes.transactionAmount}>
-              {transaction.transactionAmount}
+              {`${transaction.transactionAmount.transactionCurrency}${transaction.transactionAmount.transactionValue}`}
             </p>
           </div>
         )
@@ -65,24 +79,24 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   return (
     <div className={classes.transactionsTable}>
       <div className={classes.transactionsTableHeader}>
-        <p className={classes.transactionName}>
-          {t('billing.transactionsTable.descriptionTitle')}
+        <p className={classes.transactionDescription}>
+          {t('billing.transactionsTable.description')}
         </p>
 
-        <p className={classes.transactionReference}>
-          {t('billing.transactionsTable.referenceTitle')}
+        <p className={classes.transactionID}>
+          {t('billing.transactionsTable.reference')}
         </p>
 
         <p className={classes.transactionDate}>
-          {t('billing.transactionsTable.dateOfPurchaseTitle')}
+          {t('billing.transactionsTable.dateOfPurchase')}
         </p>
 
         <p className={classes.transactionStatus}>
-          {t('billing.transactionsTable.statusTitle')}
+          {t('billing.transactionsTable.status')}
         </p>
 
         <p className={classes.transactionAmount}>
-          {t('billing.transactionsTable.priceTitle')}
+          {t('billing.transactionsTable.price')}
         </p>
       </div>
 

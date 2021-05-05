@@ -26,13 +26,11 @@
         "subtitle": "Next billing date"
       },
       "transactionsTable": {
-        "transactionAuthorized": "Authorized",
-        "transactionPending": "Pending",
-        "descriptionTitle": "Description",
-        "referenceTitle": "Reference",
-        "dateOfPurchaseTitle": "Date of purchase",
-        "statusTitle": "Payment status",
-        "priceTitle": "Price"
+        "description": "Description",
+        "reference": "Reference",
+        "dateOfPurchase": "Date of purchase",
+        "status": "Payment status",
+        "price": "Price"
       }
     }
   }

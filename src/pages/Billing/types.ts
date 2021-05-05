@@ -9,9 +9,6 @@ import {
   GET_ALL_USER_DETAILS_ACTION,
   GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS,
   GET_ALL_USER_TRANSACTIONS_ACTION,
-
-  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-  HAS_PURCHASED_CREDITS_ACTION,
 } from './ducks'
 
 export interface User {
@@ -47,13 +44,13 @@ export interface SubscriptionPlanDetails {
 
 export interface TransactionDetails {
   createdAt: string
-  creditsReceived: number
-  paymentID: number
-  transactionCost: number
-  transactionStatus: boolean
-  transactionType: 'topup' | 'consent' | 'subscription'
-  updatedAt: string
-  userID: string
+  transactionAmount: {
+    transactionCurrency: string
+    transactionValue: string
+  }
+  transactionDescription: string
+  transactionID: string
+  transactionsStatus: string
 }
 
 export interface BillingStore {
@@ -61,25 +58,18 @@ export interface BillingStore {
   allSubscriptionPlans: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
-
-  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-  hasPurchasedCredits: boolean
 }
 
 export interface BillingProps {
-  user: User
   allCreditPacks: CreditPackDetails[]
   allSubscriptionPlans: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
-
-  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-  hasPurchasedCredits: boolean
-
   getAllCreditPacksAction: () => void
   getAllSubscriptionPlansAction: () => void
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
+  user: User
 }
 
 export interface GetAllUserDetailsAction extends Action {
@@ -119,11 +109,6 @@ export interface GetAllUserTransactionsActionSuccess extends Action {
   allUserTransactions: TransactionDetails[]
 }
 
-// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-export interface HasPurchasedCreditsAction extends Action {
-  type: typeof HAS_PURCHASED_CREDITS_ACTION
-}
-
 export type BillingActions =
   | GetAllCreditPacksAction
   | GetAllCreditPacksActionSuccess
@@ -133,5 +118,3 @@ export type BillingActions =
   | GetAllUserDetailsActionSuccess
   | GetAllUserTransactionsAction
   | GetAllUserTransactionsActionSuccess
-  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-  | HasPurchasedCreditsAction

@@ -1,11 +1,5 @@
+import { TransactionDetails } from 'pages/Billing/types'
+
 export type TransactionsTableProps = {
   arrayOfTransactions: TransactionDetails[]
-}
-
-export type TransactionDetails = {
-  transactionAmount: string
-  transactionCompleted: boolean
-  transactionReference: string
-  transactionDate: string
-  transactionName: string
 }

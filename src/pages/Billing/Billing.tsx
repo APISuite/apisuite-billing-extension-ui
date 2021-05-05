@@ -18,7 +18,6 @@ const Billing: React.FC<BillingProps> = ({
   getAllSubscriptionPlansAction,
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
-  hasPurchasedCredits,
   user,
 }) => {
   const classes = useStyles()
@@ -134,14 +133,6 @@ const Billing: React.FC<BillingProps> = ({
     }
   }
 
-  /* Temporary */
-
-  const [hasStartedSubscription, setHasStartedSubscription] = useState(false)
-
-  const handleSubscriptionStart = () => {
-    setHasStartedSubscription(true)
-  }
-
   return (
     <main className={`page-container ${classes.billingContentContainer}`}>
       <p className={classes.title}>{t('billing.title')}</p>
@@ -169,7 +160,7 @@ const Billing: React.FC<BillingProps> = ({
           <div>
             <hr className={classes.separator} />
 
-            {allCreditPacks.length !== 0 ? (
+            {allCreditPacks.length ? (
               <>
                 <p className={classes.creditPacksTitle}>
                   {t('billing.creditPacksTitle')}
@@ -190,7 +181,7 @@ const Billing: React.FC<BillingProps> = ({
             <div>
               <Link
                 className={
-                  currentlySelectedCreditPack.idOfCreditPack !== 0
+                  currentlySelectedCreditPack.idOfCreditPack
                     ? classes.enabledPurchaseCreditsButton
                     : classes.disabledPurchaseCreditsButton
                 }
@@ -244,7 +235,7 @@ const Billing: React.FC<BillingProps> = ({
             {t('billing.noActiveSubscriptions')}
           </p>
 
-          {allSubscriptionPlans.length !== 0 ? (
+          {allSubscriptionPlans.length ? (
             <>
               <p className={classes.subscriptionSelectionTitle}>
                 {t('billing.chooseSubscription')}
@@ -281,7 +272,7 @@ const Billing: React.FC<BillingProps> = ({
 
       {/* 'Transaction history' section */}
 
-      {(hasPurchasedCredits || hasStartedSubscription) && (
+      {allUserTransactions.length && (
         <>
           <p className={classes.sectionTitle}>
             {t('billing.transactionHistoryTitle')}
@@ -291,17 +282,7 @@ const Billing: React.FC<BillingProps> = ({
             {t('billing.transactionHistorySubtitle')}
           </p>
 
-          <TransactionsTable
-            arrayOfTransactions={[
-              {
-                transactionAmount: '€ 100',
-                transactionCompleted: true,
-                transactionReference: 'b4605542-cad0-4ca3-83e1-1d9177a92438',
-                transactionDate: '30th April 2021, 09:30',
-                transactionName: 'Credit pack: 10000 credits',
-              },
-            ]}
-          />
+          <TransactionsTable arrayOfTransactions={allUserTransactions} />
         </>
       )}
     </main>
