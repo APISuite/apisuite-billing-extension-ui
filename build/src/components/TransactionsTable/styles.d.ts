@@ -1,2 +1,0 @@
-declare const _default: (props?: any) => import("@material-ui/styles").ClassNameMap<"alternativeTransactionsTableEntry" | "completedTransactionStatus" | "pendingTransactionStatus" | "regularTransactionsTableEntry" | "transactionAmount" | "transactionReference" | "transactionDate" | "transactionName" | "transactionStatus" | "transactionsTable" | "transactionsTableHeader">;
-export default _default;
