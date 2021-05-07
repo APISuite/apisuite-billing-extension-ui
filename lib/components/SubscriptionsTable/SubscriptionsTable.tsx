@@ -4,7 +4,9 @@ import { SubscriptionsTableProps } from './types'
 import { useTranslation } from '@apisuite/fe-base'
 import useStyles from './styles'
 
-const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({ arrayOfSubs }) => {
+const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
+  arrayOfSubs,
+}) => {
   const classes = useStyles()
 
   const trans = useTranslation()

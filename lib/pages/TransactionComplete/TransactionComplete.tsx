@@ -4,16 +4,10 @@ import { TransactionCompleteProps } from './types'
 import useStyles from './styles'
 import Link from '../../components/Link'
 
-const TransactionComplete: React.FC<TransactionCompleteProps> = ({
-  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-  hasPurchasedCreditsAction,
-}) => {
+const TransactionComplete: React.FC<TransactionCompleteProps> = () => {
   const classes = useStyles()
 
   const paymentType = window.location.pathname.split('/')[2]
-
-  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-  hasPurchasedCreditsAction()
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>

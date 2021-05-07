@@ -101,15 +101,15 @@ export function* getAllUserTransactionsActionSaga() {
       },
     })
 
-    const allUserTransactions = response.data.map((subscriptionPlan: any) => ({
-      createdAt: subscriptionPlan.createdAt,
-      creditsReceived: subscriptionPlan.credits,
-      paymentID: subscriptionPlan.paymentId,
-      transactionCost: subscriptionPlan.amount,
-      transactionStatus: subscriptionPlan.verified,
-      transactionType: subscriptionPlan.type,
-      updatedAt: subscriptionPlan.updatedAt,
-      userID: subscriptionPlan.userId,
+    const allUserTransactions = response.data.map((transaction: any) => ({
+      createdAt: transaction.createdAt,
+      transactionAmount: {
+        transactionCurrency: transaction.amount.currency,
+        transactionValue: transaction.amount.value,
+      },
+      transactionDescription: transaction.description,
+      transactionID: transaction.id,
+      transactionsStatus: transaction.status,
     }))
 
     yield put(getAllUserTransactionsActionSuccess(allUserTransactions))

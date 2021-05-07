@@ -18,9 +18,6 @@ const initialState: BillingStore = {
   allCreditPacks: [],
   allSubscriptionPlans: [],
   allUserTransactions: [],
-
-  // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-  hasPurchasedCredits: false,
 }
 
 /** Action types */
@@ -42,12 +39,6 @@ export const GET_ALL_USER_TRANSACTIONS_ACTION =
   'Billing/GET_ALL_USER_TRANSACTIONS_ACTION'
 export const GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS =
   'Billing/GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS'
-
-// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-export const HAS_PURCHASED_CREDITS_ACTION =
-  'Billing/HAS_PURCHASED_CREDITS_ACTION'
-export const HAS_PURCHASED_CREDITS_ACTION_SUCCESS =
-  'Billing/HAS_PURCHASED_CREDITS_ACTION_SUCCESS'
 
 /** Reducer */
 
@@ -93,13 +84,6 @@ export default function billingReducer(
     case GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS: {
       return update(state, {
         allUserTransactions: { $set: action.allUserTransactions },
-      })
-    }
-
-    // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-    case HAS_PURCHASED_CREDITS_ACTION: {
-      return update(state, {
-        hasPurchasedCredits: { $set: true },
       })
     }
 
@@ -149,9 +133,4 @@ export function getAllUserTransactionsActionSuccess(
   allUserTransactions: CreditPackDetails[]
 ) {
   return { type: GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions }
-}
-
-// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-export function hasPurchasedCreditsAction() {
-  return { type: HAS_PURCHASED_CREDITS_ACTION }
 }

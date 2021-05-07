@@ -1,15 +1,14 @@
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-import { hasPurchasedCreditsAction } from '../../pages/Billing/ducks'
 import TransactionComplete from './TransactionComplete'
 
-export const mapDispatchToProps = (dispatch: Dispatch): any =>
-  bindActionCreators(
-    {
-      hasPurchasedCreditsAction: hasPurchasedCreditsAction,
-    },
-    dispatch
-  )
+// export const mapDispatchToProps = (dispatch: Dispatch): any =>
+//   bindActionCreators(
+//     {
+//       someAction: someAction,
+//     },
+//     dispatch
+//   )
 
-export default connect(null, mapDispatchToProps)(TransactionComplete)
+export default connect(null, null)(TransactionComplete)

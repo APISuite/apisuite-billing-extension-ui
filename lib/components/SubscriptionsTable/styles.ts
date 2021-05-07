@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
 
     '& > :first-child': {
       color: theme.palette.text.primary,
-      fontSize: '14px',
+      fontSize: 14,
       fontWeight: 500,
       maxWidth: '50%',
       textAlign: 'left',
@@ -20,7 +20,7 @@ export default makeStyles((theme) => ({
 
     '& > :last-child': {
       color: theme.palette.text.secondary,
-      fontSize: '14px',
+      fontSize: 14,
       fontWeight: 400,
       maxWidth: '50%',
       textAlign: 'right',
@@ -38,7 +38,7 @@ export default makeStyles((theme) => ({
 
     '& > :first-child': {
       color: theme.palette.text.primary,
-      fontSize: '14px',
+      fontSize: 14,
       fontWeight: 500,
       maxWidth: '50%',
       textAlign: 'left',
@@ -47,7 +47,7 @@ export default makeStyles((theme) => ({
 
     '& > :last-child': {
       color: theme.palette.text.secondary,
-      fontSize: '14px',
+      fontSize: 14,
       fontWeight: 400,
       maxWidth: '50%',
       textAlign: 'right',
@@ -59,8 +59,8 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: theme.palette.dimensions.borderRadius,
-    marginBottom: '24px',
-    maxWidth: '900px',
+    marginBottom: 24,
+    maxWidth: 900,
     width: '100%',
   },
 
@@ -68,14 +68,14 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     color: theme.palette.text.hint,
     display: 'flex',
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: 500,
     justifyContent: 'space-between',
     padding: '12px 40px',
 
     '& > :first-child': {
       color: theme.palette.text.primary,
-      fontSize: '16px',
+      fontSize: 16,
       fontWeight: 500,
       maxWidth: '50%',
       textAlign: 'left',
@@ -84,7 +84,7 @@ export default makeStyles((theme) => ({
 
     '& > :last-child': {
       color: theme.palette.text.primary,
-      fontSize: '16px',
+      fontSize: 16,
       fontWeight: 500,
       maxWidth: '50%',
       textAlign: 'right',
