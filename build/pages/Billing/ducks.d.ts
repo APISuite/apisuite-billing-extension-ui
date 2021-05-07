@@ -8,8 +8,9 @@ export declare const GET_ALL_SUBSCRIPTION_PLANS_ACTION = "Billing/GET_ALL_SUBSCR
 export declare const GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS = "Billing/GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS";
 export declare const GET_ALL_USER_TRANSACTIONS_ACTION = "Billing/GET_ALL_USER_TRANSACTIONS_ACTION";
 export declare const GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS = "Billing/GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS";
-export declare const HAS_PURCHASED_CREDITS_ACTION = "Billing/HAS_PURCHASED_CREDITS_ACTION";
-export declare const HAS_PURCHASED_CREDITS_ACTION_SUCCESS = "Billing/HAS_PURCHASED_CREDITS_ACTION_SUCCESS";
+export declare const PURCHASE_CREDITS_ACTION = "Billing/PURCHASE_CREDITS_ACTION";
+export declare const PURCHASE_CREDITS_ACTION_SUCCESS = "Billing/PURCHASE_CREDITS_ACTION_SUCCESS";
+export declare const PURCHASE_CREDITS_ACTION_ERROR = "Billing/PURCHASE_CREDITS_ACTION_ERROR";
 /** Reducer */
 export default function billingReducer(state: BillingStore, action: BillingActions): BillingStore;
 /** Action builders */
@@ -42,6 +43,14 @@ export declare function getAllUserTransactionsActionSuccess(allUserTransactions:
     type: string;
     allUserTransactions: CreditPackDetails[];
 };
-export declare function hasPurchasedCreditsAction(): {
+export declare function purchaseCreditsAction(creditPackID: number): {
     type: string;
+    creditPackID: number;
+};
+export declare function purchaseCreditsActionSuccess(): {
+    type: string;
+};
+export declare function purchaseCreditsActionError(error: string): {
+    type: string;
+    error: string;
 };

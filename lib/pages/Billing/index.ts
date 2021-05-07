@@ -6,10 +6,11 @@ import {
   getAllSubscriptionPlansAction,
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
+  purchaseCreditsAction,
 } from './ducks'
 import Billing from './Billing'
 
-export const mapStateToProps = ({ auth, billing }: any) => ({
+export const mapStateToProps = ({ auth, billing }) => ({
   allCreditPacks: billing.allCreditPacks,
   allSubscriptionPlans: billing.allSubscriptionPlans,
   allUserDetails: billing.allUserDetails,
@@ -17,13 +18,14 @@ export const mapStateToProps = ({ auth, billing }: any) => ({
   user: auth.user,
 })
 
-export const mapDispatchToProps = (dispatch: Dispatch): any =>
+export const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       getAllCreditPacksAction: getAllCreditPacksAction,
       getAllSubscriptionPlansAction: getAllSubscriptionPlansAction,
       getAllUserDetailsAction: getAllUserDetailsAction,
       getAllUserTransactionsAction: getAllUserTransactionsAction,
+      purchaseCreditsAction: purchaseCreditsAction,
     },
     dispatch
   )

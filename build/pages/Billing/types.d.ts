@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { GET_ALL_CREDIT_PACKS_ACTION_SUCCESS, GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_DETAILS_ACTION_SUCCESS, GET_ALL_USER_DETAILS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, GET_ALL_USER_TRANSACTIONS_ACTION, HAS_PURCHASED_CREDITS_ACTION } from './ducks';
+import { GET_ALL_CREDIT_PACKS_ACTION_SUCCESS, GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_DETAILS_ACTION_SUCCESS, GET_ALL_USER_DETAILS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, GET_ALL_USER_TRANSACTIONS_ACTION, PURCHASE_CREDITS_ACTION, PURCHASE_CREDITS_ACTION_SUCCESS, PURCHASE_CREDITS_ACTION_ERROR } from './ducks';
 export interface User {
     fName: string;
     id: number;
@@ -29,32 +29,32 @@ export interface SubscriptionPlanDetails {
 }
 export interface TransactionDetails {
     createdAt: string;
-    creditsReceived: number;
-    paymentID: number;
-    transactionCost: number;
-    transactionStatus: boolean;
-    transactionType: 'topup' | 'consent' | 'subscription';
-    updatedAt: string;
-    userID: string;
+    transactionAmount: {
+        transactionCurrency: string;
+        transactionValue: string;
+    };
+    transactionDescription: string;
+    transactionID: string;
+    transactionsStatus: string;
 }
 export interface BillingStore {
+    error?: string;
     allCreditPacks: CreditPackDetails[];
     allSubscriptionPlans: SubscriptionPlanDetails[];
     allUserDetails: UserDetails;
     allUserTransactions: TransactionDetails[];
-    hasPurchasedCredits: boolean;
 }
 export interface BillingProps {
-    user: User;
     allCreditPacks: CreditPackDetails[];
     allSubscriptionPlans: SubscriptionPlanDetails[];
     allUserDetails: UserDetails;
     allUserTransactions: TransactionDetails[];
-    hasPurchasedCredits: boolean;
     getAllCreditPacksAction: () => void;
     getAllSubscriptionPlansAction: () => void;
     getAllUserDetailsAction: (userID: number) => void;
     getAllUserTransactionsAction: () => void;
+    purchaseCreditsAction: (creditPackID: number) => void;
+    user: User;
 }
 export interface GetAllUserDetailsAction extends Action {
     type: typeof GET_ALL_USER_DETAILS_ACTION;
@@ -85,7 +85,15 @@ export interface GetAllUserTransactionsActionSuccess extends Action {
     type: typeof GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS;
     allUserTransactions: TransactionDetails[];
 }
-export interface HasPurchasedCreditsAction extends Action {
-    type: typeof HAS_PURCHASED_CREDITS_ACTION;
+export interface PurchaseCreditsAction extends Action {
+    type: typeof PURCHASE_CREDITS_ACTION;
+    creditPackID: number;
 }
-export declare type BillingActions = GetAllCreditPacksAction | GetAllCreditPacksActionSuccess | GetAllSubscriptionPlansAction | GetAllSubscriptionPlansActionSuccess | GetAllUserDetailsAction | GetAllUserDetailsActionSuccess | GetAllUserTransactionsAction | GetAllUserTransactionsActionSuccess | HasPurchasedCreditsAction;
+export interface PurchaseCreditsActionSuccess extends Action {
+    type: typeof PURCHASE_CREDITS_ACTION_SUCCESS;
+}
+export interface PurchaseCreditsActionError extends Action {
+    type: typeof PURCHASE_CREDITS_ACTION_ERROR;
+    error: string;
+}
+export declare type BillingActions = GetAllCreditPacksAction | GetAllCreditPacksActionSuccess | GetAllSubscriptionPlansAction | GetAllSubscriptionPlansActionSuccess | GetAllUserDetailsAction | GetAllUserDetailsActionSuccess | GetAllUserTransactionsAction | GetAllUserTransactionsActionSuccess | PurchaseCreditsAction | PurchaseCreditsActionSuccess | PurchaseCreditsActionError;

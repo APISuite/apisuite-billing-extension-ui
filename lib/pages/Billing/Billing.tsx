@@ -18,6 +18,7 @@ const Billing: React.FC<BillingProps> = ({
   getAllSubscriptionPlansAction,
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
+  purchaseCreditsAction,
   user,
 }) => {
   const classes = useStyles()
@@ -179,16 +180,20 @@ const Billing: React.FC<BillingProps> = ({
             )}
 
             <div>
-              <Link
+              <Button
                 className={
                   currentlySelectedCreditPack.idOfCreditPack
                     ? classes.enabledPurchaseCreditsButton
                     : classes.disabledPurchaseCreditsButton
                 }
-                href="/billing/creditpayment"
+                onClick={() => {
+                  purchaseCreditsAction(
+                    currentlySelectedCreditPack.idOfCreditPack
+                  )
+                }}
               >
                 {t('billing.purchaseCreditsButtonLabel')}
-              </Link>
+              </Button>
 
               <Button
                 className={classes.cancelCreditsPurchaseButton}

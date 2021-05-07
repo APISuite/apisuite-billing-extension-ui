@@ -6,7 +6,7 @@ import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog'
 import SubscriptionsTable from '../../components/SubscriptionsTable';
 import TransactionsTable from '../../components/TransactionsTable';
 import useStyles from './styles';
-const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUserTransactions, getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, hasPurchasedCredits, user, }) => {
+const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUserTransactions, getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, purchaseCreditsAction, user, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     function t(str) {
@@ -83,11 +83,6 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
             setCurrentlySelectedSubscriptionPlan(selectedSubscriptionPlan);
         }
     };
-    /* Temporary */
-    const [hasStartedSubscription, setHasStartedSubscription] = useState(false);
-    const handleSubscriptionStart = () => {
-        setHasStartedSubscription(true);
-    };
     return (React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
         React.createElement("p", { className: classes.title }, t('billing.title')),
         React.createElement("p", { className: classes.subtitle }, t('billing.subtitle')),
@@ -104,9 +99,11 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                     React.createElement("p", { className: classes.creditPacksTitle }, t('billing.creditPacksTitle')),
                     React.createElement(CreditPacksCatalog, { arrayOfCreditPacks: allCreditPacks, currentlySelectedCreditPack: currentlySelectedCreditPack, handleCreditPackSelection: handleCreditPackSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableCreditPacks }, t('billing.retrievingCreditPacks'))),
                 React.createElement("div", null,
-                    React.createElement(Link, { className: currentlySelectedCreditPack.idOfCreditPack !== 0
+                    React.createElement(Button, { className: currentlySelectedCreditPack.idOfCreditPack
                             ? classes.enabledPurchaseCreditsButton
-                            : classes.disabledPurchaseCreditsButton, href: "/billing/creditpayment" }, t('billing.purchaseCreditsButtonLabel')),
+                            : classes.disabledPurchaseCreditsButton, onClick: () => {
+                            purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack);
+                        } }, t('billing.purchaseCreditsButtonLabel')),
                     React.createElement(Button, { className: classes.cancelCreditsPurchaseButton, onClick: handleWantsToTopUpCredits }, t('billing.cancelCreditsPurchaseButtonLabel'))))) : (React.createElement(Button, { className: classes.addCreditsButton, onClick: handleWantsToTopUpCredits }, t('billing.addCreditsButtonLabel')))),
         React.createElement("p", { className: classes.sectionTitle }, t('billing.yourSubscriptionsTitle')),
         allUserDetails.subscriptionID ? (React.createElement(React.Fragment, null,
@@ -124,17 +121,9 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
             React.createElement(Link, { className: hasSelectedSubscriptionPlan
                     ? classes.enabledStartSubscriptionButton
                     : classes.disabledStartSubscriptionButton, href: "/billing/subscriptionpayment" }, t('billing.startSubscriptionButtonLabel')))),
-        (hasPurchasedCredits || hasStartedSubscription) && (React.createElement(React.Fragment, null,
+        allUserTransactions.length !== 0 && (React.createElement(React.Fragment, null,
             React.createElement("p", { className: classes.sectionTitle }, t('billing.transactionHistoryTitle')),
             React.createElement("p", { className: classes.sectionSubtitle }, t('billing.transactionHistorySubtitle')),
-            React.createElement(TransactionsTable, { arrayOfTransactions: [
-                    {
-                        transactionAmount: '€ 100',
-                        transactionCompleted: true,
-                        transactionReference: 'b4605542-cad0-4ca3-83e1-1d9177a92438',
-                        transactionDate: '30th April 2021, 09:30',
-                        transactionName: 'Credit pack: 10000 credits',
-                    },
-                ] })))));
+            React.createElement(TransactionsTable, { arrayOfTransactions: allUserTransactions })))));
 };
 export default Billing;

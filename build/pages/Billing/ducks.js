@@ -1,6 +1,7 @@
 import update from 'immutability-helper';
 /** Initial state */
 const initialState = {
+    error: undefined,
     allUserDetails: {
         subscriptionID: '',
         userCredits: 0,
@@ -9,8 +10,6 @@ const initialState = {
     allCreditPacks: [],
     allSubscriptionPlans: [],
     allUserTransactions: [],
-    // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-    hasPurchasedCredits: false,
 };
 /** Action types */
 export const GET_ALL_USER_DETAILS_ACTION = 'Billing/GET_ALL_USER_DETAILS_ACTION';
@@ -21,9 +20,9 @@ export const GET_ALL_SUBSCRIPTION_PLANS_ACTION = 'Billing/GET_ALL_SUBSCRIPTION_P
 export const GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS = 'Billing/GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS';
 export const GET_ALL_USER_TRANSACTIONS_ACTION = 'Billing/GET_ALL_USER_TRANSACTIONS_ACTION';
 export const GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS = 'Billing/GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS';
-// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-export const HAS_PURCHASED_CREDITS_ACTION = 'Billing/HAS_PURCHASED_CREDITS_ACTION';
-export const HAS_PURCHASED_CREDITS_ACTION_SUCCESS = 'Billing/HAS_PURCHASED_CREDITS_ACTION_SUCCESS';
+export const PURCHASE_CREDITS_ACTION = 'Billing/PURCHASE_CREDITS_ACTION';
+export const PURCHASE_CREDITS_ACTION_SUCCESS = 'Billing/PURCHASE_CREDITS_ACTION_SUCCESS';
+export const PURCHASE_CREDITS_ACTION_ERROR = 'Billing/PURCHASE_CREDITS_ACTION_ERROR';
 /** Reducer */
 export default function billingReducer(state = initialState, action) {
     switch (action.type) {
@@ -59,10 +58,13 @@ export default function billingReducer(state = initialState, action) {
                 allUserTransactions: { $set: action.allUserTransactions },
             });
         }
-        // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-        case HAS_PURCHASED_CREDITS_ACTION: {
+        case PURCHASE_CREDITS_ACTION:
+        case PURCHASE_CREDITS_ACTION_SUCCESS: {
+            return state;
+        }
+        case PURCHASE_CREDITS_ACTION_ERROR: {
             return update(state, {
-                hasPurchasedCredits: { $set: true },
+                error: { $set: action.error },
             });
         }
         default:
@@ -97,7 +99,12 @@ export function getAllUserTransactionsAction() {
 export function getAllUserTransactionsActionSuccess(allUserTransactions) {
     return { type: GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions };
 }
-// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-export function hasPurchasedCreditsAction() {
-    return { type: HAS_PURCHASED_CREDITS_ACTION };
+export function purchaseCreditsAction(creditPackID) {
+    return { type: PURCHASE_CREDITS_ACTION, creditPackID };
+}
+export function purchaseCreditsActionSuccess() {
+    return { type: PURCHASE_CREDITS_ACTION_SUCCESS };
+}
+export function purchaseCreditsActionError(error) {
+    return { type: PURCHASE_CREDITS_ACTION_ERROR, error };
 }

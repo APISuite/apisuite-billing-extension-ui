@@ -1,6 +1,5 @@
 import { BILLING_API_URL } from '../../constants/endpoints'
 import { call, put, takeLatest } from 'redux-saga/effects'
-import request from '../../util/request'
 
 import {
   GET_ALL_CREDIT_PACKS_ACTION,
@@ -11,8 +10,12 @@ import {
   getAllSubscriptionPlansActionSuccess,
   getAllUserDetailsActionSuccess,
   getAllUserTransactionsActionSuccess,
+  PURCHASE_CREDITS_ACTION,
+  purchaseCreditsActionError,
 } from './ducks'
-import { GetAllUserDetailsAction } from './types'
+import { GetAllUserDetailsAction, PurchaseCreditsAction } from './types'
+import requesting from '../../util/requesting'
+import request from '../../util/request'
 
 export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
   try {
@@ -118,6 +121,24 @@ export function* getAllUserTransactionsActionSaga() {
   }
 }
 
+export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
+  try {
+    const purchaseCreditsActionUrl = `${BILLING_API_URL}/purchases/packages/${action.creditPackID}`
+
+    const response = yield call(request, {
+      url: purchaseCreditsActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    window.location.href = response.data
+  } catch (error) {
+    yield put(purchaseCreditsActionError(error.message))
+  }
+}
+
 function* billingRootSaga() {
   yield takeLatest(GET_ALL_CREDIT_PACKS_ACTION, getAllCreditPacksActionSaga)
   yield takeLatest(
@@ -129,6 +150,7 @@ function* billingRootSaga() {
     GET_ALL_USER_TRANSACTIONS_ACTION,
     getAllUserTransactionsActionSaga
   )
+  yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga)
 }
 
 export default billingRootSaga

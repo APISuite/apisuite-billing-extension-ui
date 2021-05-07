@@ -10,6 +10,7 @@ import {
 /** Initial state */
 
 const initialState: BillingStore = {
+  error: undefined,
   allUserDetails: {
     subscriptionID: '',
     userCredits: 0,
@@ -39,6 +40,12 @@ export const GET_ALL_USER_TRANSACTIONS_ACTION =
   'Billing/GET_ALL_USER_TRANSACTIONS_ACTION'
 export const GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS =
   'Billing/GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS'
+
+export const PURCHASE_CREDITS_ACTION = 'Billing/PURCHASE_CREDITS_ACTION'
+export const PURCHASE_CREDITS_ACTION_SUCCESS =
+  'Billing/PURCHASE_CREDITS_ACTION_SUCCESS'
+export const PURCHASE_CREDITS_ACTION_ERROR =
+  'Billing/PURCHASE_CREDITS_ACTION_ERROR'
 
 /** Reducer */
 
@@ -84,6 +91,17 @@ export default function billingReducer(
     case GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS: {
       return update(state, {
         allUserTransactions: { $set: action.allUserTransactions },
+      })
+    }
+
+    case PURCHASE_CREDITS_ACTION:
+    case PURCHASE_CREDITS_ACTION_SUCCESS: {
+      return state
+    }
+
+    case PURCHASE_CREDITS_ACTION_ERROR: {
+      return update(state, {
+        error: { $set: action.error },
       })
     }
 
@@ -133,4 +151,16 @@ export function getAllUserTransactionsActionSuccess(
   allUserTransactions: CreditPackDetails[]
 ) {
   return { type: GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions }
+}
+
+export function purchaseCreditsAction(creditPackID: number) {
+  return { type: PURCHASE_CREDITS_ACTION, creditPackID }
+}
+
+export function purchaseCreditsActionSuccess() {
+  return { type: PURCHASE_CREDITS_ACTION_SUCCESS }
+}
+
+export function purchaseCreditsActionError(error: string) {
+  return { type: PURCHASE_CREDITS_ACTION_ERROR, error }
 }
