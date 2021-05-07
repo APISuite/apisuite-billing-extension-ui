@@ -42,7 +42,7 @@ npm run test
 npm run build
 ```
 
-or, to watch the projecto for changes and rebuilding it:
+or, to watch the project for changes and rebuilding it:
 
 ```
 npm run build:watch
@@ -85,53 +85,3 @@ You can then install your library into other projects by running:
 ```
 npm i --save github:APISuite/apisuite-billing-extension-ui#branch-name
 ```
-
-### Supporting Image Imports
-
-Add the following library to your component library [@rollup/plugin-image](https://github.com/rollup/plugins/tree/master/packages/image):
-
-```
-npm i -D @rollup/plugin-image
-```
-
-Then add it to `rollup-config.js`:
-
-```
-...
-plugins:[
-  ...,
-  image(),
-  ...
-]
-...
-```
-
-You can then import and render images in your components like:
-
-```tsx
-import logo from './rollup.png'
-
-export const ImageComponent = () => (
-  <div>
-    <img src={logo} />
-  </div>
-)
-```
-
-## Stack
-
-- [Rollup](https://github.com/rollup/rollup)
-- [Sass](https://sass-lang.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-
-## Acknowledgments
-
-The repo is based on a stripped-down version of a React Component Library project skeleton. More info:
-
-- [Repo](https://github.com/HarveyD/react-component-library)
-- [Blog post](https://blog.harveydelaney.com/creating-your-own-react-component-library/)
-
-It also features:
-
-- [Jest](https://jestjs.io/) and [React Testing Library](https://github.com/testing-library/react-testing-library) enabling testing of the components
-# apisuite-billing-extension-ui
