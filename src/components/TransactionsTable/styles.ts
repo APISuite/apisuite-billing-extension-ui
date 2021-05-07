@@ -4,20 +4,20 @@ export default makeStyles((theme) => ({
   alternativeTransactionsTableEntry: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.default,
-    borderTop: `1px solid ${theme.palette.grey[100]}`,
+    borderTop: `1 solid ${theme.palette.grey[100]}`,
     display: 'flex',
     justifyContent: 'flex-start',
-    padding: '12px 30px',
+    padding: '12 30',
 
     '& p': {
       color: theme.palette.text.secondary,
-      fontSize: '14px',
+      fontSize: '14',
       fontWeight: 400,
     },
 
     '& > :first-child': {
       color: theme.palette.text.primary,
-      fontSize: '14px',
+      fontSize: '14',
       fontWeight: 400,
     },
   },
@@ -26,10 +26,10 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.success.light,
     borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.success.dark} !important`,
-    fontSize: '14px',
+    fontSize: '14',
     fontWeight: 400,
-    marginRight: '10px',
-    maxWidth: '135px',
+    marginRight: '10',
+    maxWidth: '135',
     textAlign: 'center',
     textTransform: 'capitalize',
     width: '100%',
@@ -39,10 +39,10 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.error.light,
     borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.error.dark} !important`,
-    fontSize: '14px',
+    fontSize: '14',
     fontWeight: 400,
-    marginRight: '10px',
-    maxWidth: '135px',
+    marginRight: '10',
+    maxWidth: '135',
     textAlign: 'center',
     textTransform: 'capitalize',
     width: '100%',
@@ -52,10 +52,10 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.info.light,
     borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.info.dark} !important`,
-    fontSize: '14px',
+    fontSize: '14',
     fontWeight: 400,
-    marginRight: '10px',
-    maxWidth: '135px',
+    marginRight: '10',
+    maxWidth: '135',
     textAlign: 'center',
     textTransform: 'capitalize',
     width: '100%',
@@ -65,10 +65,10 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.warning.light,
     borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.warning.dark} !important`,
-    fontSize: '14px',
+    fontSize: '14',
     fontWeight: 400,
-    marginRight: '10px',
-    maxWidth: '135px',
+    marginRight: '10',
+    maxWidth: '135',
     textAlign: 'center',
     textTransform: 'capitalize',
     width: '100%',
@@ -77,26 +77,26 @@ export default makeStyles((theme) => ({
   regularTransactionsTableEntry: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.paper,
-    borderTop: `1px solid ${theme.palette.grey[100]}`,
+    borderTop: `1 solid ${theme.palette.grey[100]}`,
     display: 'flex',
     justifyContent: 'flex-start',
-    padding: '12px 30px',
+    padding: '12 30',
 
     '& p': {
       color: theme.palette.text.secondary,
-      fontSize: '14px',
+      fontSize: '14',
       fontWeight: 400,
     },
 
     '& > :first-child': {
       color: theme.palette.text.primary,
-      fontSize: '14px',
+      fontSize: '14',
       fontWeight: 400,
     },
   },
 
   transactionAmount: {
-    maxWidth: '85px',
+    maxWidth: '85',
     overflow: 'hidden',
     textAlign: 'right',
     textOverflow: 'ellipsis',
@@ -105,8 +105,8 @@ export default makeStyles((theme) => ({
   },
 
   transactionDate: {
-    marginRight: '15px',
-    maxWidth: '175px',
+    marginRight: '15',
+    maxWidth: '175',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
@@ -115,8 +115,8 @@ export default makeStyles((theme) => ({
   },
 
   transactionDescription: {
-    marginRight: '15px',
-    maxWidth: '230px',
+    marginRight: '15',
+    maxWidth: '230',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
@@ -127,13 +127,13 @@ export default makeStyles((theme) => ({
   transactionID: {
     alignItems: 'center',
     display: 'flex',
-    maxWidth: '175px',
+    maxWidth: '175',
     width: '100%',
   },
 
   transactionIDText: {
-    marginRight: '5px',
-    maxWidth: '110px',
+    marginRight: '5',
+    maxWidth: '110',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
@@ -144,7 +144,7 @@ export default makeStyles((theme) => ({
   transactionIDIcon: {
     color: theme.palette.grey[400],
     cursor: 'pointer',
-    fontSize: '20px',
+    fontSize: '20',
 
     '&:hover': {
       color: theme.palette.secondary.main,
@@ -152,8 +152,8 @@ export default makeStyles((theme) => ({
   },
 
   transactionStatus: {
-    marginRight: '15px',
-    maxWidth: '135px',
+    marginRight: '15',
+    maxWidth: '135',
     overflow: 'hidden',
     textAlign: 'left',
     textOverflow: 'ellipsis',
@@ -163,10 +163,10 @@ export default makeStyles((theme) => ({
 
   transactionsTable: {
     backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.grey[300]}`,
+    border: `1 solid ${theme.palette.grey[300]}`,
     borderRadius: theme.palette.dimensions.borderRadius,
-    marginBottom: '24px',
-    maxWidth: '900px',
+    marginBottom: '24',
+    maxWidth: '900',
     width: '100%',
   },
 
@@ -174,14 +174,14 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     color: theme.palette.text.hint,
     display: 'flex',
-    fontSize: '16px',
+    fontSize: '16',
     fontWeight: 500,
     justifyContent: 'flex-start',
-    padding: '12px 30px',
+    padding: '12 30',
 
     '& p': {
       color: theme.palette.text.primary,
-      fontSize: '16px',
+      fontSize: '16',
       fontWeight: 500,
     },
   },
@@ -190,10 +190,10 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.grey[100],
     borderRadius: theme.palette.dimensions.borderRadius,
     color: `${theme.palette.text.hint} !important`,
-    fontSize: '14px',
+    fontSize: '14',
     fontWeight: 400,
-    marginRight: '10px',
-    maxWidth: '135px',
+    marginRight: '10',
+    maxWidth: '135',
     textAlign: 'center',
     textTransform: 'capitalize',
     width: '100%',

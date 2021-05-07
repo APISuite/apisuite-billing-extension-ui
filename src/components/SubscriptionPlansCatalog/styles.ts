@@ -4,56 +4,56 @@ export default makeStyles((theme) => ({
   leftDetailsContainer: {
     '& > :first-child': {
       color: theme.palette.text.hint,
-      fontSize: '14px',
+      fontSize: '14',
       fontWeight: 400,
-      marginBottom: '-6px',
+      marginBottom: '-6',
     },
 
     '& > :last-child': {
       color: theme.palette.text.primary,
-      fontSize: '16px',
+      fontSize: '16',
       fontWeight: 500,
     },
   },
 
   noActiveSubscriptionText: {
     color: theme.palette.text.hint,
-    fontSize: '16px',
+    fontSize: '16',
     fontWeight: 400,
-    marginBottom: '40px',
+    marginBottom: '40',
   },
 
   notSelectedSubscriptionPlanContainer: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.grey[300]}`,
+    border: `1 solid ${theme.palette.grey[300]}`,
     borderRadius: theme.palette.dimensions.borderRadius,
     cursor: 'pointer',
     display: 'flex',
-    height: '70px',
-    margin: '0px 12px 12px 0px',
-    maxWidth: '280px',
-    padding: '15px',
+    height: '70',
+    margin: '0 12 12 0',
+    maxWidth: '280',
+    padding: '15',
     width: '100%',
   },
 
   notSelectedSubscriptionPlanIcon: {
     color: theme.palette.text.primary,
-    fontSize: '24px',
-    marginRight: '12px',
+    fontSize: '24',
+    marginRight: '12',
   },
 
   rightDetailsContainer: {
     '& > :first-child': {
       color: theme.palette.text.primary,
-      fontSize: '16px',
+      fontSize: '16',
       fontWeight: 500,
-      marginBottom: '-6px',
+      marginBottom: '-6',
     },
 
     '& > :last-child': {
       color: theme.palette.text.hint,
-      fontSize: '14px',
+      fontSize: '14',
       fontWeight: 400,
     },
   },
@@ -61,39 +61,39 @@ export default makeStyles((theme) => ({
   selectedSubscriptionPlanContainer: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.action.focus}`,
+    border: `1 solid ${theme.palette.action.focus}`,
     borderRadius: theme.palette.dimensions.borderRadius,
     cursor: 'pointer',
     display: 'flex',
-    height: '70px',
-    margin: '0px 12px 12px 0px',
-    maxWidth: '280px',
-    padding: '15px',
+    height: '70',
+    margin: '0 12 12 0',
+    maxWidth: '280',
+    padding: '15',
     width: '100%',
   },
 
   selectedSubscriptionPlanIcon: {
     color: theme.palette.action.focus,
-    fontSize: '24px',
-    marginRight: '12px',
+    fontSize: '24',
+    marginRight: '12',
   },
 
   subscriptionPlanDetailsContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    maxWidth: '220px',
+    maxWidth: '220',
     width: '100%',
   },
 
   subscriptionPlansCatalogEntriesContainer: {
     display: 'flex',
-    marginBottom: '40px',
+    marginBottom: '40',
   },
 
   subscriptionSelectionTitle: {
     color: theme.palette.text.primary,
-    fontSize: '18px',
+    fontSize: '18',
     fontWeight: 500,
-    marginBottom: '24px',
+    marginBottom: '24',
   },
 }))
