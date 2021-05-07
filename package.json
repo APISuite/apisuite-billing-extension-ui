@@ -1,26 +1,35 @@
 {
-  "name": "apisuite-billing-extension-ui",
+  "name": "@apisuite/apisuite-billing-extension-ui",
   "version": "1.0.4",
   "main": "build/index.js",
-  "module": "build/index.esm.js",
   "files": [
     "build"
   ],
   "types": "build/src/index.d.ts",
   "description": "The Billing extension's UI.",
+  "watch": {
+    "build": {
+      "patterns": [
+        "lib"
+      ],
+      "extensions": "ts,tsx,scss,json",
+      "ignore": "lib/constants/info.ts",
+      "quiet": false
+    }
+  },
   "scripts": {
-    "format": "prettier --write \"src/{,**/}*.ts{,x}\"",
-    "lint": "tsc --noEmit && eslint \"src/{,**/}*.ts{,x}\"",
-    "build": "rollup -c",
-    "build:watch": "rollup -w -c",
-    "version": "npm run build",
+    "format": "prettier --write \"lib/{,**/}*.ts{,x}\"",
+    "lint": "tsc --noEmit && eslint \"lib/{,**/}*.ts{,x}\"",
+    "build": "node ./scripts/write-info && rimraf ./build && tsc",
+    "build:watch": "npm-watch build",
+    "version": "npm run build && git add -A build lib/constants/info.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "prepublishOnly": "npm run build",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "{src,test}/{,**/}*.ts{,x}": [
+    "{lib,test}/{,**/}*.ts{,x}": [
       "prettier --write",
       "git add"
     ]
@@ -33,7 +42,6 @@
     "React",
     "Component",
     "Library",
-    "Rollup",
     "Typescript",
     "Sass"
   ],
@@ -48,16 +56,16 @@
   },
   "homepage": "https://github.com/HarveyD/react-component-library#readme",
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2",
     "redux": ">=4.0.4",
     "react-redux": ">=7.1.3",
     "react-router": ">=5.1.2",
     "react-router-dom": ">=5.1.2",
-    "redux-saga": "1.1.3",
+    "redux-saga": ">=1.1.3",
     "formik": ">=2.2.0",
     "yup": ">=0.29.3",
-    "@apisuite/fe-base": "1.0.0-next.4",
+    "@apisuite/fe-base": ">=1.0.0-next.4",
     "@material-ui/icons": ">=4.5.1",
     "@material-ui/lab": ">=4.0.0-alpha.56"
   },
@@ -67,10 +75,6 @@
     "@babel/core": "7.11.4",
     "@material-ui/icons": "4.5.1",
     "@material-ui/lab": "4.0.0-alpha.56",
-    "@rollup/plugin-commonjs": "15.0.0",
-    "@rollup/plugin-json": "4.1.0",
-    "@rollup/plugin-node-resolve": "9.0.0",
-    "@svgr/rollup": "5.4.0",
     "@testing-library/jest-dom": "5.11.4",
     "@testing-library/react": "10.4.9",
     "@types/jest": "26.0.10",
@@ -95,6 +99,10 @@
     "jest": "26.4.2",
     "lint-staged": "10.2.12",
     "node-sass": "4.14.1",
+<<<<<<< HEAD
+=======
+    "npm-watch": "0.9.0",
+>>>>>>> 057bba84c37123e7fe1f7e78f9469a625a65c5dd
     "prettier": "2.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -103,17 +111,9 @@
     "react-router-dom": "5.1.2",
     "redux": "4.0.4",
     "redux-saga": "1.1.3",
-    "rollup": "2.26.5",
-    "rollup-plugin-copy": "3.3.0",
-    "rollup-plugin-peer-deps-external": "2.2.3",
-    "rollup-plugin-postcss": "3.1.6",
-    "rollup-plugin-typescript2": "0.27.2",
     "sass-loader": "10.0.1",
     "ts-jest": "26.2.0",
-    "typescript": "4.0.2",
+    "typescript": "4.1.3",
     "yup": "0.29.3"
-  },
-  "dependencies": {
-    "react-copy-to-clipboard": "5.0.3"
   }
 }
