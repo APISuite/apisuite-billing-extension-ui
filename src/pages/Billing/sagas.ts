@@ -1,18 +1,46 @@
+import { BILLING_API_URL } from 'constants/endpoints'
 import { call, put, takeLatest } from 'redux-saga/effects'
 import request from 'util/request'
 
 import {
   GET_ALL_CREDIT_PACKS_ACTION,
   GET_ALL_SUBSCRIPTION_PLANS_ACTION,
+  GET_ALL_USER_DETAILS_ACTION,
   GET_ALL_USER_TRANSACTIONS_ACTION,
   getAllCreditPacksActionSuccess,
   getAllSubscriptionPlansActionSuccess,
+  getAllUserDetailsActionSuccess,
   getAllUserTransactionsActionSuccess,
 } from './ducks'
+import { GetAllUserDetailsAction } from './types'
+
+export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
+  try {
+    const getAllUserDetailsActionUrl = `${BILLING_API_URL}/users/${action.userID}`
+
+    const response = yield call(request, {
+      url: getAllUserDetailsActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    const allUserDetails = {
+      subscriptionID: response.data.subscriptionId,
+      userCredits: response.data.credits,
+      userID: response.data.id,
+    }
+
+    yield put(getAllUserDetailsActionSuccess(allUserDetails))
+  } catch (error) {
+    console.log('Error fetching all user details.')
+  }
+}
 
 export function* getAllCreditPacksActionSaga() {
   try {
-    const getAllCreditPacksActionUrl = `https://billing.develop.apisuite.io/packages`
+    const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages`
 
     const response = yield call(request, {
       url: getAllCreditPacksActionUrl,
@@ -37,7 +65,7 @@ export function* getAllCreditPacksActionSaga() {
 
 export function* getAllSubscriptionPlansActionSaga() {
   try {
-    const getAllSubscriptionPlansActionUrl = `https://billing.develop.apisuite.io/subscriptions`
+    const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions`
 
     const response = yield call(request, {
       url: getAllSubscriptionPlansActionUrl,
@@ -63,7 +91,7 @@ export function* getAllSubscriptionPlansActionSaga() {
 
 export function* getAllUserTransactionsActionSaga() {
   try {
-    const getAllUserTransactionsActionUrl = `https://billing.develop.apisuite.io/purchases`
+    const getAllUserTransactionsActionUrl = `${BILLING_API_URL}/purchases`
 
     const response = yield call(request, {
       url: getAllUserTransactionsActionUrl,
@@ -96,6 +124,7 @@ function* billingRootSaga() {
     GET_ALL_SUBSCRIPTION_PLANS_ACTION,
     getAllSubscriptionPlansActionSaga
   )
+  yield takeLatest(GET_ALL_USER_DETAILS_ACTION, getAllUserDetailsActionSaga)
   yield takeLatest(
     GET_ALL_USER_TRANSACTIONS_ACTION,
     getAllUserTransactionsActionSaga

@@ -1,10 +1,20 @@
 import update from 'immutability-helper'
 
-import { BillingActions, BillingStore, CreditPackDetails } from './types'
+import {
+  BillingActions,
+  BillingStore,
+  CreditPackDetails,
+  UserDetails,
+} from './types'
 
 /** Initial state */
 
 const initialState: BillingStore = {
+  allUserDetails: {
+    subscriptionID: '',
+    userCredits: 0,
+    userID: 0,
+  },
   allCreditPacks: [],
   allSubscriptionPlans: [],
   allUserTransactions: [],
@@ -14,6 +24,10 @@ const initialState: BillingStore = {
 }
 
 /** Action types */
+
+export const GET_ALL_USER_DETAILS_ACTION = 'Billing/GET_ALL_USER_DETAILS_ACTION'
+export const GET_ALL_USER_DETAILS_ACTION_SUCCESS =
+  'Billing/GET_ALL_USER_DETAILS_ACTION_SUCCESS'
 
 export const GET_ALL_CREDIT_PACKS_ACTION = 'Billing/GET_ALL_CREDIT_PACKS_ACTION'
 export const GET_ALL_CREDIT_PACKS_ACTION_SUCCESS =
@@ -42,6 +56,16 @@ export default function billingReducer(
   action: BillingActions
 ): BillingStore {
   switch (action.type) {
+    case GET_ALL_USER_DETAILS_ACTION: {
+      return state
+    }
+
+    case GET_ALL_USER_DETAILS_ACTION_SUCCESS: {
+      return update(state, {
+        allUserDetails: { $set: action.allUserDetails },
+      })
+    }
+
     case GET_ALL_CREDIT_PACKS_ACTION: {
       return state
     }
@@ -85,6 +109,14 @@ export default function billingReducer(
 }
 
 /** Action builders */
+
+export function getAllUserDetailsAction(userID: number) {
+  return { type: GET_ALL_USER_DETAILS_ACTION, userID }
+}
+
+export function getAllUserDetailsActionSuccess(allUserDetails: UserDetails) {
+  return { type: GET_ALL_USER_DETAILS_ACTION_SUCCESS, allUserDetails }
+}
 
 export function getAllCreditPacksAction() {
   return { type: GET_ALL_CREDIT_PACKS_ACTION }
