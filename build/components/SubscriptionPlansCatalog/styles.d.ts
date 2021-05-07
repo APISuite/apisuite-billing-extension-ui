@@ -1,0 +1,2 @@
+declare const _default: (props?: any) => Record<"leftDetailsContainer" | "noActiveSubscriptionText" | "notSelectedSubscriptionPlanContainer" | "notSelectedSubscriptionPlanIcon" | "rightDetailsContainer" | "selectedSubscriptionPlanContainer" | "selectedSubscriptionPlanIcon" | "subscriptionPlanDetailsContainer" | "subscriptionPlansCatalogEntriesContainer" | "subscriptionSelectionTitle", string>;
+export default _default;
