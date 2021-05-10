@@ -9,9 +9,11 @@ import {
   GET_ALL_USER_DETAILS_ACTION,
   GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS,
   GET_ALL_USER_TRANSACTIONS_ACTION,
-  PURCHASE_CREDITS_ACTION,
-  PURCHASE_CREDITS_ACTION_SUCCESS,
+  GET_TRANSACTION_DETAILS_ACTION_SUCCESS,
+  GET_TRANSACTION_DETAILS_ACTION,
   PURCHASE_CREDITS_ACTION_ERROR,
+  PURCHASE_CREDITS_ACTION_SUCCESS,
+  PURCHASE_CREDITS_ACTION,
 } from './ducks'
 
 export interface User {
@@ -46,22 +48,25 @@ export interface SubscriptionPlanDetails {
 }
 
 export interface TransactionDetails {
-  createdAt: string
   transactionAmount: {
     transactionCurrency: string
     transactionValue: string
   }
+  transactionCredits: number
+  transactionDate: string
   transactionDescription: string
   transactionID: string
-  transactionsStatus: string
+  transactionStatus: string
+  transactionType: string
 }
 
 export interface BillingStore {
-  error?: string
   allCreditPacks: CreditPackDetails[]
   allSubscriptionPlans: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
+  error?: string
+  transactionDetails: TransactionDetails
 }
 
 export interface BillingProps {
@@ -114,6 +119,16 @@ export interface GetAllUserTransactionsActionSuccess extends Action {
   allUserTransactions: TransactionDetails[]
 }
 
+export interface GetTransactionDetailsAction extends Action {
+  type: typeof GET_TRANSACTION_DETAILS_ACTION
+  transactionID: string
+}
+
+export interface GetTransactionDetailsActionSuccess extends Action {
+  type: typeof GET_TRANSACTION_DETAILS_ACTION_SUCCESS
+  transactionDetails: TransactionDetails
+}
+
 export interface PurchaseCreditsAction extends Action {
   type: typeof PURCHASE_CREDITS_ACTION
   creditPackID: number
@@ -137,6 +152,8 @@ export type BillingActions =
   | GetAllUserDetailsActionSuccess
   | GetAllUserTransactionsAction
   | GetAllUserTransactionsActionSuccess
+  | GetTransactionDetailsAction
+  | GetTransactionDetailsActionSuccess
   | PurchaseCreditsAction
-  | PurchaseCreditsActionSuccess
   | PurchaseCreditsActionError
+  | PurchaseCreditsActionSuccess

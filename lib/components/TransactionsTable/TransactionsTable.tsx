@@ -18,6 +18,12 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
     return trans.t(`extensions.${str}`)
   }
 
+  const convertDate = (dateString: string) => {
+    const convertedDate = new Date(dateString)
+
+    return convertedDate.toLocaleString()
+  }
+
   const generateTransactionsTableEntries = () => {
     const arrayOfTableEntries = arrayOfTransactions.map(
       (transaction, index) => {
@@ -44,29 +50,31 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
               </CopyToClipboard>
             </div>
 
-            <p className={classes.transactionDate}>{transaction.createdAt}</p>
+            <p className={classes.transactionDate}>
+              {convertDate(transaction.transactionDate)}
+            </p>
 
             <p
               className={clsx({
                 [classes.completeTransactionStatus]:
-                  transaction.transactionsStatus === 'authorized' ||
-                  transaction.transactionsStatus === 'paid',
+                  transaction.transactionStatus === 'authorized' ||
+                  transaction.transactionStatus === 'paid',
                 [classes.failedTransactionStatus]:
-                  transaction.transactionsStatus === 'failed',
+                  transaction.transactionStatus === 'failed',
                 [classes.incompleteTransactionStatus]:
-                  transaction.transactionsStatus === 'canceled' ||
-                  transaction.transactionsStatus === 'expired',
+                  transaction.transactionStatus === 'canceled' ||
+                  transaction.transactionStatus === 'expired',
                 [classes.openTransactionStatus]:
-                  transaction.transactionsStatus === 'open',
+                  transaction.transactionStatus === 'open',
                 [classes.pendingTransactionStatus]:
-                  transaction.transactionsStatus === 'pending',
+                  transaction.transactionStatus === 'pending',
               })}
             >
-              {transaction.transactionsStatus}
+              {transaction.transactionStatus}
             </p>
 
             <p className={classes.transactionAmount}>
-              {`${transaction.transactionAmount.transactionCurrency}${transaction.transactionAmount.transactionValue}`}
+              {`${transaction.transactionAmount.transactionCurrency} ${transaction.transactionAmount.transactionValue}`}
             </p>
           </div>
         )
@@ -75,6 +83,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
     return arrayOfTableEntries
   }
+
+  // TODO: Convert 'EUR' references to '€'
 
   return (
     <div className={classes.transactionsTable}>

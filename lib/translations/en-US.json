@@ -31,6 +31,22 @@
         "dateOfPurchase": "Date of purchase",
         "status": "Payment status",
         "price": "Price"
+      },
+      "transactionComplete": {
+        "title": "Thank you for your payment!",
+        "subtitlePartOne": "Your payment is currently being processed.",
+        "subtitlePartTwo": "Once it is approved, your credit balance will be updated.",
+        "goToMarketplaceButtonLabel": "Go to the Marketplace",
+        "goToBillingButtonLabel": "Go back to Billing",
+        "transactionDetails": {
+          "title": "Transaction details",
+          "creditTopUpTransactionType": "Credit top-up",
+          "subscriptionTransactionType": "Subscription",
+          "reference": "Reference:",
+          "price": "Price:",
+          "creditAmount": "Credit amount:",
+          "transactionDate": "Transaction date:"
+        }
       }
     }
   }

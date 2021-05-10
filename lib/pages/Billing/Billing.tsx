@@ -41,19 +41,17 @@ const Billing: React.FC<BillingProps> = ({
 
   /* Credits logic */
 
-  const [wantsToTopUpCredits, setWantsToTopUpCredits] = React.useState(false)
+  const [wantsToTopUpCredits, setWantsToTopUpCredits] = useState(false)
 
   const handleWantsToTopUpCredits = () => {
     setWantsToTopUpCredits(!wantsToTopUpCredits)
   }
 
-  const [hasSelectedCreditPack, setHasSelectedCreditPack] = React.useState(
-    false
-  )
+  const [hasSelectedCreditPack, setHasSelectedCreditPack] = useState(false)
   const [
     currentlySelectedCreditPack,
     setCurrentlySelectedCreditPack,
-  ] = React.useState({
+  ] = useState({
     creditsInCreditPack: 0,
     idOfCreditPack: 0,
     nameOfCreditPack: '',
@@ -93,7 +91,7 @@ const Billing: React.FC<BillingProps> = ({
   const [
     currentlySelectedSubscriptionPlan,
     setCurrentlySelectedSubscriptionPlan,
-  ] = React.useState({
+  ] = useState({
     creditsInSubscriptionPlan: 0,
     idOfSubscriptionPlan: 0,
     nameOfSubscriptionPlan: '',

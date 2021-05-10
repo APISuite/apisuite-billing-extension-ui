@@ -1,14 +1,19 @@
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
+import { getTransactionDetailsAction } from '../Billing/ducks'
 import TransactionComplete from './TransactionComplete'
 
-// export const mapDispatchToProps = (dispatch: Dispatch): any =>
-//   bindActionCreators(
-//     {
-//       someAction: someAction,
-//     },
-//     dispatch
-//   )
+export const mapStateToProps = ({ billing }) => ({
+  transactionDetails: billing.transactionDetails,
+})
 
-export default connect(null, null)(TransactionComplete)
+export const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      getTransactionDetailsAction: getTransactionDetailsAction,
+    },
+    dispatch
+  )
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionComplete)

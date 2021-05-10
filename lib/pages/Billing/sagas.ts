@@ -6,15 +6,20 @@ import {
   GET_ALL_SUBSCRIPTION_PLANS_ACTION,
   GET_ALL_USER_DETAILS_ACTION,
   GET_ALL_USER_TRANSACTIONS_ACTION,
+  GET_TRANSACTION_DETAILS_ACTION,
   getAllCreditPacksActionSuccess,
   getAllSubscriptionPlansActionSuccess,
   getAllUserDetailsActionSuccess,
   getAllUserTransactionsActionSuccess,
+  getTransactionDetailsActionSuccess,
   PURCHASE_CREDITS_ACTION,
   purchaseCreditsActionError,
 } from './ducks'
-import { GetAllUserDetailsAction, PurchaseCreditsAction } from './types'
-import requesting from '../../util/requesting'
+import {
+  GetAllUserDetailsAction,
+  GetTransactionDetailsAction,
+  PurchaseCreditsAction,
+} from './types'
 import request from '../../util/request'
 
 export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
@@ -105,19 +110,54 @@ export function* getAllUserTransactionsActionSaga() {
     })
 
     const allUserTransactions = response.data.map((transaction: any) => ({
-      createdAt: transaction.createdAt,
       transactionAmount: {
         transactionCurrency: transaction.amount.currency,
         transactionValue: transaction.amount.value,
       },
+      transactionCredits: transaction.credits,
+      transactionDate: transaction.createdAt,
       transactionDescription: transaction.description,
       transactionID: transaction.id,
-      transactionsStatus: transaction.status,
+      transactionStatus: transaction.status,
+      transactionType: transaction.type,
     }))
 
     yield put(getAllUserTransactionsActionSuccess(allUserTransactions))
   } catch (error) {
     console.log("Error fetching all of the user's transactions.")
+  }
+}
+
+export function* getTransactionDetailsActionSaga(
+  action: GetTransactionDetailsAction
+) {
+  try {
+    const getTransactionDetailsActionUrl = `${BILLING_API_URL}/purchases/${action.transactionID}`
+
+    const response = yield call(request, {
+      url: getTransactionDetailsActionUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    const transactionDetails = {
+      transactionAmount: {
+        transactionCurrency: response.data.amount.currency,
+        transactionValue: response.data.amount.value,
+      },
+      transactionCredits: response.data.credits,
+      transactionDate: response.data.createdAt,
+      transactionDescription: response.data.description,
+      transactionID: response.data.id,
+      transactionStatus: response.data.status,
+      transactionType: response.data.type,
+    }
+
+    yield put(getTransactionDetailsActionSuccess(transactionDetails))
+  } catch (error) {
+    console.log("Error fetching the transaction's details.")
   }
 }
 
@@ -149,6 +189,10 @@ function* billingRootSaga() {
   yield takeLatest(
     GET_ALL_USER_TRANSACTIONS_ACTION,
     getAllUserTransactionsActionSaga
+  )
+  yield takeLatest(
+    GET_TRANSACTION_DETAILS_ACTION,
+    getTransactionDetailsActionSaga
   )
   yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga)
 }

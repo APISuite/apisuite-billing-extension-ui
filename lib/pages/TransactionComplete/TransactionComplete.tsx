@@ -1,66 +1,106 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useTranslation } from '@apisuite/fe-base'
 
 import { TransactionCompleteProps } from './types'
-import useStyles from './styles'
 import Link from '../../components/Link'
+import useStyles from './styles'
 
-const TransactionComplete: React.FC<TransactionCompleteProps> = () => {
+const TransactionComplete: React.FC<TransactionCompleteProps> = ({
+  getTransactionDetailsAction,
+  transactionDetails,
+}) => {
   const classes = useStyles()
 
-  const paymentType = window.location.pathname.split('/')[2]
+  const trans = useTranslation()
+
+  const t = (str: string) => {
+    return trans.t(`extensions.${str}`)
+  }
+
+  useEffect(() => {
+    const urlParameters = new URLSearchParams(window.location.search)
+    const idOfTransaction = urlParameters.get('id')
+
+    getTransactionDetailsAction(idOfTransaction)
+  }, [])
+
+  const convertDate = (dateString: string) => {
+    const convertedDate = new Date(dateString)
+
+    return convertedDate.toLocaleString()
+  }
+
+  // TODO: Convert 'EUR' references to '€'
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      <p className={classes.title}>Thank you for your payment!</p>
+      <p className={classes.title}>{t('billing.transactionComplete.title')}</p>
 
       <p className={classes.subtitle}>
-        <span>Your payment is currently being proccessed.</span>
-        Once it is approved, your credit balance will be updated.
+        <span>{t('billing.transactionComplete.subtitlePartOne')}</span>
+        {t('billing.transactionComplete.subtitlePartTwo')}
       </p>
 
       <div className={classes.buttonsContainer}>
         <Link className={classes.goToMarketplaceButton} href="/marketplace">
-          Go to the Marketplace
+          {t('billing.transactionComplete.goToMarketplaceButtonLabel')}
         </Link>
 
         <Link className={classes.goToBillingButton} href="/billing">
-          Go back to Billing
+          {t('billing.transactionComplete.goToBillingButtonLabel')}
         </Link>
       </div>
 
       <hr className={classes.separator} />
 
-      <p className={classes.transactionDetailsTitle}>Transaction details</p>
+      <p className={classes.transactionDetailsTitle}>
+        {t('billing.transactionComplete.transactionDetails.title')}
+      </p>
 
       <div className={classes.allTransactionDetailsContainer}>
         <p className={classes.transactionTitle}>
-          {paymentType === 'creditpayment'
-            ? 'Credit pack'
-            : 'Subscription plan'}
+          {transactionDetails.transactionType === 'topup'
+            ? t(
+                'billing.transactionComplete.transactionDetails.creditTopUpTransactionType'
+              )
+            : t(
+                'billing.transactionComplete.transactionDetails.subscriptionTransactionType'
+              )}
+
+          <span>({transactionDetails.transactionDescription})</span>
         </p>
 
         <div className={classes.transactionDetailContainer}>
-          <p>Reference:</p>
+          <p>{t('billing.transactionComplete.transactionDetails.reference')}</p>
 
-          <p>b4605542-cad0-4ca3-83e1-1d9177a92438</p>
+          <p>{transactionDetails.transactionID}</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
-          <p>Price:</p>
+          <p>{t('billing.transactionComplete.transactionDetails.price')}</p>
 
-          <p>€ 100</p>
+          <p>
+            {`${transactionDetails.transactionAmount.transactionCurrency}
+${transactionDetails.transactionAmount.transactionValue}`}
+          </p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
-          <p>Credit amount:</p>
+          <p>
+            {t('billing.transactionComplete.transactionDetails.creditAmount')}
+          </p>
 
-          <p>10000 Cr</p>
+          <p>{transactionDetails.transactionCredits} Cr</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
-          <p>Transaction date:</p>
+          <p>
+            {t(
+              'billing.transactionComplete.transactionDetails.transactionDate'
+            )}
+          </p>
 
-          <p>30th April 2021, 09:30</p>
+          <p>{convertDate(transactionDetails.transactionDate)}</p>
         </div>
       </div>
     </main>
