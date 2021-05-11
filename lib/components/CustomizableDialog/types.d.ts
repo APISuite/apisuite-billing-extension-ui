@@ -1,7 +1,7 @@
 import { DialogActionsProps, DialogProps } from '@apisuite/fe-base'
 
 export interface CustomizableDialogProps extends DialogProps {
-  icon: 'warning' | 'info'
+  icon: 'warning' | 'success'
   title: string
   text: string
   subText?: string

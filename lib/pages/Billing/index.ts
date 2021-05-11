@@ -9,6 +9,7 @@ import {
   purchaseCreditsAction,
   startSubscriptionAction,
   cancelSubscriptionAction,
+  clearSubscriptionInfoAction,
 } from './ducks'
 import Billing from './Billing'
 import { BillingStore } from './types'
@@ -18,6 +19,7 @@ export const mapStateToProps = ({ auth, billing }) => ({
   allSubscriptionPlans: billing.allSubscriptionPlans,
   allUserDetails: billing.allUserDetails,
   allUserTransactions: billing.allUserTransactions as BillingStore['transactionDetails'],
+  dialogInfo: billing.subscriptionsDialogInfo,
   user: auth.user,
 })
 
@@ -31,6 +33,7 @@ export const mapDispatchToProps = (dispatch: Dispatch) =>
       purchaseCreditsAction: purchaseCreditsAction,
       startSubscriptionAction: startSubscriptionAction,
       cancelSubscriptionAction,
+      clearSubscriptionInfoAction,
     },
     dispatch
   )

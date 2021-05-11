@@ -79,8 +79,8 @@ export default makeStyles((theme) => ({
     },
   },
 
-  dialogTitleInfoIcon: {
-    color: '#46B5EF',
+  dialogTitleSuccessIcon: {
+    color: theme.palette.success.main,
   },
 
   dialogTitleWarningIcon: {

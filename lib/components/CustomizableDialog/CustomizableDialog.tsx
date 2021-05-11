@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@apisuite/fe-base'
-import InfoRoundedIcon from '@material-ui/icons/InfoRounded'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import WarningRoundedIcon from '@material-ui/icons/WarningRounded'
 
 import { CustomizableDialogProps } from './types'
@@ -26,8 +26,8 @@ export const CustomizableDialog: React.FC<CustomizableDialogProps> = ({
   return (
     <Dialog {...rest}>
       <div className={classes.dialogTitleContainer}>
-        {icon === 'info' && (
-          <InfoRoundedIcon className={classes.dialogTitleInfoIcon} />
+        {icon === 'success' && (
+          <CheckCircleOutlineIcon className={classes.dialogTitleSuccessIcon} />
         )}
 
         {icon === 'warning' && (

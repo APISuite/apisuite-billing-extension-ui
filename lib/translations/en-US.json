@@ -55,7 +55,15 @@
           "creditAmount": "Credit amount:",
           "transactionDate": "Transaction date:"
         }
-      }
+      },
+      "subscriptions": {
+        "success": {
+          "title": "Subscription plan cancelled",
+          "text": "Your subscription plan has been canceled.",
+          "subText": "You can still use all the credits in your account and subscribe to a new subscription plan anytime you want."
+        }
+      },
+      "closeCTA": "close"
     }
   }
 }

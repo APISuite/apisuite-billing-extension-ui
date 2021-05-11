@@ -33,6 +33,14 @@ const initialState: BillingStore = {
     transactionType: '',
   },
   error: undefined,
+  subscriptionsDialogInfo: {
+    type: 'warning',
+    transKeys: {
+      title: '',
+      text: '',
+      subText: '',
+    },
+  },
 }
 
 /** Action types */
@@ -75,6 +83,8 @@ export const START_SUBSCRIPTION_ACTION_ERROR =
 export const CANCEL_SUBSCRIPTION = 'Billing/CANCEL_SUBSCRIPTION'
 export const CANCEL_SUBSCRIPTION_SUCCESS = 'Billing/CANCEL_SUBSCRIPTION_SUCCESS'
 export const CANCEL_SUBSCRIPTION_ERROR = 'Billing/CANCEL_SUBSCRIPTION_ERROR'
+
+export const CLEAR_SUBSCRIPTION_INFO = 'Billing/CLEAR_SUBSCRIPTION_INFO'
 
 /** Reducer */
 
@@ -121,9 +131,34 @@ export default function billingReducer(
 
     case CANCEL_SUBSCRIPTION_SUCCESS: {
       return update(state, {
+        subscriptionsDialogInfo: {
+          $set: {
+            type: 'success',
+            transKeys: {
+              title: 'subscriptions.success.title',
+              text: 'subscriptions.success.text',
+              subText: 'subscriptions.success.subText',
+            },
+          },
+        },
         allUserDetails: {
           subscriptionID: { $set: '' },
           nextPaymentDate: { $set: '' },
+        },
+      })
+    }
+
+    case CLEAR_SUBSCRIPTION_INFO: {
+      return update(state, {
+        subscriptionsDialogInfo: {
+          $set: {
+            type: 'warning',
+            transKeys: {
+              title: '',
+              text: '',
+              subText: '',
+            },
+          },
         },
       })
     }
@@ -220,4 +255,8 @@ export function cancelSubscriptionActionError(error: string) {
 
 export function cancelSubscriptionActionSuccess() {
   return { type: CANCEL_SUBSCRIPTION_SUCCESS }
+}
+
+export function clearSubscriptionInfoAction() {
+  return { type: CLEAR_SUBSCRIPTION_INFO }
 }

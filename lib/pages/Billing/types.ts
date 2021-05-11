@@ -20,6 +20,7 @@ import {
   CANCEL_SUBSCRIPTION,
   CANCEL_SUBSCRIPTION_SUCCESS,
   CANCEL_SUBSCRIPTION_ERROR,
+  CLEAR_SUBSCRIPTION_INFO,
 } from './ducks'
 
 export interface User {
@@ -74,6 +75,14 @@ export interface BillingStore {
   allUserTransactions: TransactionDetails[]
   error?: string
   transactionDetails: TransactionDetails
+  subscriptionsDialogInfo: {
+    type: 'success' | 'warning'
+    transKeys: {
+      title: string
+      text: string
+      subText: string
+    }
+  }
 }
 
 export interface BillingProps {
@@ -81,6 +90,8 @@ export interface BillingProps {
   allSubscriptionPlans: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
+  dialogInfo: BillingStore['subscriptionsDialogInfo']
+  clearSubscriptionInfoAction: () => void
   getAllCreditPacksAction: () => void
   getAllSubscriptionPlansAction: () => void
   getAllUserDetailsAction: (userID: number) => void
@@ -179,6 +190,10 @@ export interface CancelSubscriptionActionError {
   error: string
 }
 
+export interface ClearSubscriptionInfoAction {
+  type: typeof CLEAR_SUBSCRIPTION_INFO
+}
+
 export type BillingActions =
   | GetAllCreditPacksAction
   | GetAllCreditPacksActionSuccess
@@ -199,3 +214,4 @@ export type BillingActions =
   | CancelSubscriptionAction
   | CancelSubscriptionActionError
   | CancelSubscriptionActionSuccess
+  | ClearSubscriptionInfoAction
