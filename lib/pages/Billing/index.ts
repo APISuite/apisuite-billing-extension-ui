@@ -9,12 +9,13 @@ import {
   purchaseCreditsAction,
 } from './ducks'
 import Billing from './Billing'
+import { BillingStore } from './types'
 
 export const mapStateToProps = ({ auth, billing }) => ({
   allCreditPacks: billing.allCreditPacks,
   allSubscriptionPlans: billing.allSubscriptionPlans,
   allUserDetails: billing.allUserDetails,
-  allUserTransactions: billing.allUserTransactions,
+  allUserTransactions: billing.allUserTransactions as BillingStore['transactionDetails'],
   user: auth.user,
 })
 

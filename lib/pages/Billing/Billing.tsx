@@ -285,7 +285,7 @@ const Billing: React.FC<BillingProps> = ({
             {t('billing.transactionHistorySubtitle')}
           </p>
 
-          <TransactionsTable arrayOfTransactions={allUserTransactions} />
+          <TransactionsTable transactions={allUserTransactions} />
         </>
       )}
     </main>

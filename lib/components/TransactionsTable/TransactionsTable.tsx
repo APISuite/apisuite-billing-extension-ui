@@ -8,7 +8,7 @@ import { useTranslation } from '@apisuite/fe-base'
 import useStyles from './styles'
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
-  arrayOfTransactions,
+  transactions,
 }) => {
   const classes = useStyles()
 
@@ -25,61 +25,59 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   }
 
   const generateTransactionsTableEntries = () => {
-    const arrayOfTableEntries = arrayOfTransactions.map(
-      (transaction, index) => {
-        return (
-          <div
-            className={
-              index % 2 === 0
-                ? classes.regularTransactionsTableEntry
-                : classes.alternativeTransactionsTableEntry
-            }
-            key={`transactionsTableEntry${index}`}
-          >
-            <p className={classes.transactionDescription}>
-              {transaction.transactionDescription}
+    const arrayOfTableEntries = transactions.map((transaction, index) => {
+      return (
+        <div
+          className={
+            index % 2 === 0
+              ? classes.regularTransactionsTableEntry
+              : classes.alternativeTransactionsTableEntry
+          }
+          key={`transactionsTableEntry${index}`}
+        >
+          <p className={classes.transactionDescription}>
+            {transaction.transactionDescription}
+          </p>
+
+          <div className={classes.transactionID}>
+            <p className={classes.transactionIDText}>
+              {transaction.transactionID}
             </p>
 
-            <div className={classes.transactionID}>
-              <p className={classes.transactionIDText}>
-                {transaction.transactionID}
-              </p>
-
-              <CopyToClipboard text={transaction.transactionID}>
-                <FileCopyRoundedIcon className={classes.transactionIDIcon} />
-              </CopyToClipboard>
-            </div>
-
-            <p className={classes.transactionDate}>
-              {convertDate(transaction.transactionDate)}
-            </p>
-
-            <p
-              className={clsx({
-                [classes.completeTransactionStatus]:
-                  transaction.transactionStatus === 'authorized' ||
-                  transaction.transactionStatus === 'paid',
-                [classes.failedTransactionStatus]:
-                  transaction.transactionStatus === 'failed',
-                [classes.incompleteTransactionStatus]:
-                  transaction.transactionStatus === 'canceled' ||
-                  transaction.transactionStatus === 'expired',
-                [classes.openTransactionStatus]:
-                  transaction.transactionStatus === 'open',
-                [classes.pendingTransactionStatus]:
-                  transaction.transactionStatus === 'pending',
-              })}
-            >
-              {transaction.transactionStatus}
-            </p>
-
-            <p className={classes.transactionAmount}>
-              {`${transaction.transactionAmount.transactionCurrency} ${transaction.transactionAmount.transactionValue}`}
-            </p>
+            <CopyToClipboard text={transaction.transactionID}>
+              <FileCopyRoundedIcon className={classes.transactionIDIcon} />
+            </CopyToClipboard>
           </div>
-        )
-      }
-    )
+
+          <p className={classes.transactionDate}>
+            {convertDate(transaction.transactionDate)}
+          </p>
+
+          <p
+            className={clsx({
+              [classes.completeTransactionStatus]:
+                transaction.transactionStatus === 'authorized' ||
+                transaction.transactionStatus === 'paid',
+              [classes.failedTransactionStatus]:
+                transaction.transactionStatus === 'failed',
+              [classes.incompleteTransactionStatus]:
+                transaction.transactionStatus === 'canceled' ||
+                transaction.transactionStatus === 'expired',
+              [classes.openTransactionStatus]:
+                transaction.transactionStatus === 'open',
+              [classes.pendingTransactionStatus]:
+                transaction.transactionStatus === 'pending',
+            })}
+          >
+            {transaction.transactionStatus}
+          </p>
+
+          <p className={classes.transactionAmount}>
+            {`${transaction.transactionAmount.transactionCurrency} ${transaction.transactionAmount.transactionValue}`}
+          </p>
+        </div>
+      )
+    })
 
     return arrayOfTableEntries
   }
