@@ -1,4 +1,4 @@
-import { GetAllUserDetailsAction } from './types';
+import { GetAllUserDetailsAction, PurchaseCreditsAction } from './types';
 export declare function getAllUserDetailsActionSaga(action: GetAllUserDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allUserDetails: import("./types").UserDetails;
@@ -14,6 +14,10 @@ export declare function getAllSubscriptionPlansActionSaga(): Generator<import("r
 export declare function getAllUserTransactionsActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allUserTransactions: import("./types").CreditPackDetails[];
+}>, void, unknown>;
+export declare function purchaseCreditsActionSaga(action: PurchaseCreditsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+    error: string;
 }>, void, unknown>;
 declare function billingRootSaga(): Generator<import("redux-saga/effects").ForkEffect<never>, void, unknown>;
 export default billingRootSaga;

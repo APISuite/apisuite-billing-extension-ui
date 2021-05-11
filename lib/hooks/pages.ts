@@ -15,8 +15,7 @@ const pagesConfig: PageEntry[] = [
     auth: true,
     component: TransactionComplete,
     exact: true,
-    // TODO: Once we get around to payment processing, decide upon this
-    path: `${BASE_URI}/creditpayment` || `${BASE_URI}/subscriptionpayment`,
+    path: `${BASE_URI}/payments`,
   },
 ]
 

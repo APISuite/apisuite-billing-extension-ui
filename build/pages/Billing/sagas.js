@@ -1,7 +1,7 @@
 import { BILLING_API_URL } from '../../constants/endpoints';
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_DETAILS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION, getAllCreditPacksActionSuccess, getAllSubscriptionPlansActionSuccess, getAllUserDetailsActionSuccess, getAllUserTransactionsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, } from './ducks';
 import request from '../../util/request';
-import { GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_DETAILS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION, getAllCreditPacksActionSuccess, getAllSubscriptionPlansActionSuccess, getAllUserDetailsActionSuccess, getAllUserTransactionsActionSuccess, } from './ducks';
 export function* getAllUserDetailsActionSaga(action) {
     try {
         const getAllUserDetailsActionUrl = `${BILLING_API_URL}/users/${action.userID}`;
@@ -78,15 +78,15 @@ export function* getAllUserTransactionsActionSaga() {
                 'content-type': 'application/x-www-form-urlencoded',
             },
         });
-        const allUserTransactions = response.data.map((subscriptionPlan) => ({
-            createdAt: subscriptionPlan.createdAt,
-            creditsReceived: subscriptionPlan.credits,
-            paymentID: subscriptionPlan.paymentId,
-            transactionCost: subscriptionPlan.amount,
-            transactionStatus: subscriptionPlan.verified,
-            transactionType: subscriptionPlan.type,
-            updatedAt: subscriptionPlan.updatedAt,
-            userID: subscriptionPlan.userId,
+        const allUserTransactions = response.data.map((transaction) => ({
+            createdAt: transaction.createdAt,
+            transactionAmount: {
+                transactionCurrency: transaction.amount.currency,
+                transactionValue: transaction.amount.value,
+            },
+            transactionDescription: transaction.description,
+            transactionID: transaction.id,
+            transactionsStatus: transaction.status,
         }));
         yield put(getAllUserTransactionsActionSuccess(allUserTransactions));
     }
@@ -94,10 +94,27 @@ export function* getAllUserTransactionsActionSaga() {
         console.log("Error fetching all of the user's transactions.");
     }
 }
+export function* purchaseCreditsActionSaga(action) {
+    try {
+        const purchaseCreditsActionUrl = `${BILLING_API_URL}/purchases/packages/${action.creditPackID}`;
+        const response = yield call(request, {
+            url: purchaseCreditsActionUrl,
+            method: 'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+        });
+        window.location.href = response.data;
+    }
+    catch (error) {
+        yield put(purchaseCreditsActionError(error.message));
+    }
+}
 function* billingRootSaga() {
     yield takeLatest(GET_ALL_CREDIT_PACKS_ACTION, getAllCreditPacksActionSaga);
     yield takeLatest(GET_ALL_SUBSCRIPTION_PLANS_ACTION, getAllSubscriptionPlansActionSaga);
     yield takeLatest(GET_ALL_USER_DETAILS_ACTION, getAllUserDetailsActionSaga);
     yield takeLatest(GET_ALL_USER_TRANSACTIONS_ACTION, getAllUserTransactionsActionSaga);
+    yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga);
 }
 export default billingRootSaga;

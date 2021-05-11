@@ -9,6 +9,11 @@ import {
   GET_ALL_USER_DETAILS_ACTION,
   GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS,
   GET_ALL_USER_TRANSACTIONS_ACTION,
+  GET_TRANSACTION_DETAILS_ACTION_SUCCESS,
+  GET_TRANSACTION_DETAILS_ACTION,
+  PURCHASE_CREDITS_ACTION_ERROR,
+  PURCHASE_CREDITS_ACTION_SUCCESS,
+  PURCHASE_CREDITS_ACTION,
 } from './ducks'
 
 export interface User {
@@ -43,14 +48,16 @@ export interface SubscriptionPlanDetails {
 }
 
 export interface TransactionDetails {
-  createdAt: string
   transactionAmount: {
     transactionCurrency: string
     transactionValue: string
   }
+  transactionCredits: number
+  transactionDate: string
   transactionDescription: string
   transactionID: string
-  transactionsStatus: string
+  transactionStatus: string
+  transactionType: string
 }
 
 export interface BillingStore {
@@ -58,6 +65,8 @@ export interface BillingStore {
   allSubscriptionPlans: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
+  error?: string
+  transactionDetails: TransactionDetails
 }
 
 export interface BillingProps {
@@ -69,6 +78,7 @@ export interface BillingProps {
   getAllSubscriptionPlansAction: () => void
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
+  purchaseCreditsAction: (creditPackID: number) => void
   user: User
 }
 
@@ -109,6 +119,30 @@ export interface GetAllUserTransactionsActionSuccess extends Action {
   allUserTransactions: TransactionDetails[]
 }
 
+export interface GetTransactionDetailsAction extends Action {
+  type: typeof GET_TRANSACTION_DETAILS_ACTION
+  transactionID: string
+}
+
+export interface GetTransactionDetailsActionSuccess extends Action {
+  type: typeof GET_TRANSACTION_DETAILS_ACTION_SUCCESS
+  transactionDetails: TransactionDetails
+}
+
+export interface PurchaseCreditsAction extends Action {
+  type: typeof PURCHASE_CREDITS_ACTION
+  creditPackID: number
+}
+
+export interface PurchaseCreditsActionSuccess extends Action {
+  type: typeof PURCHASE_CREDITS_ACTION_SUCCESS
+}
+
+export interface PurchaseCreditsActionError extends Action {
+  type: typeof PURCHASE_CREDITS_ACTION_ERROR
+  error: string
+}
+
 export type BillingActions =
   | GetAllCreditPacksAction
   | GetAllCreditPacksActionSuccess
@@ -118,3 +152,8 @@ export type BillingActions =
   | GetAllUserDetailsActionSuccess
   | GetAllUserTransactionsAction
   | GetAllUserTransactionsActionSuccess
+  | GetTransactionDetailsAction
+  | GetTransactionDetailsActionSuccess
+  | PurchaseCreditsAction
+  | PurchaseCreditsActionError
+  | PurchaseCreditsActionSuccess

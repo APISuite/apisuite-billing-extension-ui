@@ -4,6 +4,7 @@ import {
   BillingActions,
   BillingStore,
   CreditPackDetails,
+  TransactionDetails,
   UserDetails,
 } from './types'
 
@@ -18,6 +19,19 @@ const initialState: BillingStore = {
   allCreditPacks: [],
   allSubscriptionPlans: [],
   allUserTransactions: [],
+  transactionDetails: {
+    transactionAmount: {
+      transactionCurrency: '',
+      transactionValue: '',
+    },
+    transactionCredits: 0,
+    transactionDate: '',
+    transactionDescription: '',
+    transactionID: '',
+    transactionStatus: '',
+    transactionType: '',
+  },
+  error: undefined,
 }
 
 /** Action types */
@@ -39,6 +53,17 @@ export const GET_ALL_USER_TRANSACTIONS_ACTION =
   'Billing/GET_ALL_USER_TRANSACTIONS_ACTION'
 export const GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS =
   'Billing/GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS'
+
+export const GET_TRANSACTION_DETAILS_ACTION =
+  'Billing/GET_TRANSACTION_DETAILS_ACTION'
+export const GET_TRANSACTION_DETAILS_ACTION_SUCCESS =
+  'Billing/GET_TRANSACTION_DETAILS_ACTION_SUCCESS'
+
+export const PURCHASE_CREDITS_ACTION = 'Billing/PURCHASE_CREDITS_ACTION'
+export const PURCHASE_CREDITS_ACTION_SUCCESS =
+  'Billing/PURCHASE_CREDITS_ACTION_SUCCESS'
+export const PURCHASE_CREDITS_ACTION_ERROR =
+  'Billing/PURCHASE_CREDITS_ACTION_ERROR'
 
 /** Reducer */
 
@@ -87,6 +112,27 @@ export default function billingReducer(
       })
     }
 
+    case GET_TRANSACTION_DETAILS_ACTION: {
+      return state
+    }
+
+    case GET_TRANSACTION_DETAILS_ACTION_SUCCESS: {
+      return update(state, {
+        transactionDetails: { $set: action.transactionDetails },
+      })
+    }
+
+    case PURCHASE_CREDITS_ACTION:
+    case PURCHASE_CREDITS_ACTION_SUCCESS: {
+      return state
+    }
+
+    case PURCHASE_CREDITS_ACTION_ERROR: {
+      return update(state, {
+        error: { $set: action.error },
+      })
+    }
+
     default:
       return state
   }
@@ -130,7 +176,29 @@ export function getAllUserTransactionsAction() {
 }
 
 export function getAllUserTransactionsActionSuccess(
-  allUserTransactions: CreditPackDetails[]
+  allUserTransactions: TransactionDetails[]
 ) {
   return { type: GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions }
+}
+
+export function getTransactionDetailsAction(transactionID: string) {
+  return { type: GET_TRANSACTION_DETAILS_ACTION, transactionID }
+}
+
+export function getTransactionDetailsActionSuccess(
+  transactionDetails: TransactionDetails
+) {
+  return { type: GET_TRANSACTION_DETAILS_ACTION_SUCCESS, transactionDetails }
+}
+
+export function purchaseCreditsAction(creditPackID: number) {
+  return { type: PURCHASE_CREDITS_ACTION, creditPackID }
+}
+
+export function purchaseCreditsActionSuccess() {
+  return { type: PURCHASE_CREDITS_ACTION_SUCCESS }
+}
+
+export function purchaseCreditsActionError(error: string) {
+  return { type: PURCHASE_CREDITS_ACTION_ERROR, error }
 }

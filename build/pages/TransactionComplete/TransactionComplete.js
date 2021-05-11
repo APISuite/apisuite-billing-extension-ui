@@ -1,13 +1,9 @@
 import React from 'react';
 import useStyles from './styles';
 import Link from '../../components/Link';
-const TransactionComplete = ({ 
-// Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-hasPurchasedCreditsAction, }) => {
+const TransactionComplete = () => {
     const classes = useStyles();
     const paymentType = window.location.pathname.split('/')[2];
-    // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-    hasPurchasedCreditsAction();
     return (React.createElement("main", { className: `page-container ${classes.pageContentContainer}` },
         React.createElement("p", { className: classes.title }, "Thank you for your payment!"),
         React.createElement("p", { className: classes.subtitle },

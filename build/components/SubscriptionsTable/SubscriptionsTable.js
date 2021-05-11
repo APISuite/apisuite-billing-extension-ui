@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from '@apisuite/fe-base';
 import useStyles from './styles';
-const SubscriptionsTable = ({ arrayOfSubs }) => {
+const SubscriptionsTable = ({ arrayOfSubs, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     function t(str) {

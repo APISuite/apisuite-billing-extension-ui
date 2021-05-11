@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, } from './ducks';
+import { getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, purchaseCreditsAction, } from './ducks';
 import Billing from './Billing';
 export const mapStateToProps = ({ auth, billing }) => ({
     allCreditPacks: billing.allCreditPacks,
@@ -8,13 +8,12 @@ export const mapStateToProps = ({ auth, billing }) => ({
     allUserDetails: billing.allUserDetails,
     allUserTransactions: billing.allUserTransactions,
     user: auth.user,
-    // Keep this for demo purposes, remove once demo is complete, and implement this behaviour
-    hasPurchasedCredits: billing.hasPurchasedCredits,
 });
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
     getAllCreditPacksAction: getAllCreditPacksAction,
     getAllSubscriptionPlansAction: getAllSubscriptionPlansAction,
     getAllUserDetailsAction: getAllUserDetailsAction,
     getAllUserTransactionsAction: getAllUserTransactionsAction,
+    purchaseCreditsAction: purchaseCreditsAction,
 }, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Billing);

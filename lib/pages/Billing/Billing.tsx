@@ -18,6 +18,7 @@ const Billing: React.FC<BillingProps> = ({
   getAllSubscriptionPlansAction,
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
+  purchaseCreditsAction,
   user,
 }) => {
   const classes = useStyles()
@@ -40,19 +41,17 @@ const Billing: React.FC<BillingProps> = ({
 
   /* Credits logic */
 
-  const [wantsToTopUpCredits, setWantsToTopUpCredits] = React.useState(false)
+  const [wantsToTopUpCredits, setWantsToTopUpCredits] = useState(false)
 
   const handleWantsToTopUpCredits = () => {
     setWantsToTopUpCredits(!wantsToTopUpCredits)
   }
 
-  const [hasSelectedCreditPack, setHasSelectedCreditPack] = React.useState(
-    false
-  )
+  const [hasSelectedCreditPack, setHasSelectedCreditPack] = useState(false)
   const [
     currentlySelectedCreditPack,
     setCurrentlySelectedCreditPack,
-  ] = React.useState({
+  ] = useState({
     creditsInCreditPack: 0,
     idOfCreditPack: 0,
     nameOfCreditPack: '',
@@ -92,7 +91,7 @@ const Billing: React.FC<BillingProps> = ({
   const [
     currentlySelectedSubscriptionPlan,
     setCurrentlySelectedSubscriptionPlan,
-  ] = React.useState({
+  ] = useState({
     creditsInSubscriptionPlan: 0,
     idOfSubscriptionPlan: 0,
     nameOfSubscriptionPlan: '',
@@ -179,16 +178,20 @@ const Billing: React.FC<BillingProps> = ({
             )}
 
             <div>
-              <Link
+              <Button
                 className={
                   currentlySelectedCreditPack.idOfCreditPack
                     ? classes.enabledPurchaseCreditsButton
                     : classes.disabledPurchaseCreditsButton
                 }
-                href="/billing/creditpayment"
+                onClick={() => {
+                  purchaseCreditsAction(
+                    currentlySelectedCreditPack.idOfCreditPack
+                  )
+                }}
               >
                 {t('billing.purchaseCreditsButtonLabel')}
-              </Link>
+              </Button>
 
               <Button
                 className={classes.cancelCreditsPurchaseButton}
