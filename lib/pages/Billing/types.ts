@@ -14,6 +14,9 @@ import {
   PURCHASE_CREDITS_ACTION_ERROR,
   PURCHASE_CREDITS_ACTION_SUCCESS,
   PURCHASE_CREDITS_ACTION,
+  START_SUBSCRIPTION_ACTION_ERROR,
+  START_SUBSCRIPTION_ACTION_SUCCESS,
+  START_SUBSCRIPTION_ACTION,
 } from './ducks'
 
 export interface User {
@@ -30,6 +33,7 @@ export interface UserDetails {
   subscriptionID: string | null
   userCredits: number
   userID: number
+  nextPaymentDate: string
 }
 
 export interface CreditPackDetails {
@@ -79,6 +83,7 @@ export interface BillingProps {
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
   purchaseCreditsAction: (creditPackID: number) => void
+  startSubscriptionAction: (subscriptionPlanID: number) => void
   user: User
 }
 
@@ -143,6 +148,20 @@ export interface PurchaseCreditsActionError extends Action {
   error: string
 }
 
+export interface StartSubscriptionAction extends Action {
+  type: typeof START_SUBSCRIPTION_ACTION
+  subscriptionPlanID: number
+}
+
+export interface StartSubscriptionActionSuccess extends Action {
+  type: typeof START_SUBSCRIPTION_ACTION_SUCCESS
+}
+
+export interface StartSubscriptionActionError extends Action {
+  type: typeof START_SUBSCRIPTION_ACTION_ERROR
+  error: string
+}
+
 export type BillingActions =
   | GetAllCreditPacksAction
   | GetAllCreditPacksActionSuccess
@@ -157,3 +176,6 @@ export type BillingActions =
   | PurchaseCreditsAction
   | PurchaseCreditsActionError
   | PurchaseCreditsActionSuccess
+  | StartSubscriptionAction
+  | StartSubscriptionActionError
+  | StartSubscriptionActionSuccess

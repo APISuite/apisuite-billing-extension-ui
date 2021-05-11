@@ -25,9 +25,15 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   }, [])
 
   const convertDate = (dateString: string) => {
-    const convertedDate = new Date(dateString)
+    const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
+      {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+      }
+    )
 
-    return convertedDate.toLocaleString()
+    return dateFormat.format(new Date(dateString))
   }
 
   // TODO: Convert 'EUR' references to '€'

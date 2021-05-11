@@ -65,6 +65,12 @@ export const PURCHASE_CREDITS_ACTION_SUCCESS =
 export const PURCHASE_CREDITS_ACTION_ERROR =
   'Billing/PURCHASE_CREDITS_ACTION_ERROR'
 
+export const START_SUBSCRIPTION_ACTION = 'Billing/START_SUBSCRIPTION_ACTION'
+export const START_SUBSCRIPTION_ACTION_SUCCESS =
+  'Billing/START_SUBSCRIPTION_ACTION_SUCCESS'
+export const START_SUBSCRIPTION_ACTION_ERROR =
+  'Billing/START_SUBSCRIPTION_ACTION_ERROR'
+
 /** Reducer */
 
 export default function billingReducer(
@@ -131,6 +137,12 @@ export default function billingReducer(
       return update(state, {
         error: { $set: action.error },
       })
+    }
+
+    case START_SUBSCRIPTION_ACTION:
+    case START_SUBSCRIPTION_ACTION_ERROR:
+    case START_SUBSCRIPTION_ACTION_SUCCESS: {
+      return state
     }
 
     default:
@@ -201,4 +213,16 @@ export function purchaseCreditsActionSuccess() {
 
 export function purchaseCreditsActionError(error: string) {
   return { type: PURCHASE_CREDITS_ACTION_ERROR, error }
+}
+
+export function startSubscriptionAction(subscriptionPlanID: number) {
+  return { type: START_SUBSCRIPTION_ACTION, subscriptionPlanID }
+}
+
+export function startSubscriptionActionError(error: string) {
+  return { type: START_SUBSCRIPTION_ACTION_ERROR, error }
+}
+
+export function startSubscriptionActionSuccess() {
+  return { type: START_SUBSCRIPTION_ACTION_SUCCESS }
 }

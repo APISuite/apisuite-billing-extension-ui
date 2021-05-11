@@ -1,7 +1,7 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
-  leftDetailsContainer: {
+  enabledLeftDetailsContainer: {
     '& > :first-child': {
       color: theme.palette.text.hint,
       fontSize: 14,
@@ -11,6 +11,21 @@ export default makeStyles((theme) => ({
 
     '& > :last-child': {
       color: theme.palette.text.primary,
+      fontSize: 16,
+      fontWeight: 500,
+    },
+  },
+
+  disabledLeftDetailsContainer: {
+    '& > :first-child': {
+      color: theme.palette.action.disabled,
+      fontSize: 14,
+      fontWeight: 400,
+      marginBottom: -6,
+    },
+
+    '& > :last-child': {
+      color: theme.palette.action.disabled,
       fontSize: 16,
       fontWeight: 500,
     },
@@ -32,6 +47,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     height: 70,
     margin: '0px 12px 12px 0px',
+    position: 'relative',
     maxWidth: 280,
     padding: 15,
     width: '100%',
@@ -43,7 +59,7 @@ export default makeStyles((theme) => ({
     marginRight: 12,
   },
 
-  rightDetailsContainer: {
+  enabledRightDetailsContainer: {
     '& > :first-child': {
       color: theme.palette.text.primary,
       fontSize: 16,
@@ -53,6 +69,21 @@ export default makeStyles((theme) => ({
 
     '& > :last-child': {
       color: theme.palette.text.hint,
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  },
+
+  disabledRightDetailsContainer: {
+    '& > :first-child': {
+      color: theme.palette.action.disabled,
+      fontSize: 16,
+      fontWeight: 500,
+      marginBottom: -6,
+    },
+
+    '& > :last-child': {
+      color: theme.palette.action.disabled,
       fontSize: 14,
       fontWeight: 400,
     },
@@ -70,6 +101,7 @@ export default makeStyles((theme) => ({
     maxWidth: 280,
     padding: 15,
     width: '100%',
+    position: 'relative',
   },
 
   selectedSubscriptionPlanIcon: {
@@ -95,5 +127,22 @@ export default makeStyles((theme) => ({
     fontSize: 18,
     fontWeight: 500,
     marginBottom: 24,
+  },
+
+  disabledSubscriptionPlanContainer: {
+    backgroundColor: theme.palette.action.disabled,
+    borderRadius: 4,
+    bottom: 0,
+    cursor: 'default',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+
+  disabledSubscriptionPlanIcon: {
+    color: theme.palette.action.disabled,
+    fontSize: 24,
+    marginRight: 12,
   },
 }))

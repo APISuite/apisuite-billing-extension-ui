@@ -14,11 +14,14 @@ import {
   getTransactionDetailsActionSuccess,
   PURCHASE_CREDITS_ACTION,
   purchaseCreditsActionError,
+  startSubscriptionActionError,
+  START_SUBSCRIPTION_ACTION,
 } from './ducks'
 import {
   GetAllUserDetailsAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
+  StartSubscriptionAction,
 } from './types'
 import request from '../../util/request'
 
@@ -38,6 +41,7 @@ export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
       subscriptionID: response.data.subscriptionId,
       userCredits: response.data.credits,
       userID: response.data.id,
+      nextPaymentDate: response.data.nextPaymentDate,
     }
 
     yield put(getAllUserDetailsActionSuccess(allUserDetails))
@@ -179,6 +183,24 @@ export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
   }
 }
 
+export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
+  try {
+    const startSubscriptionActionUrl = `${BILLING_API_URL}/purchases/subscriptions/${action.subscriptionPlanID}`
+
+    const response = yield call(request, {
+      url: startSubscriptionActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    window.location.href = response.data
+  } catch (error) {
+    yield put(startSubscriptionActionError(error.message))
+  }
+}
+
 function* billingRootSaga() {
   yield takeLatest(GET_ALL_CREDIT_PACKS_ACTION, getAllCreditPacksActionSaga)
   yield takeLatest(
@@ -195,6 +217,7 @@ function* billingRootSaga() {
     getTransactionDetailsActionSaga
   )
   yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga)
+  yield takeLatest(START_SUBSCRIPTION_ACTION, startSubscriptionActionSaga)
 }
 
 export default billingRootSaga

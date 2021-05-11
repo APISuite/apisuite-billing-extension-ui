@@ -14,6 +14,7 @@
       "editPaymentInfoButtonLabel": "Edit payment information",
       "noActiveSubscriptions": "You don't have any active subscriptions.",
       "chooseSubscription": "Choose subscription",
+      "chooseNewSubscription": "Choose new subscription",
       "retrievingSubscriptionPlans": "Retrieving all available subscription plans...",
       "startSubscriptionButtonLabel": "Start subscription",
       "transactionHistoryTitle": "Transaction history",

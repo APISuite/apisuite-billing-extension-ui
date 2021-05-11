@@ -7,6 +7,7 @@ import {
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
   purchaseCreditsAction,
+  startSubscriptionAction,
 } from './ducks'
 import Billing from './Billing'
 import { BillingStore } from './types'
@@ -27,6 +28,7 @@ export const mapDispatchToProps = (dispatch: Dispatch) =>
       getAllUserDetailsAction: getAllUserDetailsAction,
       getAllUserTransactionsAction: getAllUserTransactionsAction,
       purchaseCreditsAction: purchaseCreditsAction,
+      startSubscriptionAction: startSubscriptionAction,
     },
     dispatch
   )

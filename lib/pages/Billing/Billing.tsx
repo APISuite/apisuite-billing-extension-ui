@@ -3,7 +3,6 @@ import { Button, useTranslation } from '@apisuite/fe-base'
 
 import { BillingProps } from './types'
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog'
-import Link from '../../components/Link'
 import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog'
 import SubscriptionsTable from '../../components/SubscriptionsTable'
 import TransactionsTable from '../../components/TransactionsTable'
@@ -19,6 +18,7 @@ const Billing: React.FC<BillingProps> = ({
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
   purchaseCreditsAction,
+  startSubscriptionAction,
   user,
 }) => {
   const classes = useStyles()
@@ -222,15 +222,34 @@ const Billing: React.FC<BillingProps> = ({
           <SubscriptionsTable
             arrayOfSubs={[
               {
-                subName: 'Basic plan',
-                subNextBillingDate: '13 August 2021',
+                subName: allSubscriptionPlans.find((subscriptionPlan) => {
+                  return (
+                    subscriptionPlan.idOfSubscriptionPlan ===
+                    parseInt(allUserDetails.subscriptionID)
+                  )
+                })?.nameOfSubscriptionPlan,
+                subNextBillingDate: allUserDetails.nextPaymentDate,
               },
             ]}
           />
 
-          <Button className={classes.editPaymentDetailsButton}>
+          {/* TODO: Move this button to the table, and remove it once you do */}
+          {/* <Button className={classes.editPaymentDetailsButton}>
             {t('billing.editPaymentInfoButtonLabel')}
-          </Button>
+          </Button> */}
+
+          <p className={classes.subscriptionSelectionTitle}>
+            {t('billing.chooseNewSubscription')}
+          </p>
+
+          <SubscriptionPlansCatalog
+            activeSubscriptionPlanID={parseInt(allUserDetails.subscriptionID)}
+            arrayOfSubscriptionPlans={allSubscriptionPlans}
+            currentlySelectedSubscriptionPlan={
+              currentlySelectedSubscriptionPlan
+            }
+            handleSubscriptionPlanSelection={handleSubscriptionPlanSelection}
+          />
         </>
       ) : (
         <>
@@ -260,16 +279,21 @@ const Billing: React.FC<BillingProps> = ({
             </p>
           )}
 
-          <Link
+          <Button
             className={
               hasSelectedSubscriptionPlan
                 ? classes.enabledStartSubscriptionButton
                 : classes.disabledStartSubscriptionButton
             }
-            href="/billing/subscriptionpayment"
+            onClick={() => {
+              console.log('Brunoooooo')
+              startSubscriptionAction(
+                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
+              )
+            }}
           >
             {t('billing.startSubscriptionButtonLabel')}
-          </Link>
+          </Button>
         </>
       )}
 
