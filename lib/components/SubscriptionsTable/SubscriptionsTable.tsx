@@ -109,23 +109,23 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
         icon="warning"
         open={cancelSubDialogOpen}
         onClose={() => setCancelSubDialogOpen(false)}
-        title="Cancel Subscription"
-        text="Are you sure you want to cancel your current subscription plan?"
-        subText="You can still use all of your current credits after you cancel your subscription plan."
+        title={t('subscriptionsTable.cancel.title')}
+        text={t('subscriptionsTable.cancel.text')}
+        subText={t('subscriptionsTable.cancel.subText')}
         actions={[
           <Button
             variant="outlined"
             key="cancel-sub-cancel"
             onClick={() => setCancelSubDialogOpen(false)}
           >
-            Cancel
+            {t('subscriptionsTable.cancel.cta')}
           </Button>,
           <Button
             className={classes.confirmCancelCTA}
             key="cancel-sub-confirm"
             onClick={handleConfirmCancelSubscription}
           >
-            Cancel subscription plan
+            {t('subscriptionsTable.cancel.confirmCTA')}
           </Button>,
         ]}
       />

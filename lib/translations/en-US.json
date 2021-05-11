@@ -24,7 +24,14 @@
       },
       "subscriptionsTable": {
         "title": "Subscription",
-        "subtitle": "Next billing date"
+        "subtitle": "Next billing date",
+        "cancel": {
+          "title": "Cancel Subscription",
+          "text": "Are you sure you want to cancel your current subscription plan?",
+          "subText": "You can still use all of your current credits after you cancel your subscription plan.",
+          "cta": "cancel",
+          "confirmCTA": "Cancel subscription plan"
+        }
       },
       "transactionsTable": {
         "description": "Description",
