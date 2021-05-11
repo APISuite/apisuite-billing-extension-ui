@@ -15,6 +15,7 @@ const initialState: BillingStore = {
     subscriptionID: '',
     userCredits: 0,
     userID: 0,
+    nextPaymentDate: '',
   },
   allCreditPacks: [],
   allSubscriptionPlans: [],
@@ -71,6 +72,10 @@ export const START_SUBSCRIPTION_ACTION_SUCCESS =
 export const START_SUBSCRIPTION_ACTION_ERROR =
   'Billing/START_SUBSCRIPTION_ACTION_ERROR'
 
+export const CANCEL_SUBSCRIPTION = 'Billing/CANCEL_SUBSCRIPTION'
+export const CANCEL_SUBSCRIPTION_SUCCESS = 'Billing/CANCEL_SUBSCRIPTION_SUCCESS'
+export const CANCEL_SUBSCRIPTION_ERROR = 'Billing/CANCEL_SUBSCRIPTION_ERROR'
+
 /** Reducer */
 
 export default function billingReducer(
@@ -78,18 +83,10 @@ export default function billingReducer(
   action: BillingActions
 ): BillingStore {
   switch (action.type) {
-    case GET_ALL_USER_DETAILS_ACTION: {
-      return state
-    }
-
     case GET_ALL_USER_DETAILS_ACTION_SUCCESS: {
       return update(state, {
         allUserDetails: { $set: action.allUserDetails },
       })
-    }
-
-    case GET_ALL_CREDIT_PACKS_ACTION: {
-      return state
     }
 
     case GET_ALL_CREDIT_PACKS_ACTION_SUCCESS: {
@@ -98,18 +95,10 @@ export default function billingReducer(
       })
     }
 
-    case GET_ALL_SUBSCRIPTION_PLANS_ACTION: {
-      return state
-    }
-
     case GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS: {
       return update(state, {
         allSubscriptionPlans: { $set: action.allSubscriptionPlans },
       })
-    }
-
-    case GET_ALL_USER_TRANSACTIONS_ACTION: {
-      return state
     }
 
     case GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS: {
@@ -118,19 +107,10 @@ export default function billingReducer(
       })
     }
 
-    case GET_TRANSACTION_DETAILS_ACTION: {
-      return state
-    }
-
     case GET_TRANSACTION_DETAILS_ACTION_SUCCESS: {
       return update(state, {
         transactionDetails: { $set: action.transactionDetails },
       })
-    }
-
-    case PURCHASE_CREDITS_ACTION:
-    case PURCHASE_CREDITS_ACTION_SUCCESS: {
-      return state
     }
 
     case PURCHASE_CREDITS_ACTION_ERROR: {
@@ -139,10 +119,13 @@ export default function billingReducer(
       })
     }
 
-    case START_SUBSCRIPTION_ACTION:
-    case START_SUBSCRIPTION_ACTION_ERROR:
-    case START_SUBSCRIPTION_ACTION_SUCCESS: {
-      return state
+    case CANCEL_SUBSCRIPTION_SUCCESS: {
+      return update(state, {
+        allUserDetails: {
+          subscriptionID: { $set: '' },
+          nextPaymentDate: { $set: '' },
+        },
+      })
     }
 
     default:
@@ -225,4 +208,16 @@ export function startSubscriptionActionError(error: string) {
 
 export function startSubscriptionActionSuccess() {
   return { type: START_SUBSCRIPTION_ACTION_SUCCESS }
+}
+
+export function cancelSubscriptionAction() {
+  return { type: CANCEL_SUBSCRIPTION }
+}
+
+export function cancelSubscriptionActionError(error: string) {
+  return { type: CANCEL_SUBSCRIPTION_ERROR, error }
+}
+
+export function cancelSubscriptionActionSuccess() {
+  return { type: CANCEL_SUBSCRIPTION_SUCCESS }
 }

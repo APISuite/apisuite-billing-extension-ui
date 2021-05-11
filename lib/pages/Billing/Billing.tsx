@@ -19,14 +19,14 @@ const Billing: React.FC<BillingProps> = ({
   getAllUserTransactionsAction,
   purchaseCreditsAction,
   startSubscriptionAction,
+  cancelSubscriptionAction,
   user,
 }) => {
   const classes = useStyles()
-
   const trans = useTranslation()
 
   function t(str: string) {
-    return trans.t(`extensions.${str}`)
+    return trans.t(`extensions.billing.${str}`)
   }
 
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')
@@ -134,13 +134,13 @@ const Billing: React.FC<BillingProps> = ({
 
   return (
     <main className={`page-container ${classes.billingContentContainer}`}>
-      <p className={classes.title}>{t('billing.title')}</p>
+      <p className={classes.title}>{t('title')}</p>
 
-      <p className={classes.subtitle}>{t('billing.subtitle')}</p>
+      <p className={classes.subtitle}>{t('subtitle')}</p>
 
       {/* 'Your balance' section */}
 
-      <p className={classes.sectionTitle}>{t('billing.yourBalance')}</p>
+      <p className={classes.sectionTitle}>{t('yourBalance')}</p>
 
       <div
         className={
@@ -150,7 +150,7 @@ const Billing: React.FC<BillingProps> = ({
         }
       >
         <div className={classes.creditBalanceContainer}>
-          <p>{t('billing.availableCredits')}</p>
+          <p>{t('availableCredits')}</p>
 
           <p>{allUserDetails.userCredits}</p>
         </div>
@@ -162,7 +162,7 @@ const Billing: React.FC<BillingProps> = ({
             {allCreditPacks.length !== 0 ? (
               <>
                 <p className={classes.creditPacksTitle}>
-                  {t('billing.creditPacksTitle')}
+                  {t('creditPacksTitle')}
                 </p>
 
                 <CreditPacksCatalog
@@ -173,7 +173,7 @@ const Billing: React.FC<BillingProps> = ({
               </>
             ) : (
               <p className={classes.retrievingAllAvailableCreditPacks}>
-                {t('billing.retrievingCreditPacks')}
+                {t('retrievingCreditPacks')}
               </p>
             )}
 
@@ -190,14 +190,14 @@ const Billing: React.FC<BillingProps> = ({
                   )
                 }}
               >
-                {t('billing.purchaseCreditsButtonLabel')}
+                {t('purchaseCreditsButtonLabel')}
               </Button>
 
               <Button
                 className={classes.cancelCreditsPurchaseButton}
                 onClick={handleWantsToTopUpCredits}
               >
-                {t('billing.cancelCreditsPurchaseButtonLabel')}
+                {t('cancelCreditsPurchaseButtonLabel')}
               </Button>
             </div>
           </div>
@@ -206,16 +206,14 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.addCreditsButton}
             onClick={handleWantsToTopUpCredits}
           >
-            {t('billing.addCreditsButtonLabel')}
+            {t('addCreditsButtonLabel')}
           </Button>
         )}
       </div>
 
       {/* 'Your subscription' section */}
 
-      <p className={classes.sectionTitle}>
-        {t('billing.yourSubscriptionsTitle')}
-      </p>
+      <p className={classes.sectionTitle}>{t('yourSubscriptionsTitle')}</p>
 
       {allUserDetails.subscriptionID ? (
         <>
@@ -231,15 +229,16 @@ const Billing: React.FC<BillingProps> = ({
                 subNextBillingDate: allUserDetails.nextPaymentDate,
               },
             ]}
+            onCancelSubscription={cancelSubscriptionAction}
           />
 
           {/* TODO: Move this button to the table, and remove it once you do */}
           {/* <Button className={classes.editPaymentDetailsButton}>
-            {t('billing.editPaymentInfoButtonLabel')}
+            {t('editPaymentInfoButtonLabel')}
           </Button> */}
 
           <p className={classes.subscriptionSelectionTitle}>
-            {t('billing.chooseNewSubscription')}
+            {t('chooseNewSubscription')}
           </p>
 
           <SubscriptionPlansCatalog
@@ -254,13 +253,13 @@ const Billing: React.FC<BillingProps> = ({
       ) : (
         <>
           <p className={classes.noActiveSubscriptionText}>
-            {t('billing.noActiveSubscriptions')}
+            {t('noActiveSubscriptions')}
           </p>
 
           {allSubscriptionPlans.length !== 0 ? (
             <>
               <p className={classes.subscriptionSelectionTitle}>
-                {t('billing.chooseSubscription')}
+                {t('chooseSubscription')}
               </p>
 
               <SubscriptionPlansCatalog
@@ -275,7 +274,7 @@ const Billing: React.FC<BillingProps> = ({
             </>
           ) : (
             <p className={classes.retrievingAllAvailableSubscriptionPlans}>
-              {t('billing.retrievingSubscriptionPlans')}
+              {t('retrievingSubscriptionPlans')}
             </p>
           )}
 
@@ -286,13 +285,12 @@ const Billing: React.FC<BillingProps> = ({
                 : classes.disabledStartSubscriptionButton
             }
             onClick={() => {
-              console.log('Brunoooooo')
               startSubscriptionAction(
                 currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
               )
             }}
           >
-            {t('billing.startSubscriptionButtonLabel')}
+            {t('startSubscriptionButtonLabel')}
           </Button>
         </>
       )}
@@ -301,12 +299,10 @@ const Billing: React.FC<BillingProps> = ({
 
       {allUserTransactions.length !== 0 && (
         <>
-          <p className={classes.sectionTitle}>
-            {t('billing.transactionHistoryTitle')}
-          </p>
+          <p className={classes.sectionTitle}>{t('transactionHistoryTitle')}</p>
 
           <p className={classes.sectionSubtitle}>
-            {t('billing.transactionHistorySubtitle')}
+            {t('transactionHistorySubtitle')}
           </p>
 
           <TransactionsTable transactions={allUserTransactions} />

@@ -56,4 +56,13 @@ export default makeStyles((theme) => ({
     overflow: 'hidden',
     marginBottom: 24,
   },
+
+  confirmCancelCTA: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.common.white,
+
+    '&:hover': {
+      backgroundColor: theme.palette.error.dark,
+    },
+  },
 }))

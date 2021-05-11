@@ -17,6 +17,9 @@ import {
   START_SUBSCRIPTION_ACTION_ERROR,
   START_SUBSCRIPTION_ACTION_SUCCESS,
   START_SUBSCRIPTION_ACTION,
+  CANCEL_SUBSCRIPTION,
+  CANCEL_SUBSCRIPTION_SUCCESS,
+  CANCEL_SUBSCRIPTION_ERROR,
 } from './ducks'
 
 export interface User {
@@ -84,6 +87,7 @@ export interface BillingProps {
   getAllUserTransactionsAction: () => void
   purchaseCreditsAction: (creditPackID: number) => void
   startSubscriptionAction: (subscriptionPlanID: number) => void
+  cancelSubscriptionAction: () => void
   user: User
 }
 
@@ -162,6 +166,19 @@ export interface StartSubscriptionActionError extends Action {
   error: string
 }
 
+export interface CancelSubscriptionAction {
+  type: typeof CANCEL_SUBSCRIPTION
+}
+
+export interface CancelSubscriptionActionSuccess {
+  type: typeof CANCEL_SUBSCRIPTION_SUCCESS
+}
+
+export interface CancelSubscriptionActionError {
+  type: typeof CANCEL_SUBSCRIPTION_ERROR
+  error: string
+}
+
 export type BillingActions =
   | GetAllCreditPacksAction
   | GetAllCreditPacksActionSuccess
@@ -179,3 +196,6 @@ export type BillingActions =
   | StartSubscriptionAction
   | StartSubscriptionActionError
   | StartSubscriptionActionSuccess
+  | CancelSubscriptionAction
+  | CancelSubscriptionActionError
+  | CancelSubscriptionActionSuccess

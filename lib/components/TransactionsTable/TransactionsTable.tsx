@@ -15,7 +15,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   const trans = useTranslation()
 
   function t(str: string) {
-    return trans.t(`extensions.${str}`)
+    return trans.t(`extensions.billing.${str}`)
   }
 
   const convertDate = (dateString: string) => {
@@ -94,23 +94,23 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
     <div className={classes.transactionsTable}>
       <div className={classes.transactionsTableHeader}>
         <p className={classes.transactionDescription}>
-          {t('billing.transactionsTable.description')}
+          {t('transactionsTable.description')}
         </p>
 
         <p className={classes.transactionID}>
-          {t('billing.transactionsTable.reference')}
+          {t('transactionsTable.reference')}
         </p>
 
         <p className={classes.transactionDate}>
-          {t('billing.transactionsTable.dateOfPurchase')}
+          {t('transactionsTable.dateOfPurchase')}
         </p>
 
         <p className={classes.transactionStatus}>
-          {t('billing.transactionsTable.status')}
+          {t('transactionsTable.status')}
         </p>
 
         <p className={classes.transactionAmount}>
-          {t('billing.transactionsTable.price')}
+          {t('transactionsTable.price')}
         </p>
       </div>
 

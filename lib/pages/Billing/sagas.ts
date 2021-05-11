@@ -1,5 +1,5 @@
 import { BILLING_API_URL } from '../../constants/endpoints'
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, select, takeLatest } from 'redux-saga/effects'
 
 import {
   GET_ALL_CREDIT_PACKS_ACTION,
@@ -16,8 +16,12 @@ import {
   purchaseCreditsActionError,
   startSubscriptionActionError,
   START_SUBSCRIPTION_ACTION,
+  cancelSubscriptionActionSuccess,
+  cancelSubscriptionActionError,
+  CANCEL_SUBSCRIPTION,
 } from './ducks'
 import {
+  CancelSubscriptionAction,
   GetAllUserDetailsAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
@@ -201,6 +205,24 @@ export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
   }
 }
 
+export function* cancelSubscriptionSaga() {
+  try {
+    const userID: number = yield select(
+      (store) => store.billing.allUserDetails.userID
+    )
+    const cancelSubscriptionActionUrl = `${BILLING_API_URL}/users/${userID}/subscriptions`
+
+    yield call(request, {
+      url: cancelSubscriptionActionUrl,
+      method: 'DELETE',
+    })
+
+    yield put(cancelSubscriptionActionSuccess())
+  } catch (error) {
+    yield put(cancelSubscriptionActionError(error.message))
+  }
+}
+
 function* billingRootSaga() {
   yield takeLatest(GET_ALL_CREDIT_PACKS_ACTION, getAllCreditPacksActionSaga)
   yield takeLatest(
@@ -218,6 +240,7 @@ function* billingRootSaga() {
   )
   yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga)
   yield takeLatest(START_SUBSCRIPTION_ACTION, startSubscriptionActionSaga)
+  yield takeLatest(CANCEL_SUBSCRIPTION, cancelSubscriptionSaga)
 }
 
 export default billingRootSaga
