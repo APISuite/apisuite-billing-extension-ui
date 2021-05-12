@@ -25,16 +25,24 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   }, [])
 
   const convertDate = (dateString: string) => {
+    console.log('dateString', dateString)
     const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
       year: 'numeric',
       month: 'long',
       day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
     })
 
     return dateFormat.format(new Date(dateString))
   }
 
-  // TODO: Convert 'EUR' references to '€'
+  const currencyConverter = (valueString: string, currencyString: string) => {
+    return parseInt(valueString).toLocaleString(trans.i18n.language, {
+      style: 'currency',
+      currency: currencyString,
+    })
+  }
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
@@ -84,8 +92,12 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
           <p>{t('transactionComplete.transactionDetails.price')}</p>
 
           <p>
-            {`${transactionDetails.transactionAmount.transactionCurrency}
-${transactionDetails.transactionAmount.transactionValue}`}
+            {transactionDetails.transactionAmount.transactionValue &&
+              transactionDetails.transactionAmount.transactionCurrency &&
+              currencyConverter(
+                transactionDetails.transactionAmount.transactionValue,
+                transactionDetails.transactionAmount.transactionCurrency
+              )}
           </p>
         </div>
 
@@ -98,7 +110,10 @@ ${transactionDetails.transactionAmount.transactionValue}`}
         <div className={classes.transactionDetailContainer}>
           <p>{t('transactionComplete.transactionDetails.transactionDate')}</p>
 
-          <p>{convertDate(transactionDetails.transactionDate)}</p>
+          <p>
+            {transactionDetails.transactionDate &&
+              convertDate(transactionDetails.transactionDate)}
+          </p>
         </div>
       </div>
     </main>

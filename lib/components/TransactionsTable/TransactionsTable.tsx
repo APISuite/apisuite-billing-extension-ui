@@ -30,6 +30,13 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
     return dateFormat.format(new Date(dateString))
   }
 
+  const currencyConverter = (valueString: string, currencyString: string) => {
+    return parseInt(valueString).toLocaleString(trans.i18n.language, {
+      style: 'currency',
+      currency: currencyString,
+    })
+  }
+
   const generateTransactionsTableEntries = () => {
     const arrayOfTableEntries = transactions.map((transaction, index) => {
       return (
@@ -79,7 +86,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
           </p>
 
           <p className={classes.transactionAmount}>
-            {`${transaction.transactionAmount.transactionCurrency} ${transaction.transactionAmount.transactionValue}`}
+            {currencyConverter(
+              transaction.transactionAmount.transactionValue,
+              transaction.transactionAmount.transactionCurrency
+            )}
           </p>
         </div>
       )
@@ -87,8 +97,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
     return arrayOfTableEntries
   }
-
-  // TODO: Convert 'EUR' references to '€'
 
   return (
     <div className={classes.transactionsTable}>
