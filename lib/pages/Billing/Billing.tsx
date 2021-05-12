@@ -27,8 +27,8 @@ const Billing: React.FC<BillingProps> = ({
   user,
 }) => {
   const classes = useStyles()
-
   const trans = useTranslation()
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const t = (str: string, ...args) => {
     return trans.t(`extensions.billing.${str}`, ...args)
@@ -43,6 +43,12 @@ const Billing: React.FC<BillingProps> = ({
     getAllUserDetailsAction(user.id)
     getAllUserTransactionsAction()
   }, [successfullySubscribedToPlan])
+
+  useEffect(() => {
+    if (dialogInfo.transKeys.title.length) {
+      setDialogOpen(true)
+    }
+  }, [dialogInfo.transKeys.title])
 
   /* Credits logic */
 
@@ -137,6 +143,15 @@ const Billing: React.FC<BillingProps> = ({
 
       setCurrentlySelectedSubscriptionPlan(selectedSubscriptionPlan)
     }
+  }
+
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+
+    // defer clear
+    setTimeout(() => {
+      clearSubscriptionInfoAction()
+    }, 500)
   }
 
   const [
@@ -348,6 +363,24 @@ const Billing: React.FC<BillingProps> = ({
           </>
         )}
       </main>
+
+      <CustomizableDialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        icon={dialogInfo.type}
+        title={t(dialogInfo.transKeys.title)}
+        text={t(dialogInfo.transKeys.text)}
+        subText={t(dialogInfo.transKeys.subText)}
+        actions={[
+          <Button
+            key="cancel-sub-confirm"
+            variant="outlined"
+            onClick={handleDialogClose}
+          >
+            {t('closeCTA')}
+          </Button>,
+        ]}
+      />
 
       <CustomizableDialog
         icon="warning"
