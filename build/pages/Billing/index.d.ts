@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, purchaseCreditsAction } from './ducks';
+import { getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, purchaseCreditsAction, startSubscriptionAction, cancelSubscriptionAction, clearSubscriptionInfoAction } from './ducks';
 export declare const mapStateToProps: ({ auth, billing }: {
     auth: any;
     billing: any;
@@ -7,7 +7,9 @@ export declare const mapStateToProps: ({ auth, billing }: {
     allCreditPacks: any;
     allSubscriptionPlans: any;
     allUserDetails: any;
-    allUserTransactions: any;
+    allUserTransactions: import("./types").TransactionDetails;
+    dialogInfo: any;
+    successfullySubscribedToPlan: any;
     user: any;
 };
 export declare const mapDispatchToProps: (dispatch: Dispatch) => {
@@ -16,6 +18,9 @@ export declare const mapDispatchToProps: (dispatch: Dispatch) => {
     getAllUserDetailsAction: typeof getAllUserDetailsAction;
     getAllUserTransactionsAction: typeof getAllUserTransactionsAction;
     purchaseCreditsAction: typeof purchaseCreditsAction;
+    startSubscriptionAction: typeof startSubscriptionAction;
+    cancelSubscriptionAction: typeof cancelSubscriptionAction;
+    clearSubscriptionInfoAction: typeof clearSubscriptionInfoAction;
 };
 declare const _default: any;
 export default _default;

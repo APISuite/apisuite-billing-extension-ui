@@ -14,16 +14,32 @@
             "editPaymentInfoButtonLabel": "Edit payment information",
             "noActiveSubscriptions": "You don't have any active subscriptions.",
             "chooseSubscription": "Choose subscription",
+            "chooseNewSubscription": "Choose new subscription",
             "retrievingSubscriptionPlans": "Retrieving all available subscription plans...",
             "startSubscriptionButtonLabel": "Start subscription",
+            "startNewSubscriptionButtonLabel": "Start new subscription",
             "transactionHistoryTitle": "Transaction history",
             "transactionHistorySubtitle": "See your last transaction movements in your account.",
             "generalWording": {
                 "credits": "credits"
             },
+            "changeSubscriptionDialog": {
+                "title": "Change subscription plan",
+                "text": "Are you sure you want to change your subscription?",
+                "subText": "Once you click on \"Start new subscription\" button, your current plan will be automatically canceled, and you will be redirected to the payment page for your new subscription.",
+                "cancelButtonLabel": "Cancel",
+                "confirmButtonLabel": "Start new subscription"
+            },
             "subscriptionsTable": {
                 "title": "Subscription",
-                "subtitle": "Next billing date"
+                "subtitle": "Next billing date",
+                "cancel": {
+                    "title": "Cancel subscription",
+                    "text": "Are you sure you want to cancel your current subscription plan?",
+                    "subText": "You can still use all of your current credits after you cancel your subscription plan.",
+                    "cta": "Cancel",
+                    "confirmCTA": "Cancel subscription plan"
+                }
             },
             "transactionsTable": {
                 "description": "Description",
@@ -31,7 +47,31 @@
                 "dateOfPurchase": "Date of purchase",
                 "status": "Payment status",
                 "price": "Price"
-            }
+            },
+            "transactionComplete": {
+                "title": "Thank you for your payment!",
+                "subtitlePartOne": "Your payment is currently being processed.",
+                "subtitlePartTwo": "Once it is approved, your credit balance will be updated.",
+                "goToMarketplaceButtonLabel": "Go to the Marketplace",
+                "goToBillingButtonLabel": "Go back to Billing",
+                "transactionDetails": {
+                    "title": "Transaction details",
+                    "creditTopUpTransactionType": "Credit top-up",
+                    "subscriptionTransactionType": "Subscription",
+                    "reference": "Reference:",
+                    "price": "Price:",
+                    "creditAmount": "Credit amount:",
+                    "transactionDate": "Transaction date:"
+                }
+            },
+            "subscriptions": {
+                "success": {
+                    "title": "Subscription plan cancelled",
+                    "text": "Your subscription plan has been canceled.",
+                    "subText": "You can still use all the credits in your account and subscribe to a new subscription plan anytime you want."
+                }
+            },
+            "closeCTA": "close"
         }
     }
 }

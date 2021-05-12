@@ -20,6 +20,7 @@ export const mapStateToProps = ({ auth, billing }) => ({
   allUserDetails: billing.allUserDetails,
   allUserTransactions: billing.allUserTransactions as BillingStore['transactionDetails'],
   dialogInfo: billing.subscriptionsDialogInfo,
+  successfullySubscribedToPlan: billing.successfullySubscribedToPlan,
   user: auth.user,
 })
 

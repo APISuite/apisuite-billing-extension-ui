@@ -41,6 +41,7 @@ const initialState: BillingStore = {
       subText: '',
     },
   },
+  successfullySubscribedToPlan: false,
 }
 
 /** Action types */
@@ -126,6 +127,18 @@ export default function billingReducer(
     case PURCHASE_CREDITS_ACTION_ERROR: {
       return update(state, {
         error: { $set: action.error },
+      })
+    }
+
+    case START_SUBSCRIPTION_ACTION: {
+      return update(state, {
+        successfullySubscribedToPlan: { $set: false },
+      })
+    }
+
+    case START_SUBSCRIPTION_ACTION_SUCCESS: {
+      return update(state, {
+        successfullySubscribedToPlan: { $set: true },
       })
     }
 

@@ -1,4 +1,4 @@
-import { GetAllUserDetailsAction, PurchaseCreditsAction } from './types';
+import { GetAllUserDetailsAction, GetTransactionDetailsAction, PurchaseCreditsAction, StartSubscriptionAction } from './types';
 export declare function getAllUserDetailsActionSaga(action: GetAllUserDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allUserDetails: import("./types").UserDetails;
@@ -13,11 +13,21 @@ export declare function getAllSubscriptionPlansActionSaga(): Generator<import("r
 }>, void, unknown>;
 export declare function getAllUserTransactionsActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
-    allUserTransactions: import("./types").CreditPackDetails[];
+    allUserTransactions: import("./types").TransactionDetails[];
+}>, void, unknown>;
+export declare function getTransactionDetailsActionSaga(action: GetTransactionDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+    transactionDetails: import("./types").TransactionDetails;
 }>, void, unknown>;
 export declare function purchaseCreditsActionSaga(action: PurchaseCreditsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     error: string;
 }>, void, unknown>;
+export declare function startSubscriptionActionSaga(action: StartSubscriptionAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+}>, any, unknown>;
+export declare function cancelSubscriptionSaga(): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+}>, void, number>;
 declare function billingRootSaga(): Generator<import("redux-saga/effects").ForkEffect<never>, void, unknown>;
 export default billingRootSaga;

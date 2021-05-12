@@ -74,6 +74,7 @@ export interface BillingStore {
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
   error?: string
+  successfullySubscribedToPlan: boolean
   transactionDetails: TransactionDetails
   subscriptionsDialogInfo: {
     type: 'success' | 'warning'
@@ -99,6 +100,7 @@ export interface BillingProps {
   purchaseCreditsAction: (creditPackID: number) => void
   startSubscriptionAction: (subscriptionPlanID: number) => void
   cancelSubscriptionAction: () => void
+  successfullySubscribedToPlan: boolean
   user: User
 }
 

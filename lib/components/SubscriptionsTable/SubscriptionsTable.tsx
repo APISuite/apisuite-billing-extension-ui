@@ -1,26 +1,22 @@
 import React, { useState } from 'react'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
-import {
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  useTranslation,
-} from '@apisuite/fe-base'
+import { Button, IconButton, Menu, MenuItem, useTranslation } from '@apisuite/fe-base'
+import { CustomizableDialog } from '../CustomizableDialog/CustomizableDialog'
 import { SubscriptionsTableProps } from './types'
 import useStyles from './styles'
-import { CustomizableDialog } from '../CustomizableDialog/CustomizableDialog'
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
   arrayOfSubs,
   onCancelSubscription,
 }) => {
   const classes = useStyles()
+
   const trans = useTranslation()
+
   const [cancelSubDialogOpen, setCancelSubDialogOpen] = useState(false)
 
-  function t(str: string) {
+  const t = (str: string) => {
     return trans.t(`extensions.billing.${str}`)
   }
 
@@ -90,7 +86,9 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                   >
                     {menuOptions.map((menuOption, index) => (
                       <MenuItem
-                        disabled={!index}
+                        // We want to disable the first option (because we're using it as a title),
+                        // and the second option as well (because we have yet to implement it).
+                        disabled={!index || index === 1}
                         key={menuOption}
                         onClick={handleMenuClose(index)}
                       >

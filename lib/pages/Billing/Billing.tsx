@@ -23,13 +23,14 @@ const Billing: React.FC<BillingProps> = ({
   startSubscriptionAction,
   cancelSubscriptionAction,
   clearSubscriptionInfoAction,
+  successfullySubscribedToPlan,
   user,
 }) => {
   const classes = useStyles()
   const trans = useTranslation()
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  function t(str: string) {
+  const t = (str: string) => {
     return trans.t(`extensions.billing.${str}`)
   }
 
@@ -41,7 +42,7 @@ const Billing: React.FC<BillingProps> = ({
     getAllSubscriptionPlansAction()
     getAllUserDetailsAction(user.id)
     getAllUserTransactionsAction()
-  }, [])
+  }, [successfullySubscribedToPlan])
 
   useEffect(() => {
     if (dialogInfo.transKeys.title.length) {
@@ -58,6 +59,7 @@ const Billing: React.FC<BillingProps> = ({
   }
 
   const [hasSelectedCreditPack, setHasSelectedCreditPack] = useState(false)
+
   const [
     currentlySelectedCreditPack,
     setCurrentlySelectedCreditPack,
@@ -98,6 +100,7 @@ const Billing: React.FC<BillingProps> = ({
     hasSelectedSubscriptionPlan,
     setHasSelectedSubscriptionPlan,
   ] = useState(false)
+
   const [
     currentlySelectedSubscriptionPlan,
     setCurrentlySelectedSubscriptionPlan,
@@ -150,6 +153,29 @@ const Billing: React.FC<BillingProps> = ({
       clearSubscriptionInfoAction()
     }, 500)
   }
+
+  const [
+    wantsToChangeSubscriptionPlan,
+    setWantsToChangeSubscriptionPlan,
+  ] = useState(false)
+
+  const handleWantsToChangeSubscriptionPlan = () => {
+    setWantsToChangeSubscriptionPlan(!wantsToChangeSubscriptionPlan)
+  }
+
+  useEffect(() => {
+    if (successfullySubscribedToPlan) {
+      setCurrentlySelectedSubscriptionPlan({
+        creditsInSubscriptionPlan: 0,
+        idOfSubscriptionPlan: 0,
+        nameOfSubscriptionPlan: '',
+        periodicityOfSubscriptionPlan: '',
+        priceOfSubscriptionPlan: 0,
+      })
+      setHasSelectedSubscriptionPlan(false)
+      setWantsToChangeSubscriptionPlan(false)
+    }
+  }, [successfullySubscribedToPlan])
 
   return (
     <>
@@ -252,11 +278,6 @@ const Billing: React.FC<BillingProps> = ({
               onCancelSubscription={cancelSubscriptionAction}
             />
 
-            {/* TODO: Move this button to the table, and remove it once you do */}
-            {/* <Button className={classes.editPaymentDetailsButton}>
-            {t('editPaymentInfoButtonLabel')}
-          </Button> */}
-
             <p className={classes.subscriptionSelectionTitle}>
               {t('chooseNewSubscription')}
             </p>
@@ -269,6 +290,17 @@ const Billing: React.FC<BillingProps> = ({
               }
               handleSubscriptionPlanSelection={handleSubscriptionPlanSelection}
             />
+
+            <Button
+              className={
+                hasSelectedSubscriptionPlan
+                  ? classes.enabledStartSubscriptionButton
+                  : classes.disabledStartSubscriptionButton
+              }
+              onClick={handleWantsToChangeSubscriptionPlan}
+            >
+              {t('startNewSubscriptionButtonLabel')}
+            </Button>
           </>
         ) : (
           <>
@@ -333,19 +365,34 @@ const Billing: React.FC<BillingProps> = ({
       </main>
 
       <CustomizableDialog
-        open={dialogOpen}
-        onClose={handleDialogClose}
-        icon={dialogInfo.type}
-        title={t(dialogInfo.transKeys.title)}
-        text={t(dialogInfo.transKeys.text)}
-        subText={t(dialogInfo.transKeys.subText)}
+        icon="warning"
+        open={wantsToChangeSubscriptionPlan}
+        onClose={handleWantsToChangeSubscriptionPlan}
+        title={t('changeSubscriptionDialog.title')}
+        text={t('changeSubscriptionDialog.text', {
+          newSubscriptionPlan:
+            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+        })}
+        subText={t('changeSubscriptionDialog.subText')}
         actions={[
           <Button
-            key="cancel-sub-confirm"
             variant="outlined"
-            onClick={handleDialogClose}
+            className={classes.cancelSubscriptionPlanChangeButton}
+            key="cancelSubscriptionPlanChange"
+            onClick={handleWantsToChangeSubscriptionPlan}
           >
-            {t('closeCTA')}
+            {t('changeSubscriptionDialog.cancelButtonLabel')}
+          </Button>,
+          <Button
+            className={classes.confirmSubscriptionPlanChangeButton}
+            key="confirmSubscriptionPlanChange"
+            onClick={() => {
+              startSubscriptionAction(
+                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
+              )
+            }}
+          >
+            {t('changeSubscriptionDialog.confirmButtonLabel')}
           </Button>,
         ]}
       />

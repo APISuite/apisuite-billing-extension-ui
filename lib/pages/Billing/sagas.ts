@@ -19,6 +19,7 @@ import {
   cancelSubscriptionActionSuccess,
   cancelSubscriptionActionError,
   CANCEL_SUBSCRIPTION,
+  startSubscriptionActionSuccess,
 } from './ducks'
 import {
   CancelSubscriptionAction,
@@ -198,6 +199,13 @@ export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
+
+    // FIXME: When the time to refactor comes, look into the fact that there might be requests
+    // that do not have any response whatsoever - this, in turn, causes issues. Look into 'request' and
+    // its associated 'checkStatus' function.
+    if (!response) {
+      return yield put(startSubscriptionActionSuccess())
+    }
 
     window.location.href = response.data
   } catch (error) {

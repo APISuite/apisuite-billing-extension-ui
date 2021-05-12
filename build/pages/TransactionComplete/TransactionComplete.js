@@ -1,34 +1,60 @@
-import React from 'react';
-import useStyles from './styles';
+import React, { useEffect } from 'react';
+import { useTranslation } from '@apisuite/fe-base';
 import Link from '../../components/Link';
-const TransactionComplete = () => {
+import useStyles from './styles';
+const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, }) => {
     const classes = useStyles();
-    const paymentType = window.location.pathname.split('/')[2];
+    const trans = useTranslation();
+    const t = (str) => {
+        return trans.t(`extensions.billing.${str}`);
+    };
+    useEffect(() => {
+        const urlParameters = new URLSearchParams(window.location.search);
+        const idOfTransaction = urlParameters.get('id');
+        getTransactionDetailsAction(idOfTransaction);
+    }, []);
+    const convertDate = (dateString) => {
+        const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+        });
+        return dateFormat.format(new Date(dateString));
+    };
+    // TODO: Convert 'EUR' references to '€'
     return (React.createElement("main", { className: `page-container ${classes.pageContentContainer}` },
-        React.createElement("p", { className: classes.title }, "Thank you for your payment!"),
+        React.createElement("p", { className: classes.title }, t('transactionComplete.title')),
         React.createElement("p", { className: classes.subtitle },
-            React.createElement("span", null, "Your payment is currently being proccessed."),
-            "Once it is approved, your credit balance will be updated."),
+            React.createElement("span", null, t('transactionComplete.subtitlePartOne')),
+            t('transactionComplete.subtitlePartTwo')),
         React.createElement("div", { className: classes.buttonsContainer },
-            React.createElement(Link, { className: classes.goToMarketplaceButton, href: "/marketplace" }, "Go to the Marketplace"),
-            React.createElement(Link, { className: classes.goToBillingButton, href: "/billing" }, "Go back to Billing")),
+            React.createElement(Link, { className: classes.goToMarketplaceButton, href: "/marketplace" }, t('transactionComplete.goToMarketplaceButtonLabel')),
+            React.createElement(Link, { className: classes.goToBillingButton, href: "/billing" }, t('transactionComplete.goToBillingButtonLabel'))),
         React.createElement("hr", { className: classes.separator }),
-        React.createElement("p", { className: classes.transactionDetailsTitle }, "Transaction details"),
+        React.createElement("p", { className: classes.transactionDetailsTitle }, t('transactionComplete.transactionDetails.title')),
         React.createElement("div", { className: classes.allTransactionDetailsContainer },
-            React.createElement("p", { className: classes.transactionTitle }, paymentType === 'creditpayment'
-                ? 'Credit pack'
-                : 'Subscription plan'),
+            React.createElement("p", { className: classes.transactionTitle },
+                transactionDetails.transactionType === 'topup'
+                    ? t('transactionComplete.transactionDetails.creditTopUpTransactionType')
+                    : t('transactionComplete.transactionDetails.subscriptionTransactionType'),
+                React.createElement("span", null,
+                    "(",
+                    transactionDetails.transactionDescription,
+                    ")")),
             React.createElement("div", { className: classes.transactionDetailContainer },
-                React.createElement("p", null, "Reference:"),
-                React.createElement("p", null, "b4605542-cad0-4ca3-83e1-1d9177a92438")),
+                React.createElement("p", null, t('transactionComplete.transactionDetails.reference')),
+                React.createElement("p", null, transactionDetails.transactionID)),
             React.createElement("div", { className: classes.transactionDetailContainer },
-                React.createElement("p", null, "Price:"),
-                React.createElement("p", null, "\u20AC 100")),
+                React.createElement("p", null, t('transactionComplete.transactionDetails.price')),
+                React.createElement("p", null, `${transactionDetails.transactionAmount.transactionCurrency}
+${transactionDetails.transactionAmount.transactionValue}`)),
             React.createElement("div", { className: classes.transactionDetailContainer },
-                React.createElement("p", null, "Credit amount:"),
-                React.createElement("p", null, "10000 Cr")),
+                React.createElement("p", null, t('transactionComplete.transactionDetails.creditAmount')),
+                React.createElement("p", null,
+                    transactionDetails.transactionCredits,
+                    " Cr")),
             React.createElement("div", { className: classes.transactionDetailContainer },
-                React.createElement("p", null, "Transaction date:"),
-                React.createElement("p", null, "30th April 2021, 09:30")))));
+                React.createElement("p", null, t('transactionComplete.transactionDetails.transactionDate')),
+                React.createElement("p", null, convertDate(transactionDetails.transactionDate))))));
 };
 export default TransactionComplete;

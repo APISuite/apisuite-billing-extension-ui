@@ -14,7 +14,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
   const trans = useTranslation()
 
-  function t(str: string) {
+  const t = (str: string) => {
     return trans.t(`extensions.billing.${str}`)
   }
 
