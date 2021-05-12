@@ -15,6 +15,7 @@ const initialState: BillingStore = {
     subscriptionID: '',
     userCredits: 0,
     userID: 0,
+    nextPaymentDate: '',
   },
   allCreditPacks: [],
   allSubscriptionPlans: [],
@@ -32,6 +33,15 @@ const initialState: BillingStore = {
     transactionType: '',
   },
   error: undefined,
+  subscriptionsDialogInfo: {
+    type: 'warning',
+    transKeys: {
+      title: '',
+      text: '',
+      subText: '',
+    },
+  },
+  successfullySubscribedToPlan: false,
 }
 
 /** Action types */
@@ -65,6 +75,18 @@ export const PURCHASE_CREDITS_ACTION_SUCCESS =
 export const PURCHASE_CREDITS_ACTION_ERROR =
   'Billing/PURCHASE_CREDITS_ACTION_ERROR'
 
+export const START_SUBSCRIPTION_ACTION = 'Billing/START_SUBSCRIPTION_ACTION'
+export const START_SUBSCRIPTION_ACTION_SUCCESS =
+  'Billing/START_SUBSCRIPTION_ACTION_SUCCESS'
+export const START_SUBSCRIPTION_ACTION_ERROR =
+  'Billing/START_SUBSCRIPTION_ACTION_ERROR'
+
+export const CANCEL_SUBSCRIPTION = 'Billing/CANCEL_SUBSCRIPTION'
+export const CANCEL_SUBSCRIPTION_SUCCESS = 'Billing/CANCEL_SUBSCRIPTION_SUCCESS'
+export const CANCEL_SUBSCRIPTION_ERROR = 'Billing/CANCEL_SUBSCRIPTION_ERROR'
+
+export const CLEAR_SUBSCRIPTION_INFO = 'Billing/CLEAR_SUBSCRIPTION_INFO'
+
 /** Reducer */
 
 export default function billingReducer(
@@ -72,18 +94,10 @@ export default function billingReducer(
   action: BillingActions
 ): BillingStore {
   switch (action.type) {
-    case GET_ALL_USER_DETAILS_ACTION: {
-      return state
-    }
-
     case GET_ALL_USER_DETAILS_ACTION_SUCCESS: {
       return update(state, {
         allUserDetails: { $set: action.allUserDetails },
       })
-    }
-
-    case GET_ALL_CREDIT_PACKS_ACTION: {
-      return state
     }
 
     case GET_ALL_CREDIT_PACKS_ACTION_SUCCESS: {
@@ -92,18 +106,10 @@ export default function billingReducer(
       })
     }
 
-    case GET_ALL_SUBSCRIPTION_PLANS_ACTION: {
-      return state
-    }
-
     case GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS: {
       return update(state, {
         allSubscriptionPlans: { $set: action.allSubscriptionPlans },
       })
-    }
-
-    case GET_ALL_USER_TRANSACTIONS_ACTION: {
-      return state
     }
 
     case GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS: {
@@ -112,24 +118,61 @@ export default function billingReducer(
       })
     }
 
-    case GET_TRANSACTION_DETAILS_ACTION: {
-      return state
-    }
-
     case GET_TRANSACTION_DETAILS_ACTION_SUCCESS: {
       return update(state, {
         transactionDetails: { $set: action.transactionDetails },
       })
     }
 
-    case PURCHASE_CREDITS_ACTION:
-    case PURCHASE_CREDITS_ACTION_SUCCESS: {
-      return state
-    }
-
     case PURCHASE_CREDITS_ACTION_ERROR: {
       return update(state, {
         error: { $set: action.error },
+      })
+    }
+
+    case START_SUBSCRIPTION_ACTION: {
+      return update(state, {
+        successfullySubscribedToPlan: { $set: false },
+      })
+    }
+
+    case START_SUBSCRIPTION_ACTION_SUCCESS: {
+      return update(state, {
+        successfullySubscribedToPlan: { $set: true },
+      })
+    }
+
+    case CANCEL_SUBSCRIPTION_SUCCESS: {
+      return update(state, {
+        subscriptionsDialogInfo: {
+          $set: {
+            type: 'success',
+            transKeys: {
+              title: 'subscriptions.success.title',
+              text: 'subscriptions.success.text',
+              subText: 'subscriptions.success.subText',
+            },
+          },
+        },
+        allUserDetails: {
+          subscriptionID: { $set: '' },
+          nextPaymentDate: { $set: '' },
+        },
+      })
+    }
+
+    case CLEAR_SUBSCRIPTION_INFO: {
+      return update(state, {
+        subscriptionsDialogInfo: {
+          $set: {
+            type: 'warning',
+            transKeys: {
+              title: '',
+              text: '',
+              subText: '',
+            },
+          },
+        },
       })
     }
 
@@ -201,4 +244,32 @@ export function purchaseCreditsActionSuccess() {
 
 export function purchaseCreditsActionError(error: string) {
   return { type: PURCHASE_CREDITS_ACTION_ERROR, error }
+}
+
+export function startSubscriptionAction(subscriptionPlanID: number) {
+  return { type: START_SUBSCRIPTION_ACTION, subscriptionPlanID }
+}
+
+export function startSubscriptionActionError(error: string) {
+  return { type: START_SUBSCRIPTION_ACTION_ERROR, error }
+}
+
+export function startSubscriptionActionSuccess() {
+  return { type: START_SUBSCRIPTION_ACTION_SUCCESS }
+}
+
+export function cancelSubscriptionAction() {
+  return { type: CANCEL_SUBSCRIPTION }
+}
+
+export function cancelSubscriptionActionError(error: string) {
+  return { type: CANCEL_SUBSCRIPTION_ERROR, error }
+}
+
+export function cancelSubscriptionActionSuccess() {
+  return { type: CANCEL_SUBSCRIPTION_SUCCESS }
+}
+
+export function clearSubscriptionInfoAction() {
+  return { type: CLEAR_SUBSCRIPTION_INFO }
 }

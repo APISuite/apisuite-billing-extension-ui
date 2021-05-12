@@ -1,5 +1,5 @@
 import { BILLING_API_URL } from '../../constants/endpoints'
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, select, takeLatest } from 'redux-saga/effects'
 
 import {
   GET_ALL_CREDIT_PACKS_ACTION,
@@ -14,11 +14,19 @@ import {
   getTransactionDetailsActionSuccess,
   PURCHASE_CREDITS_ACTION,
   purchaseCreditsActionError,
+  startSubscriptionActionError,
+  START_SUBSCRIPTION_ACTION,
+  cancelSubscriptionActionSuccess,
+  cancelSubscriptionActionError,
+  CANCEL_SUBSCRIPTION,
+  startSubscriptionActionSuccess,
 } from './ducks'
 import {
+  CancelSubscriptionAction,
   GetAllUserDetailsAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
+  StartSubscriptionAction,
 } from './types'
 import request from '../../util/request'
 
@@ -38,6 +46,7 @@ export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
       subscriptionID: response.data.subscriptionId,
       userCredits: response.data.credits,
       userID: response.data.id,
+      nextPaymentDate: response.data.nextPaymentDate,
     }
 
     yield put(getAllUserDetailsActionSuccess(allUserDetails))
@@ -179,6 +188,49 @@ export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
   }
 }
 
+export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
+  try {
+    const startSubscriptionActionUrl = `${BILLING_API_URL}/purchases/subscriptions/${action.subscriptionPlanID}`
+
+    const response = yield call(request, {
+      url: startSubscriptionActionUrl,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    // FIXME: When the time to refactor comes, look into the fact that there might be requests
+    // that do not have any response whatsoever - this, in turn, causes issues. Look into 'request' and
+    // its associated 'checkStatus' function.
+    if (!response) {
+      return yield put(startSubscriptionActionSuccess())
+    }
+
+    window.location.href = response.data
+  } catch (error) {
+    yield put(startSubscriptionActionError(error.message))
+  }
+}
+
+export function* cancelSubscriptionSaga() {
+  try {
+    const userID: number = yield select(
+      (store) => store.billing.allUserDetails.userID
+    )
+    const cancelSubscriptionActionUrl = `${BILLING_API_URL}/users/${userID}/subscriptions`
+
+    yield call(request, {
+      url: cancelSubscriptionActionUrl,
+      method: 'DELETE',
+    })
+
+    yield put(cancelSubscriptionActionSuccess())
+  } catch (error) {
+    yield put(cancelSubscriptionActionError(error.message))
+  }
+}
+
 function* billingRootSaga() {
   yield takeLatest(GET_ALL_CREDIT_PACKS_ACTION, getAllCreditPacksActionSaga)
   yield takeLatest(
@@ -195,6 +247,8 @@ function* billingRootSaga() {
     getTransactionDetailsActionSaga
   )
   yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga)
+  yield takeLatest(START_SUBSCRIPTION_ACTION, startSubscriptionActionSaga)
+  yield takeLatest(CANCEL_SUBSCRIPTION, cancelSubscriptionSaga)
 }
 
 export default billingRootSaga

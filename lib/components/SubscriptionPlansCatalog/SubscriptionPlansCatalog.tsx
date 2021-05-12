@@ -3,9 +3,11 @@ import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonChecked
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
 
 import { SubscriptionPlansCatalogProps } from './types'
+import clsx from 'clsx'
 import useStyles from './styles'
 
 const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
+  activeSubscriptionPlanID,
   arrayOfSubscriptionPlans,
   currentlySelectedSubscriptionPlan,
   handleSubscriptionPlanSelection,
@@ -17,12 +19,14 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
       (subscriptionPlan, index) => {
         return (
           <div
-            className={
-              subscriptionPlan.idOfSubscriptionPlan ===
-              currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
-                ? classes.selectedSubscriptionPlanContainer
-                : classes.notSelectedSubscriptionPlanContainer
-            }
+            className={clsx({
+              [classes.selectedSubscriptionPlanContainer]:
+                subscriptionPlan.idOfSubscriptionPlan ===
+                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan,
+              [classes.notSelectedSubscriptionPlanContainer]:
+                subscriptionPlan.idOfSubscriptionPlan !==
+                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan,
+            })}
             key={`subscriptionPlansCatalogEntry${index}`}
             onClick={() =>
               handleSubscriptionPlanSelection(
@@ -31,9 +35,15 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
             }
           >
             {subscriptionPlan.idOfSubscriptionPlan ===
-            currentlySelectedSubscriptionPlan.idOfSubscriptionPlan ? (
+              currentlySelectedSubscriptionPlan.idOfSubscriptionPlan ||
+            subscriptionPlan.idOfSubscriptionPlan ===
+              activeSubscriptionPlanID ? (
               <RadioButtonCheckedRoundedIcon
-                className={classes.selectedSubscriptionPlanIcon}
+                className={clsx(classes.selectedSubscriptionPlanIcon, {
+                  [classes.disabledSubscriptionPlanIcon]:
+                    subscriptionPlan.idOfSubscriptionPlan ===
+                    activeSubscriptionPlanID,
+                })}
               />
             ) : (
               <RadioButtonUncheckedRoundedIcon
@@ -42,18 +52,46 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
             )}
 
             <div className={classes.subscriptionPlanDetailsContainer}>
-              <div className={classes.leftDetailsContainer}>
+              <div
+                className={clsx({
+                  [classes.enabledLeftDetailsContainer]:
+                    subscriptionPlan.idOfSubscriptionPlan !==
+                    activeSubscriptionPlanID,
+                  [classes.disabledLeftDetailsContainer]:
+                    subscriptionPlan.idOfSubscriptionPlan ===
+                    activeSubscriptionPlanID,
+                })}
+              >
                 <p>{subscriptionPlan.nameOfSubscriptionPlan}</p>
 
                 <p>{subscriptionPlan.creditsInSubscriptionPlan} credits</p>
               </div>
 
-              <div className={classes.rightDetailsContainer}>
+              <div
+                className={clsx({
+                  [classes.enabledRightDetailsContainer]:
+                    subscriptionPlan.idOfSubscriptionPlan !==
+                    activeSubscriptionPlanID,
+                  [classes.disabledRightDetailsContainer]:
+                    subscriptionPlan.idOfSubscriptionPlan ===
+                    activeSubscriptionPlanID,
+                })}
+              >
                 <p>€ {subscriptionPlan.priceOfSubscriptionPlan}</p>
 
                 <p>{subscriptionPlan.periodicityOfSubscriptionPlan}</p>
               </div>
             </div>
+
+            {subscriptionPlan.idOfSubscriptionPlan ===
+              activeSubscriptionPlanID && (
+              <div
+                className={classes.disabledSubscriptionPlanContainer}
+                onClick={(event) => {
+                  event.stopPropagation()
+                }}
+              />
+            )}
           </div>
         )
       }

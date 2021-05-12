@@ -103,5 +103,10 @@ export default makeStyles((theme) => ({
         fontSize: 18,
         fontWeight: 500,
         marginBottom: 15,
+        '& > span': {
+            fontSize: '15px',
+            fontWeight: 300,
+            marginLeft: '5px',
+        },
     },
 }));

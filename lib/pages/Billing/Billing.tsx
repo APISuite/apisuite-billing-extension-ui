@@ -3,30 +3,35 @@ import { Button, useTranslation } from '@apisuite/fe-base'
 
 import { BillingProps } from './types'
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog'
-import Link from '../../components/Link'
 import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog'
 import SubscriptionsTable from '../../components/SubscriptionsTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import useStyles from './styles'
+import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog'
 
 const Billing: React.FC<BillingProps> = ({
   allCreditPacks,
   allSubscriptionPlans,
   allUserDetails,
   allUserTransactions,
+  dialogInfo,
   getAllCreditPacksAction,
   getAllSubscriptionPlansAction,
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
   purchaseCreditsAction,
+  startSubscriptionAction,
+  cancelSubscriptionAction,
+  clearSubscriptionInfoAction,
+  successfullySubscribedToPlan,
   user,
 }) => {
   const classes = useStyles()
-
   const trans = useTranslation()
+  const [dialogOpen, setDialogOpen] = useState(false)
 
-  function t(str: string) {
-    return trans.t(`extensions.${str}`)
+  const t = (str: string) => {
+    return trans.t(`extensions.billing.${str}`)
   }
 
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')
@@ -37,7 +42,13 @@ const Billing: React.FC<BillingProps> = ({
     getAllSubscriptionPlansAction()
     getAllUserDetailsAction(user.id)
     getAllUserTransactionsAction()
-  }, [])
+  }, [successfullySubscribedToPlan])
+
+  useEffect(() => {
+    if (dialogInfo.transKeys.title.length) {
+      setDialogOpen(true)
+    }
+  }, [dialogInfo.transKeys.title])
 
   /* Credits logic */
 
@@ -48,6 +59,7 @@ const Billing: React.FC<BillingProps> = ({
   }
 
   const [hasSelectedCreditPack, setHasSelectedCreditPack] = useState(false)
+
   const [
     currentlySelectedCreditPack,
     setCurrentlySelectedCreditPack,
@@ -88,6 +100,7 @@ const Billing: React.FC<BillingProps> = ({
     hasSelectedSubscriptionPlan,
     setHasSelectedSubscriptionPlan,
   ] = useState(false)
+
   const [
     currentlySelectedSubscriptionPlan,
     setCurrentlySelectedSubscriptionPlan,
@@ -132,163 +145,258 @@ const Billing: React.FC<BillingProps> = ({
     }
   }
 
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+
+    // defer clear
+    setTimeout(() => {
+      clearSubscriptionInfoAction()
+    }, 500)
+  }
+
+  const [
+    wantsToChangeSubscriptionPlan,
+    setWantsToChangeSubscriptionPlan,
+  ] = useState(false)
+
+  const handleWantsToChangeSubscriptionPlan = () => {
+    setWantsToChangeSubscriptionPlan(!wantsToChangeSubscriptionPlan)
+  }
+
+  useEffect(() => {
+    if (successfullySubscribedToPlan) {
+      setCurrentlySelectedSubscriptionPlan({
+        creditsInSubscriptionPlan: 0,
+        idOfSubscriptionPlan: 0,
+        nameOfSubscriptionPlan: '',
+        periodicityOfSubscriptionPlan: '',
+        priceOfSubscriptionPlan: 0,
+      })
+      setHasSelectedSubscriptionPlan(false)
+      setWantsToChangeSubscriptionPlan(false)
+    }
+  }, [successfullySubscribedToPlan])
+
   return (
-    <main className={`page-container ${classes.billingContentContainer}`}>
-      <p className={classes.title}>{t('billing.title')}</p>
+    <>
+      <main className={`page-container ${classes.billingContentContainer}`}>
+        <p className={classes.title}>{t('title')}</p>
 
-      <p className={classes.subtitle}>{t('billing.subtitle')}</p>
+        <p className={classes.subtitle}>{t('subtitle')}</p>
 
-      {/* 'Your balance' section */}
+        {/* 'Your balance' section */}
 
-      <p className={classes.sectionTitle}>{t('billing.yourBalance')}</p>
+        <p className={classes.sectionTitle}>{t('yourBalance')}</p>
 
-      <div
-        className={
-          wantsToTopUpCredits
-            ? classes.yourCreditBalanceContainerWithCreditPacks
-            : classes.yourCreditBalanceContainerWithoutCreditPacks
-        }
-      >
-        <div className={classes.creditBalanceContainer}>
-          <p>{t('billing.availableCredits')}</p>
+        <div
+          className={
+            wantsToTopUpCredits
+              ? classes.yourCreditBalanceContainerWithCreditPacks
+              : classes.yourCreditBalanceContainerWithoutCreditPacks
+          }
+        >
+          <div className={classes.creditBalanceContainer}>
+            <p>{t('availableCredits')}</p>
 
-          <p>{allUserDetails.userCredits}</p>
+            <p>{allUserDetails.userCredits}</p>
+          </div>
+
+          {wantsToTopUpCredits ? (
+            <div>
+              <hr className={classes.separator} />
+
+              {allCreditPacks.length !== 0 ? (
+                <>
+                  <p className={classes.creditPacksTitle}>
+                    {t('creditPacksTitle')}
+                  </p>
+
+                  <CreditPacksCatalog
+                    arrayOfCreditPacks={allCreditPacks}
+                    currentlySelectedCreditPack={currentlySelectedCreditPack}
+                    handleCreditPackSelection={handleCreditPackSelection}
+                  />
+                </>
+              ) : (
+                <p className={classes.retrievingAllAvailableCreditPacks}>
+                  {t('retrievingCreditPacks')}
+                </p>
+              )}
+
+              <div>
+                <Button
+                  className={
+                    currentlySelectedCreditPack.idOfCreditPack
+                      ? classes.enabledPurchaseCreditsButton
+                      : classes.disabledPurchaseCreditsButton
+                  }
+                  onClick={() => {
+                    purchaseCreditsAction(
+                      currentlySelectedCreditPack.idOfCreditPack
+                    )
+                  }}
+                >
+                  {t('purchaseCreditsButtonLabel')}
+                </Button>
+
+                <Button
+                  className={classes.cancelCreditsPurchaseButton}
+                  onClick={handleWantsToTopUpCredits}
+                >
+                  {t('cancelCreditsPurchaseButtonLabel')}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Button
+              className={classes.addCreditsButton}
+              onClick={handleWantsToTopUpCredits}
+            >
+              {t('addCreditsButtonLabel')}
+            </Button>
+          )}
         </div>
 
-        {wantsToTopUpCredits ? (
-          <div>
-            <hr className={classes.separator} />
+        {/* 'Your subscription' section */}
 
-            {allCreditPacks.length !== 0 ? (
+        <p className={classes.sectionTitle}>{t('yourSubscriptionsTitle')}</p>
+
+        {allUserDetails.subscriptionID ? (
+          <>
+            <SubscriptionsTable
+              arrayOfSubs={[
+                {
+                  subName: allSubscriptionPlans.find((subscriptionPlan) => {
+                    return (
+                      subscriptionPlan.idOfSubscriptionPlan ===
+                      parseInt(allUserDetails.subscriptionID)
+                    )
+                  })?.nameOfSubscriptionPlan,
+                  subNextBillingDate: allUserDetails.nextPaymentDate,
+                },
+              ]}
+              onCancelSubscription={cancelSubscriptionAction}
+            />
+
+            <p className={classes.subscriptionSelectionTitle}>
+              {t('chooseNewSubscription')}
+            </p>
+
+            <SubscriptionPlansCatalog
+              activeSubscriptionPlanID={parseInt(allUserDetails.subscriptionID)}
+              arrayOfSubscriptionPlans={allSubscriptionPlans}
+              currentlySelectedSubscriptionPlan={
+                currentlySelectedSubscriptionPlan
+              }
+              handleSubscriptionPlanSelection={handleSubscriptionPlanSelection}
+            />
+
+            <Button
+              className={
+                hasSelectedSubscriptionPlan
+                  ? classes.enabledStartSubscriptionButton
+                  : classes.disabledStartSubscriptionButton
+              }
+              onClick={handleWantsToChangeSubscriptionPlan}
+            >
+              {t('startNewSubscriptionButtonLabel')}
+            </Button>
+          </>
+        ) : (
+          <>
+            <p className={classes.noActiveSubscriptionText}>
+              {t('noActiveSubscriptions')}
+            </p>
+
+            {allSubscriptionPlans.length !== 0 ? (
               <>
-                <p className={classes.creditPacksTitle}>
-                  {t('billing.creditPacksTitle')}
+                <p className={classes.subscriptionSelectionTitle}>
+                  {t('chooseSubscription')}
                 </p>
 
-                <CreditPacksCatalog
-                  arrayOfCreditPacks={allCreditPacks}
-                  currentlySelectedCreditPack={currentlySelectedCreditPack}
-                  handleCreditPackSelection={handleCreditPackSelection}
+                <SubscriptionPlansCatalog
+                  arrayOfSubscriptionPlans={allSubscriptionPlans}
+                  currentlySelectedSubscriptionPlan={
+                    currentlySelectedSubscriptionPlan
+                  }
+                  handleSubscriptionPlanSelection={
+                    handleSubscriptionPlanSelection
+                  }
                 />
               </>
             ) : (
-              <p className={classes.retrievingAllAvailableCreditPacks}>
-                {t('billing.retrievingCreditPacks')}
+              <p className={classes.retrievingAllAvailableSubscriptionPlans}>
+                {t('retrievingSubscriptionPlans')}
               </p>
             )}
 
-            <div>
-              <Button
-                className={
-                  currentlySelectedCreditPack.idOfCreditPack
-                    ? classes.enabledPurchaseCreditsButton
-                    : classes.disabledPurchaseCreditsButton
-                }
-                onClick={() => {
-                  purchaseCreditsAction(
-                    currentlySelectedCreditPack.idOfCreditPack
-                  )
-                }}
-              >
-                {t('billing.purchaseCreditsButtonLabel')}
-              </Button>
-
-              <Button
-                className={classes.cancelCreditsPurchaseButton}
-                onClick={handleWantsToTopUpCredits}
-              >
-                {t('billing.cancelCreditsPurchaseButtonLabel')}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <Button
-            className={classes.addCreditsButton}
-            onClick={handleWantsToTopUpCredits}
-          >
-            {t('billing.addCreditsButtonLabel')}
-          </Button>
+            <Button
+              className={
+                hasSelectedSubscriptionPlan
+                  ? classes.enabledStartSubscriptionButton
+                  : classes.disabledStartSubscriptionButton
+              }
+              onClick={() => {
+                startSubscriptionAction(
+                  currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
+                )
+              }}
+            >
+              {t('startSubscriptionButtonLabel')}
+            </Button>
+          </>
         )}
-      </div>
 
-      {/* 'Your subscription' section */}
+        {/* 'Transaction history' section */}
 
-      <p className={classes.sectionTitle}>
-        {t('billing.yourSubscriptionsTitle')}
-      </p>
-
-      {allUserDetails.subscriptionID ? (
-        <>
-          <SubscriptionsTable
-            arrayOfSubs={[
-              {
-                subName: 'Basic plan',
-                subNextBillingDate: '13 August 2021',
-              },
-            ]}
-          />
-
-          <Button className={classes.editPaymentDetailsButton}>
-            {t('billing.editPaymentInfoButtonLabel')}
-          </Button>
-        </>
-      ) : (
-        <>
-          <p className={classes.noActiveSubscriptionText}>
-            {t('billing.noActiveSubscriptions')}
-          </p>
-
-          {allSubscriptionPlans.length !== 0 ? (
-            <>
-              <p className={classes.subscriptionSelectionTitle}>
-                {t('billing.chooseSubscription')}
-              </p>
-
-              <SubscriptionPlansCatalog
-                arrayOfSubscriptionPlans={allSubscriptionPlans}
-                currentlySelectedSubscriptionPlan={
-                  currentlySelectedSubscriptionPlan
-                }
-                handleSubscriptionPlanSelection={
-                  handleSubscriptionPlanSelection
-                }
-              />
-            </>
-          ) : (
-            <p className={classes.retrievingAllAvailableSubscriptionPlans}>
-              {t('billing.retrievingSubscriptionPlans')}
+        {allUserTransactions.length !== 0 && (
+          <>
+            <p className={classes.sectionTitle}>
+              {t('transactionHistoryTitle')}
             </p>
-          )}
 
-          <Link
-            className={
-              hasSelectedSubscriptionPlan
-                ? classes.enabledStartSubscriptionButton
-                : classes.disabledStartSubscriptionButton
-            }
-            href="/billing/subscriptionpayment"
+            <p className={classes.sectionSubtitle}>
+              {t('transactionHistorySubtitle')}
+            </p>
+
+            <TransactionsTable transactions={allUserTransactions} />
+          </>
+        )}
+      </main>
+
+      <CustomizableDialog
+        icon="warning"
+        open={wantsToChangeSubscriptionPlan}
+        onClose={handleWantsToChangeSubscriptionPlan}
+        title={t('changeSubscriptionDialog.title')}
+        text={t('changeSubscriptionDialog.text', {
+          newSubscriptionPlan:
+            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+        })}
+        subText={t('changeSubscriptionDialog.subText')}
+        actions={[
+          <Button
+            variant="outlined"
+            className={classes.cancelSubscriptionPlanChangeButton}
+            key="cancelSubscriptionPlanChange"
+            onClick={handleWantsToChangeSubscriptionPlan}
           >
-            {t('billing.startSubscriptionButtonLabel')}
-          </Link>
-        </>
-      )}
-
-      {/* 'Transaction history' section */}
-
-      {allUserTransactions.length !== 0 && (
-        <>
-          <p className={classes.sectionTitle}>
-            {t('billing.transactionHistoryTitle')}
-          </p>
-
-          <p className={classes.sectionSubtitle}>
-            {t('billing.transactionHistorySubtitle')}
-          </p>
-
-          <TransactionsTable arrayOfTransactions={allUserTransactions} />
-        </>
-      )}
-    </main>
+            {t('changeSubscriptionDialog.cancelButtonLabel')}
+          </Button>,
+          <Button
+            className={classes.confirmSubscriptionPlanChangeButton}
+            key="confirmSubscriptionPlanChange"
+            onClick={() => {
+              startSubscriptionAction(
+                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
+              )
+            }}
+          >
+            {t('changeSubscriptionDialog.confirmButtonLabel')}
+          </Button>,
+        ]}
+      />
+    </>
   )
 }
 

@@ -213,4 +213,20 @@ export default makeStyles((theme) => ({
         padding: 24,
         width: '100%',
     },
+    confirmSubscriptionPlanChangeButton: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+        textTransform: 'none',
+        '&:hover': {
+            backgroundColor: theme.palette.primary.dark,
+        },
+    },
+    cancelSubscriptionPlanChangeButton: {
+        backgroundColor: theme.palette.common.white,
+        color: theme.palette.text.primary,
+        textTransform: 'none',
+        '&:hover': {
+            backgroundColor: theme.palette.common.white,
+        },
+    },
 }));

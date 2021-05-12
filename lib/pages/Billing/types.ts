@@ -14,6 +14,13 @@ import {
   PURCHASE_CREDITS_ACTION_ERROR,
   PURCHASE_CREDITS_ACTION_SUCCESS,
   PURCHASE_CREDITS_ACTION,
+  START_SUBSCRIPTION_ACTION_ERROR,
+  START_SUBSCRIPTION_ACTION_SUCCESS,
+  START_SUBSCRIPTION_ACTION,
+  CANCEL_SUBSCRIPTION,
+  CANCEL_SUBSCRIPTION_SUCCESS,
+  CANCEL_SUBSCRIPTION_ERROR,
+  CLEAR_SUBSCRIPTION_INFO,
 } from './ducks'
 
 export interface User {
@@ -30,6 +37,7 @@ export interface UserDetails {
   subscriptionID: string | null
   userCredits: number
   userID: number
+  nextPaymentDate: string
 }
 
 export interface CreditPackDetails {
@@ -66,7 +74,16 @@ export interface BillingStore {
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
   error?: string
+  successfullySubscribedToPlan: boolean
   transactionDetails: TransactionDetails
+  subscriptionsDialogInfo: {
+    type: 'success' | 'warning'
+    transKeys: {
+      title: string
+      text: string
+      subText: string
+    }
+  }
 }
 
 export interface BillingProps {
@@ -74,11 +91,16 @@ export interface BillingProps {
   allSubscriptionPlans: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
+  dialogInfo: BillingStore['subscriptionsDialogInfo']
+  clearSubscriptionInfoAction: () => void
   getAllCreditPacksAction: () => void
   getAllSubscriptionPlansAction: () => void
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
   purchaseCreditsAction: (creditPackID: number) => void
+  startSubscriptionAction: (subscriptionPlanID: number) => void
+  cancelSubscriptionAction: () => void
+  successfullySubscribedToPlan: boolean
   user: User
 }
 
@@ -143,6 +165,37 @@ export interface PurchaseCreditsActionError extends Action {
   error: string
 }
 
+export interface StartSubscriptionAction extends Action {
+  type: typeof START_SUBSCRIPTION_ACTION
+  subscriptionPlanID: number
+}
+
+export interface StartSubscriptionActionSuccess extends Action {
+  type: typeof START_SUBSCRIPTION_ACTION_SUCCESS
+}
+
+export interface StartSubscriptionActionError extends Action {
+  type: typeof START_SUBSCRIPTION_ACTION_ERROR
+  error: string
+}
+
+export interface CancelSubscriptionAction {
+  type: typeof CANCEL_SUBSCRIPTION
+}
+
+export interface CancelSubscriptionActionSuccess {
+  type: typeof CANCEL_SUBSCRIPTION_SUCCESS
+}
+
+export interface CancelSubscriptionActionError {
+  type: typeof CANCEL_SUBSCRIPTION_ERROR
+  error: string
+}
+
+export interface ClearSubscriptionInfoAction {
+  type: typeof CLEAR_SUBSCRIPTION_INFO
+}
+
 export type BillingActions =
   | GetAllCreditPacksAction
   | GetAllCreditPacksActionSuccess
@@ -157,3 +210,10 @@ export type BillingActions =
   | PurchaseCreditsAction
   | PurchaseCreditsActionError
   | PurchaseCreditsActionSuccess
+  | StartSubscriptionAction
+  | StartSubscriptionActionError
+  | StartSubscriptionActionSuccess
+  | CancelSubscriptionAction
+  | CancelSubscriptionActionError
+  | CancelSubscriptionActionSuccess
+  | ClearSubscriptionInfoAction

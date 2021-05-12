@@ -14,7 +14,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   const trans = useTranslation()
 
   const t = (str: string) => {
-    return trans.t(`extensions.${str}`)
+    return trans.t(`extensions.billing.${str}`)
   }
 
   useEffect(() => {
@@ -25,59 +25,63 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   }, [])
 
   const convertDate = (dateString: string) => {
-    const convertedDate = new Date(dateString)
+    const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+    })
 
-    return convertedDate.toLocaleString()
+    return dateFormat.format(new Date(dateString))
   }
 
   // TODO: Convert 'EUR' references to '€'
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      <p className={classes.title}>{t('billing.transactionComplete.title')}</p>
+      <p className={classes.title}>{t('transactionComplete.title')}</p>
 
       <p className={classes.subtitle}>
-        <span>{t('billing.transactionComplete.subtitlePartOne')}</span>
-        {t('billing.transactionComplete.subtitlePartTwo')}
+        <span>{t('transactionComplete.subtitlePartOne')}</span>
+        {t('transactionComplete.subtitlePartTwo')}
       </p>
 
       <div className={classes.buttonsContainer}>
         <Link className={classes.goToMarketplaceButton} href="/marketplace">
-          {t('billing.transactionComplete.goToMarketplaceButtonLabel')}
+          {t('transactionComplete.goToMarketplaceButtonLabel')}
         </Link>
 
         <Link className={classes.goToBillingButton} href="/billing">
-          {t('billing.transactionComplete.goToBillingButtonLabel')}
+          {t('transactionComplete.goToBillingButtonLabel')}
         </Link>
       </div>
 
       <hr className={classes.separator} />
 
       <p className={classes.transactionDetailsTitle}>
-        {t('billing.transactionComplete.transactionDetails.title')}
+        {t('transactionComplete.transactionDetails.title')}
       </p>
 
       <div className={classes.allTransactionDetailsContainer}>
         <p className={classes.transactionTitle}>
           {transactionDetails.transactionType === 'topup'
             ? t(
-                'billing.transactionComplete.transactionDetails.creditTopUpTransactionType'
+                'transactionComplete.transactionDetails.creditTopUpTransactionType'
               )
             : t(
-                'billing.transactionComplete.transactionDetails.subscriptionTransactionType'
+                'transactionComplete.transactionDetails.subscriptionTransactionType'
               )}
 
           <span>({transactionDetails.transactionDescription})</span>
         </p>
 
         <div className={classes.transactionDetailContainer}>
-          <p>{t('billing.transactionComplete.transactionDetails.reference')}</p>
+          <p>{t('transactionComplete.transactionDetails.reference')}</p>
 
           <p>{transactionDetails.transactionID}</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
-          <p>{t('billing.transactionComplete.transactionDetails.price')}</p>
+          <p>{t('transactionComplete.transactionDetails.price')}</p>
 
           <p>
             {`${transactionDetails.transactionAmount.transactionCurrency}
@@ -86,19 +90,13 @@ ${transactionDetails.transactionAmount.transactionValue}`}
         </div>
 
         <div className={classes.transactionDetailContainer}>
-          <p>
-            {t('billing.transactionComplete.transactionDetails.creditAmount')}
-          </p>
+          <p>{t('transactionComplete.transactionDetails.creditAmount')}</p>
 
           <p>{transactionDetails.transactionCredits} Cr</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
-          <p>
-            {t(
-              'billing.transactionComplete.transactionDetails.transactionDate'
-            )}
-          </p>
+          <p>{t('transactionComplete.transactionDetails.transactionDate')}</p>
 
           <p>{convertDate(transactionDetails.transactionDate)}</p>
         </div>
