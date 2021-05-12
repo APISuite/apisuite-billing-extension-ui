@@ -30,7 +30,7 @@ const Billing: React.FC<BillingProps> = ({
   const trans = useTranslation()
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const t = (str: string) => {
+  const t = (str: string, ...args) => {
     return trans.t(`extensions.billing.${str}`)
   }
 
@@ -369,7 +369,10 @@ const Billing: React.FC<BillingProps> = ({
         open={wantsToChangeSubscriptionPlan}
         onClose={handleWantsToChangeSubscriptionPlan}
         title={t('changeSubscriptionDialog.title')}
-        text={t('changeSubscriptionDialog.text')}
+        text={t('changeSubscriptionDialog.text', {
+          newlySelectedSubscriptionPlan:
+            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+        })}
         subText={t('changeSubscriptionDialog.subText')}
         actions={[
           <Button
