@@ -6,6 +6,8 @@ import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded'
 import { TransactionsTableProps } from './types'
 import { useTranslation } from '@apisuite/fe-base'
 import useStyles from './styles'
+import { convertDate } from '../../util/convertDate'
+import { currencyConverter } from '../../util/currencyConverter'
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   transactions,
@@ -16,18 +18,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
   const t = (str: string) => {
     return trans.t(`extensions.billing.${str}`)
-  }
-
-  const convertDate = (dateString: string) => {
-    const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-
-    return dateFormat.format(new Date(dateString))
   }
 
   const generateTransactionsTableEntries = () => {
@@ -56,7 +46,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
           </div>
 
           <p className={classes.transactionDate}>
-            {convertDate(transaction.transactionDate)}
+            {convertDate(trans.i18n.language, transaction.transactionDate)}
           </p>
 
           <p
@@ -79,7 +69,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
           </p>
 
           <p className={classes.transactionAmount}>
-            {`${transaction.transactionAmount.transactionCurrency} ${transaction.transactionAmount.transactionValue}`}
+            {currencyConverter(
+              trans.i18n.language,
+              transaction.transactionAmount.transactionValue,
+              transaction.transactionAmount.transactionCurrency
+            )}
           </p>
         </div>
       )
@@ -87,8 +81,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
     return arrayOfTableEntries
   }
-
-  // TODO: Convert 'EUR' references to '€'
 
   return (
     <div className={classes.transactionsTable}>

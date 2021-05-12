@@ -25,7 +25,7 @@
       },
       "changeSubscriptionDialog": {
         "title": "Change subscription plan",
-        "text": "Are you sure you want to change your subscription?",
+        "text": "Are you sure you want to change your subscription to {{newlySelectedSubscriptionPlan}}?",
         "subText": "Once you click on \"Start new subscription\" button, your current plan will be automatically canceled, and you will be redirected to the payment page for your new subscription.",
         "cancelButtonLabel": "Cancel",
         "confirmButtonLabel": "Start new subscription"

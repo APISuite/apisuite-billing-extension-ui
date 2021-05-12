@@ -30,8 +30,8 @@ const Billing: React.FC<BillingProps> = ({
   const trans = useTranslation()
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const t = (str: string) => {
-    return trans.t(`extensions.billing.${str}`)
+  const t = (str: string, ...args) => {
+    return trans.t(`extensions.billing.${str}`, ...args)
   }
 
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')
@@ -365,12 +365,30 @@ const Billing: React.FC<BillingProps> = ({
       </main>
 
       <CustomizableDialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        icon={dialogInfo.type}
+        title={t(dialogInfo.transKeys.title)}
+        text={t(dialogInfo.transKeys.text)}
+        subText={t(dialogInfo.transKeys.subText)}
+        actions={[
+          <Button
+            key="cancel-sub-confirm"
+            variant="outlined"
+            onClick={handleDialogClose}
+          >
+            {t('closeCTA')}
+          </Button>,
+        ]}
+      />
+
+      <CustomizableDialog
         icon="warning"
         open={wantsToChangeSubscriptionPlan}
         onClose={handleWantsToChangeSubscriptionPlan}
         title={t('changeSubscriptionDialog.title')}
         text={t('changeSubscriptionDialog.text', {
-          newSubscriptionPlan:
+          newlySelectedSubscriptionPlan:
             currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
         })}
         subText={t('changeSubscriptionDialog.subText')}

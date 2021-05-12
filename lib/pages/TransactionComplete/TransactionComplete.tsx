@@ -4,6 +4,8 @@ import { useTranslation } from '@apisuite/fe-base'
 import { TransactionCompleteProps } from './types'
 import Link from '../../components/Link'
 import useStyles from './styles'
+import { convertDate } from '../../util/convertDate'
+import { currencyConverter } from '../../util/currencyConverter'
 
 const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   getTransactionDetailsAction,
@@ -23,18 +25,6 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
 
     getTransactionDetailsAction(idOfTransaction)
   }, [])
-
-  const convertDate = (dateString: string) => {
-    const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-    })
-
-    return dateFormat.format(new Date(dateString))
-  }
-
-  // TODO: Convert 'EUR' references to '€'
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
@@ -84,8 +74,13 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
           <p>{t('transactionComplete.transactionDetails.price')}</p>
 
           <p>
-            {`${transactionDetails.transactionAmount.transactionCurrency}
-${transactionDetails.transactionAmount.transactionValue}`}
+            {transactionDetails.transactionAmount.transactionValue &&
+              transactionDetails.transactionAmount.transactionCurrency &&
+              currencyConverter(
+                trans.i18n.language,
+                transactionDetails.transactionAmount.transactionValue,
+                transactionDetails.transactionAmount.transactionCurrency
+              )}
           </p>
         </div>
 
@@ -98,7 +93,13 @@ ${transactionDetails.transactionAmount.transactionValue}`}
         <div className={classes.transactionDetailContainer}>
           <p>{t('transactionComplete.transactionDetails.transactionDate')}</p>
 
-          <p>{convertDate(transactionDetails.transactionDate)}</p>
+          <p>
+            {transactionDetails.transactionDate &&
+              convertDate(
+                trans.i18n.language,
+                transactionDetails.transactionDate
+              )}
+          </p>
         </div>
       </div>
     </main>
