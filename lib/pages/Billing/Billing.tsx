@@ -30,8 +30,8 @@ const Billing: React.FC<BillingProps> = ({
   const trans = useTranslation()
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const t = (str: string, ...args) => {
-    return trans.t(`extensions.billing.${str}`)
+  const t = (str: string, otherParameters?) => {
+    return trans.t(`extensions.billing.${str}`, otherParameters)
   }
 
   /* Triggers the retrieval and storage (on the app's Store, under 'billing')
