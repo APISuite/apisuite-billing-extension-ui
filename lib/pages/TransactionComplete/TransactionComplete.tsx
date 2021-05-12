@@ -4,6 +4,8 @@ import { useTranslation } from '@apisuite/fe-base'
 import { TransactionCompleteProps } from './types'
 import Link from '../../components/Link'
 import useStyles from './styles'
+import { convertDate } from '../../util/convertDate'
+import { currencyConverter } from '../../util/currencyConverter'
 
 const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   getTransactionDetailsAction,
@@ -23,26 +25,6 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
 
     getTransactionDetailsAction(idOfTransaction)
   }, [])
-
-  const convertDate = (dateString: string) => {
-    console.log('dateString', dateString)
-    const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-
-    return dateFormat.format(new Date(dateString))
-  }
-
-  const currencyConverter = (valueString: string, currencyString: string) => {
-    return parseInt(valueString).toLocaleString(trans.i18n.language, {
-      style: 'currency',
-      currency: currencyString,
-    })
-  }
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
@@ -95,6 +77,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
             {transactionDetails.transactionAmount.transactionValue &&
               transactionDetails.transactionAmount.transactionCurrency &&
               currencyConverter(
+                trans.i18n.language,
                 transactionDetails.transactionAmount.transactionValue,
                 transactionDetails.transactionAmount.transactionCurrency
               )}
@@ -112,7 +95,10 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
 
           <p>
             {transactionDetails.transactionDate &&
-              convertDate(transactionDetails.transactionDate)}
+              convertDate(
+                trans.i18n.language,
+                transactionDetails.transactionDate
+              )}
           </p>
         </div>
       </div>

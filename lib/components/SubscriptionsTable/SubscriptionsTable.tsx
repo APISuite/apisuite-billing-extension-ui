@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
-import { Button, IconButton, Menu, MenuItem, useTranslation } from '@apisuite/fe-base'
+import {
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  useTranslation,
+} from '@apisuite/fe-base'
+import { convertDate } from '../../util/convertDate'
 import { CustomizableDialog } from '../CustomizableDialog/CustomizableDialog'
 import { SubscriptionsTableProps } from './types'
 import useStyles from './styles'
@@ -41,16 +48,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
     'Cancel subscription plan',
   ]
 
-  const convertDate = (dateString: string) => {
-    const dateFormat = new Intl.DateTimeFormat('en', {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-    })
-
-    return dateFormat.format(new Date(dateString))
-  }
-
   const handleConfirmCancelSubscription = () => {
     setCancelSubDialogOpen(false)
     onCancelSubscription()
@@ -73,7 +70,9 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                 key={`subTableEntry${index}`}
               >
                 <td>{sub.subName}</td>
-                <td>{convertDate(sub.subNextBillingDate)}</td>
+                <td>
+                  {convertDate(trans.i18n.language, sub.subNextBillingDate)}
+                </td>
                 <td>
                   <IconButton onClick={handleMenuClick}>
                     <MoreVertIcon />

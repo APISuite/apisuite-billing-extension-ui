@@ -369,10 +369,7 @@ const Billing: React.FC<BillingProps> = ({
         open={wantsToChangeSubscriptionPlan}
         onClose={handleWantsToChangeSubscriptionPlan}
         title={t('changeSubscriptionDialog.title')}
-        text={t('changeSubscriptionDialog.text', {
-          newSubscriptionPlan:
-            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
-        })}
+        text={t('changeSubscriptionDialog.text')}
         subText={t('changeSubscriptionDialog.subText')}
         actions={[
           <Button
