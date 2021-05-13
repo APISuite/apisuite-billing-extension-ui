@@ -42,7 +42,7 @@ export default makeStyles((theme) => ({
     subsTableWrapper: {
         backgroundColor: theme.palette.background.paper,
         border: `1px solid ${theme.palette.grey[300]}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         maxWidth: 900,
         width: '100%',
         overflow: 'hidden',

@@ -3,7 +3,7 @@ export default makeStyles((theme) => ({
     addCreditsButton: {
         backgroundColor: theme.palette.primary.main,
         border: `1px solid ${theme.palette.primary.main}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.primary.contrastText} !important`,
         fontSize: 16,
         fontWeight: 500,
@@ -24,7 +24,7 @@ export default makeStyles((theme) => ({
     cancelCreditsPurchaseButton: {
         backgroundColor: theme.palette.background.paper,
         border: `1px solid ${theme.palette.grey[300]}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.text.hint} !important`,
         fontSize: 16,
         fontWeight: 500,
@@ -58,7 +58,7 @@ export default makeStyles((theme) => ({
     disabledPurchaseCreditsButton: {
         backgroundColor: theme.palette.grey[300],
         border: `1px solid ${theme.palette.grey[300]}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.primary.contrastText} !important`,
         fontSize: 16,
         fontWeight: 500,
@@ -76,7 +76,7 @@ export default makeStyles((theme) => ({
     disabledStartSubscriptionButton: {
         backgroundColor: theme.palette.grey[300],
         border: `1px solid ${theme.palette.grey[300]}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.primary.contrastText} !important`,
         fontSize: 16,
         fontWeight: 500,
@@ -92,7 +92,7 @@ export default makeStyles((theme) => ({
     editPaymentDetailsButton: {
         backgroundColor: theme.palette.background.paper,
         border: `1px solid ${theme.palette.grey[300]}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.text.hint} !important`,
         fontSize: 16,
         fontWeight: 500,
@@ -108,7 +108,7 @@ export default makeStyles((theme) => ({
     enabledPurchaseCreditsButton: {
         backgroundColor: theme.palette.primary.main,
         border: `1px solid ${theme.palette.primary.main}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.primary.contrastText} !important`,
         fontSize: 16,
         fontWeight: 500,
@@ -125,7 +125,7 @@ export default makeStyles((theme) => ({
     enabledStartSubscriptionButton: {
         backgroundColor: theme.palette.primary.main,
         border: `1px solid ${theme.palette.primary.main}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.primary.contrastText} !important`,
         fontSize: 16,
         fontWeight: 500,
@@ -169,7 +169,7 @@ export default makeStyles((theme) => ({
     },
     separator: {
         border: `1px solid ${theme.palette.primary.contrastText}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         margin: '25px 0px 15px 0px',
         width: '100%',
     },
@@ -194,7 +194,7 @@ export default makeStyles((theme) => ({
     yourCreditBalanceContainerWithCreditPacks: {
         alignItems: 'center',
         backgroundColor: theme.palette.text.primary,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         display: 'block',
         justifyContent: 'space-between',
         marginBottom: 40,
@@ -205,7 +205,7 @@ export default makeStyles((theme) => ({
     yourCreditBalanceContainerWithoutCreditPacks: {
         alignItems: 'center',
         backgroundColor: theme.palette.text.primary,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         display: 'flex',
         justifyContent: 'space-between',
         marginBottom: 40,

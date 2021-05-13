@@ -20,7 +20,7 @@ export default makeStyles((theme) => ({
     },
     completeTransactionStatus: {
         backgroundColor: theme.palette.success.light,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.success.dark} !important`,
         fontSize: 14,
         fontWeight: 400,
@@ -32,7 +32,7 @@ export default makeStyles((theme) => ({
     },
     failedTransactionStatus: {
         backgroundColor: theme.palette.error.light,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.error.dark} !important`,
         fontSize: 14,
         fontWeight: 400,
@@ -44,7 +44,7 @@ export default makeStyles((theme) => ({
     },
     openTransactionStatus: {
         backgroundColor: theme.palette.info.light,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.info.dark} !important`,
         fontSize: 14,
         fontWeight: 400,
@@ -56,7 +56,7 @@ export default makeStyles((theme) => ({
     },
     pendingTransactionStatus: {
         backgroundColor: theme.palette.warning.light,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.warning.dark} !important`,
         fontSize: 14,
         fontWeight: 400,
@@ -145,7 +145,7 @@ export default makeStyles((theme) => ({
     transactionsTable: {
         backgroundColor: theme.palette.background.paper,
         border: `1px solid ${theme.palette.grey[300]}`,
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         marginBottom: 24,
         maxWidth: 900,
         width: '100%',
@@ -166,7 +166,7 @@ export default makeStyles((theme) => ({
     },
     incompleteTransactionStatus: {
         backgroundColor: theme.palette.grey[100],
-        borderRadius: theme.palette.dimensions.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: `${theme.palette.text.hint} !important`,
         fontSize: 14,
         fontWeight: 400,
