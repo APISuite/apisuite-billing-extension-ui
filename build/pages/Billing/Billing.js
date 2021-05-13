@@ -10,8 +10,8 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
     const classes = useStyles();
     const trans = useTranslation();
     const [dialogOpen, setDialogOpen] = useState(false);
-    const t = (str) => {
-        return trans.t(`extensions.billing.${str}`);
+    const t = (str, ...args) => {
+        return trans.t(`extensions.billing.${str}`, ...args);
     };
     /* Triggers the retrieval and storage (on the app's Store, under 'billing')
     of all credit packs and subscription plans we presently offer, as well as
@@ -165,8 +165,11 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                 React.createElement("p", { className: classes.sectionTitle }, t('transactionHistoryTitle')),
                 React.createElement("p", { className: classes.sectionSubtitle }, t('transactionHistorySubtitle')),
                 React.createElement(TransactionsTable, { transactions: allUserTransactions })))),
+        React.createElement(CustomizableDialog, { open: dialogOpen, onClose: handleDialogClose, icon: dialogInfo.type, title: t(dialogInfo.transKeys.title), text: t(dialogInfo.transKeys.text), subText: t(dialogInfo.transKeys.subText), actions: [
+                React.createElement(Button, { key: "cancel-sub-confirm", variant: "outlined", onClick: handleDialogClose }, t('closeCTA')),
+            ] }),
         React.createElement(CustomizableDialog, { icon: "warning", open: wantsToChangeSubscriptionPlan, onClose: handleWantsToChangeSubscriptionPlan, title: t('changeSubscriptionDialog.title'), text: t('changeSubscriptionDialog.text', {
-                newSubscriptionPlan: currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+                newlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
             }), subText: t('changeSubscriptionDialog.subText'), actions: [
                 React.createElement(Button, { variant: "outlined", className: classes.cancelSubscriptionPlanChangeButton, key: "cancelSubscriptionPlanChange", onClick: handleWantsToChangeSubscriptionPlan }, t('changeSubscriptionDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.confirmSubscriptionPlanChangeButton, key: "confirmSubscriptionPlanChange", onClick: () => {

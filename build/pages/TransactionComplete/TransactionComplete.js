@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useTranslation } from '@apisuite/fe-base';
 import Link from '../../components/Link';
 import useStyles from './styles';
+import { convertDate } from '../../util/convertDate';
+import { currencyConverter } from '../../util/currencyConverter';
 const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, }) => {
     const classes = useStyles();
     const trans = useTranslation();
@@ -13,15 +15,6 @@ const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, 
         const idOfTransaction = urlParameters.get('id');
         getTransactionDetailsAction(idOfTransaction);
     }, []);
-    const convertDate = (dateString) => {
-        const dateFormat = new Intl.DateTimeFormat(trans.i18n.language, {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit',
-        });
-        return dateFormat.format(new Date(dateString));
-    };
-    // TODO: Convert 'EUR' references to '€'
     return (React.createElement("main", { className: `page-container ${classes.pageContentContainer}` },
         React.createElement("p", { className: classes.title }, t('transactionComplete.title')),
         React.createElement("p", { className: classes.subtitle },
@@ -46,8 +39,9 @@ const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, 
                 React.createElement("p", null, transactionDetails.transactionID)),
             React.createElement("div", { className: classes.transactionDetailContainer },
                 React.createElement("p", null, t('transactionComplete.transactionDetails.price')),
-                React.createElement("p", null, `${transactionDetails.transactionAmount.transactionCurrency}
-${transactionDetails.transactionAmount.transactionValue}`)),
+                React.createElement("p", null, transactionDetails.transactionAmount.transactionValue &&
+                    transactionDetails.transactionAmount.transactionCurrency &&
+                    currencyConverter(trans.i18n.language, transactionDetails.transactionAmount.transactionValue, transactionDetails.transactionAmount.transactionCurrency))),
             React.createElement("div", { className: classes.transactionDetailContainer },
                 React.createElement("p", null, t('transactionComplete.transactionDetails.creditAmount')),
                 React.createElement("p", null,
@@ -55,6 +49,7 @@ ${transactionDetails.transactionAmount.transactionValue}`)),
                     " Cr")),
             React.createElement("div", { className: classes.transactionDetailContainer },
                 React.createElement("p", null, t('transactionComplete.transactionDetails.transactionDate')),
-                React.createElement("p", null, convertDate(transactionDetails.transactionDate))))));
+                React.createElement("p", null, transactionDetails.transactionDate &&
+                    convertDate(trans.i18n.language, transactionDetails.transactionDate))))));
 };
 export default TransactionComplete;

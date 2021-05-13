@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Button, IconButton, Menu, MenuItem, useTranslation } from '@apisuite/fe-base';
+import { Button, IconButton, Menu, MenuItem, useTranslation, } from '@apisuite/fe-base';
+import { convertDate } from '../../util/convertDate';
 import { CustomizableDialog } from '../CustomizableDialog/CustomizableDialog';
 import useStyles from './styles';
 const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
@@ -26,14 +27,6 @@ const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
         'Edit payment information',
         'Cancel subscription plan',
     ];
-    const convertDate = (dateString) => {
-        const dateFormat = new Intl.DateTimeFormat('en', {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit',
-        });
-        return dateFormat.format(new Date(dateString));
-    };
     const handleConfirmCancelSubscription = () => {
         setCancelSubDialogOpen(false);
         onCancelSubscription();
@@ -48,7 +41,7 @@ const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
                 arrayOfSubs.map((sub, index) => {
                     return (React.createElement("tr", { className: classes.subsTableEntry, key: `subTableEntry${index}` },
                         React.createElement("td", null, sub.subName),
-                        React.createElement("td", null, convertDate(sub.subNextBillingDate)),
+                        React.createElement("td", null, convertDate(trans.i18n.language, sub.subNextBillingDate)),
                         React.createElement("td", null,
                             React.createElement(IconButton, { onClick: handleMenuClick },
                                 React.createElement(MoreVertIcon, null)),
