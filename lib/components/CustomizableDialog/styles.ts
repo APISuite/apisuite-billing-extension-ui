@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   cancelButton: {
     backgroundColor: theme.palette.background.default,
     border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: `${theme.palette.dimensions.borderRadius}px`,
+    borderRadius: `${theme.shape.borderRadius}px`,
     color: `${theme.palette.action.active} !important`,
     fontSize: '16px',
     fontWeight: 500,
@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
   confirmButton: {
     backgroundColor: theme.palette.error.main,
     border: `1px solid ${theme.palette.error.main}`,
-    borderRadius: theme.palette.dimensions.borderRadius,
+    borderRadius: theme.shape.borderRadius,
     color: `${theme.palette.primary.contrastText} !important`,
     fontSize: '16px',
     fontWeight: 500,
