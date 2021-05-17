@@ -3,11 +3,11 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import clsx from 'clsx'
 import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded'
 
+import { convertDateAndTime } from '../../util/convertDateAndTime'
+import { currencyConverter } from '../../util/currencyConverter'
 import { TransactionsTableProps } from './types'
 import { useTranslation } from '@apisuite/fe-base'
 import useStyles from './styles'
-import { convertDate } from '../../util/convertDate'
-import { currencyConverter } from '../../util/currencyConverter'
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   transactions,
@@ -46,7 +46,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
           </div>
 
           <p className={classes.transactionDate}>
-            {convertDate(trans.i18n.language, transaction.transactionDate)}
+            {convertDateAndTime(
+              trans.i18n.language,
+              transaction.transactionDate
+            )}
           </p>
 
           <p
