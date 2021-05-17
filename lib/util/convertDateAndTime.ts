@@ -1,8 +1,8 @@
 export const convertDateAndTime = (
   languageString: string,
-  dateString: string
+  dateAndTimeString: string
 ) => {
-  const dateFormat = new Intl.DateTimeFormat(languageString, {
+  const dateAndTimeFormat = new Intl.DateTimeFormat(languageString, {
     year: 'numeric',
     month: 'long',
     day: '2-digit',
@@ -10,5 +10,5 @@ export const convertDateAndTime = (
     minute: '2-digit',
   })
 
-  return dateFormat.format(new Date(dateString))
+  return dateAndTimeFormat.format(new Date(dateAndTimeString))
 }
