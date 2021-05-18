@@ -1,7 +1,11 @@
-import { BILLING_API_URL } from '../../constants/endpoints'
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 
+import { BILLING_API_URL } from '../../constants/endpoints'
+import request from '../../util/request'
 import {
+  CANCEL_SUBSCRIPTION,
+  cancelSubscriptionActionError,
+  cancelSubscriptionActionSuccess,
   GET_ALL_CREDIT_PACKS_ACTION,
   GET_ALL_SUBSCRIPTION_PLANS_ACTION,
   GET_ALL_USER_DETAILS_ACTION,
@@ -14,21 +18,16 @@ import {
   getTransactionDetailsActionSuccess,
   PURCHASE_CREDITS_ACTION,
   purchaseCreditsActionError,
-  startSubscriptionActionError,
   START_SUBSCRIPTION_ACTION,
-  cancelSubscriptionActionSuccess,
-  cancelSubscriptionActionError,
-  CANCEL_SUBSCRIPTION,
+  startSubscriptionActionError,
   startSubscriptionActionSuccess,
 } from './ducks'
 import {
-  CancelSubscriptionAction,
   GetAllUserDetailsAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
   StartSubscriptionAction,
 } from './types'
-import request from '../../util/request'
 
 export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
   try {
@@ -74,7 +73,21 @@ export function* getAllCreditPacksActionSaga() {
       priceOfCreditPack: creditPack.price,
     }))
 
-    yield put(getAllCreditPacksActionSuccess(allCreditPacks))
+    const sortedCreditPacks = allCreditPacks.sort(
+      (creditPackOne, creditPackTwo) => {
+        if (creditPackOne.priceOfCreditPack < creditPackTwo.priceOfCreditPack) {
+          return -1
+        } else if (
+          creditPackOne.priceOfCreditPack > creditPackTwo.priceOfCreditPack
+        ) {
+          return 1
+        } else {
+          return 0
+        }
+      }
+    )
+
+    yield put(getAllCreditPacksActionSuccess(sortedCreditPacks))
   } catch (error) {
     console.log('Error fetching all credit packs.')
   }
@@ -100,7 +113,25 @@ export function* getAllSubscriptionPlansActionSaga() {
       priceOfSubscriptionPlan: subscriptionPlan.price,
     }))
 
-    yield put(getAllSubscriptionPlansActionSuccess(allSubscriptionPlans))
+    const sortedSubscriptionPlans = allSubscriptionPlans.sort(
+      (subscriptionPlanOne, subscriptionPlanTwo) => {
+        if (
+          subscriptionPlanOne.priceOfSubscriptionPlan <
+          subscriptionPlanTwo.priceOfSubscriptionPlan
+        ) {
+          return -1
+        } else if (
+          subscriptionPlanOne.priceOfSubscriptionPlan >
+          subscriptionPlanTwo.priceOfSubscriptionPlan
+        ) {
+          return 1
+        } else {
+          return 0
+        }
+      }
+    )
+
+    yield put(getAllSubscriptionPlansActionSuccess(sortedSubscriptionPlans))
   } catch (error) {
     console.log('Error fetching all subscription plans.')
   }
