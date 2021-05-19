@@ -4,6 +4,8 @@ import {
   BillingActions,
   BillingStore,
   CreditPackDetails,
+  PackageOrderMode,
+  PackageSortMode,
   TransactionDetails,
   UserDetails,
 } from './types'
@@ -192,8 +194,8 @@ export function getAllUserDetailsActionSuccess(allUserDetails: UserDetails) {
 }
 
 export function getAllCreditPacksAction(
-  sortBy: 'name' | 'price' | 'credits',
-  orderBy: 'asc' | 'desc'
+  sortBy: PackageSortMode,
+  orderBy: PackageOrderMode
 ) {
   return { type: GET_ALL_CREDIT_PACKS_ACTION, sortBy, orderBy }
 }
@@ -205,8 +207,8 @@ export function getAllCreditPacksActionSuccess(
 }
 
 export function getAllSubscriptionPlansAction(
-  sortBy: 'name' | 'price' | 'credits',
-  orderBy: 'asc' | 'desc'
+  sortBy: PackageSortMode,
+  orderBy: PackageOrderMode
 ) {
   return { type: GET_ALL_SUBSCRIPTION_PLANS_ACTION, sortBy, orderBy }
 }

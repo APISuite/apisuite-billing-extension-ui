@@ -23,6 +23,9 @@ import {
   CLEAR_SUBSCRIPTION_INFO,
 } from './ducks'
 
+export type PackageSortMode = 'name' | 'price' | 'credits'
+export type PackageOrderMode = 'asc' | 'desc'
+
 export interface User {
   fName: string
   id: number
@@ -94,12 +97,12 @@ export interface BillingProps {
   dialogInfo: BillingStore['subscriptionsDialogInfo']
   clearSubscriptionInfoAction: () => void
   getAllCreditPacksAction: (
-    sortBy: 'name' | 'price' | 'credits',
-    orderBy: 'asc' | 'desc'
+    sortBy: PackageSortMode,
+    orderBy: PackageOrderMode
   ) => void
   getAllSubscriptionPlansAction: (
-    sortBy: 'name' | 'price' | 'credits',
-    orderBy: 'asc' | 'desc'
+    sortBy: PackageSortMode,
+    orderBy: PackageOrderMode
   ) => void
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
@@ -122,8 +125,8 @@ export interface GetAllUserDetailsActionSuccess extends Action {
 
 export interface GetAllCreditPacksAction extends Action {
   type: typeof GET_ALL_CREDIT_PACKS_ACTION
-  sortBy: 'name' | 'price' | 'credits'
-  orderBy: 'asc' | 'desc'
+  sortBy: PackageSortMode
+  orderBy: PackageOrderMode
 }
 
 export interface GetAllCreditPacksActionSuccess extends Action {
@@ -133,8 +136,8 @@ export interface GetAllCreditPacksActionSuccess extends Action {
 
 export interface GetAllSubscriptionPlansAction extends Action {
   type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION
-  sortBy: 'name' | 'price' | 'credits'
-  orderBy: 'asc' | 'desc'
+  sortBy: PackageSortMode
+  orderBy: PackageOrderMode
 }
 
 export interface GetAllSubscriptionPlansActionSuccess extends Action {
