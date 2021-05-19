@@ -122,8 +122,8 @@ export interface GetAllUserDetailsActionSuccess extends Action {
 
 export interface GetAllCreditPacksAction extends Action {
   type: typeof GET_ALL_CREDIT_PACKS_ACTION
-  sortBy: string
-  orderBy: string
+  sortBy: 'name' | 'price' | 'credits'
+  orderBy: 'asc' | 'desc'
 }
 
 export interface GetAllCreditPacksActionSuccess extends Action {
@@ -133,8 +133,8 @@ export interface GetAllCreditPacksActionSuccess extends Action {
 
 export interface GetAllSubscriptionPlansAction extends Action {
   type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION
-  sortBy: string
-  orderBy: string
+  sortBy: 'name' | 'price' | 'credits'
+  orderBy: 'asc' | 'desc'
 }
 
 export interface GetAllSubscriptionPlansActionSuccess extends Action {
