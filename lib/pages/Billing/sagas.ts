@@ -1,7 +1,11 @@
-import { BILLING_API_URL } from '../../constants/endpoints'
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 
+import { BILLING_API_URL } from '../../constants/endpoints'
+import request from '../../util/request'
 import {
+  CANCEL_SUBSCRIPTION,
+  cancelSubscriptionActionError,
+  cancelSubscriptionActionSuccess,
   GET_ALL_CREDIT_PACKS_ACTION,
   GET_ALL_SUBSCRIPTION_PLANS_ACTION,
   GET_ALL_USER_DETAILS_ACTION,
@@ -14,21 +18,18 @@ import {
   getTransactionDetailsActionSuccess,
   PURCHASE_CREDITS_ACTION,
   purchaseCreditsActionError,
-  startSubscriptionActionError,
   START_SUBSCRIPTION_ACTION,
-  cancelSubscriptionActionSuccess,
-  cancelSubscriptionActionError,
-  CANCEL_SUBSCRIPTION,
+  startSubscriptionActionError,
   startSubscriptionActionSuccess,
 } from './ducks'
 import {
-  CancelSubscriptionAction,
+  GetAllCreditPacksAction,
+  GetAllSubscriptionPlansAction,
   GetAllUserDetailsAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
   StartSubscriptionAction,
 } from './types'
-import request from '../../util/request'
 
 export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
   try {
@@ -55,9 +56,9 @@ export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
   }
 }
 
-export function* getAllCreditPacksActionSaga() {
+export function* getAllCreditPacksActionSaga(action: GetAllCreditPacksAction) {
   try {
-    const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages`
+    const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getAllCreditPacksActionUrl,
@@ -80,9 +81,11 @@ export function* getAllCreditPacksActionSaga() {
   }
 }
 
-export function* getAllSubscriptionPlansActionSaga() {
+export function* getAllSubscriptionPlansActionSaga(
+  action: GetAllSubscriptionPlansAction
+) {
   try {
-    const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions`
+    const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getAllSubscriptionPlansActionUrl,

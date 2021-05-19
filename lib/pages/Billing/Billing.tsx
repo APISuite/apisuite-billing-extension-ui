@@ -38,8 +38,8 @@ const Billing: React.FC<BillingProps> = ({
   of all credit packs and subscription plans we presently offer, as well as
   all information we have on a user and his transactions. */
   useEffect(() => {
-    getAllCreditPacksAction()
-    getAllSubscriptionPlansAction()
+    getAllCreditPacksAction('price', 'asc')
+    getAllSubscriptionPlansAction('price', 'asc')
     getAllUserDetailsAction(user.id)
     getAllUserTransactionsAction()
   }, [successfullySubscribedToPlan])
