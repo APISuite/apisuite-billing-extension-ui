@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from '@apisuite/fe-base'
 
+import { BASE_URI } from '../../helpers/constants'
+import { convertDate } from '../../util/convertDate'
+import { currencyConverter } from '../../util/currencyConverter'
 import { TransactionCompleteProps } from './types'
 import Link from '../../components/Link'
 import useStyles from './styles'
-import { convertDate } from '../../util/convertDate'
-import { currencyConverter } from '../../util/currencyConverter'
 
 const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   getTransactionDetailsAction,
@@ -40,7 +41,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
           {t('transactionComplete.goToMarketplaceButtonLabel')}
         </Link>
 
-        <Link className={classes.goToBillingButton} href="/billing">
+        <Link className={classes.goToBillingButton} href={BASE_URI}>
           {t('transactionComplete.goToBillingButtonLabel')}
         </Link>
       </div>
