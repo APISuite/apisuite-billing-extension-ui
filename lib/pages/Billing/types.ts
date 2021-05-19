@@ -93,8 +93,14 @@ export interface BillingProps {
   allUserTransactions: TransactionDetails[]
   dialogInfo: BillingStore['subscriptionsDialogInfo']
   clearSubscriptionInfoAction: () => void
-  getAllCreditPacksAction: () => void
-  getAllSubscriptionPlansAction: () => void
+  getAllCreditPacksAction: (
+    sortBy: 'name' | 'price' | 'credits',
+    orderBy: 'asc' | 'desc'
+  ) => void
+  getAllSubscriptionPlansAction: (
+    sortBy: 'name' | 'price' | 'credits',
+    orderBy: 'asc' | 'desc'
+  ) => void
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
   purchaseCreditsAction: (creditPackID: number) => void
@@ -116,6 +122,8 @@ export interface GetAllUserDetailsActionSuccess extends Action {
 
 export interface GetAllCreditPacksAction extends Action {
   type: typeof GET_ALL_CREDIT_PACKS_ACTION
+  sortBy: string
+  orderBy: string
 }
 
 export interface GetAllCreditPacksActionSuccess extends Action {
@@ -125,6 +133,8 @@ export interface GetAllCreditPacksActionSuccess extends Action {
 
 export interface GetAllSubscriptionPlansAction extends Action {
   type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION
+  sortBy: string
+  orderBy: string
 }
 
 export interface GetAllSubscriptionPlansActionSuccess extends Action {

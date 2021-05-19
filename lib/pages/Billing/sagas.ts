@@ -23,6 +23,8 @@ import {
   startSubscriptionActionSuccess,
 } from './ducks'
 import {
+  GetAllCreditPacksAction,
+  GetAllSubscriptionPlansAction,
   GetAllUserDetailsAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
@@ -54,9 +56,9 @@ export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
   }
 }
 
-export function* getAllCreditPacksActionSaga() {
+export function* getAllCreditPacksActionSaga(action: GetAllCreditPacksAction) {
   try {
-    const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages`
+    const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getAllCreditPacksActionUrl,
@@ -73,29 +75,17 @@ export function* getAllCreditPacksActionSaga() {
       priceOfCreditPack: creditPack.price,
     }))
 
-    const sortedCreditPacks = allCreditPacks.sort(
-      (creditPackOne, creditPackTwo) => {
-        if (creditPackOne.priceOfCreditPack < creditPackTwo.priceOfCreditPack) {
-          return -1
-        } else if (
-          creditPackOne.priceOfCreditPack > creditPackTwo.priceOfCreditPack
-        ) {
-          return 1
-        } else {
-          return 0
-        }
-      }
-    )
-
-    yield put(getAllCreditPacksActionSuccess(sortedCreditPacks))
+    yield put(getAllCreditPacksActionSuccess(allCreditPacks))
   } catch (error) {
     console.log('Error fetching all credit packs.')
   }
 }
 
-export function* getAllSubscriptionPlansActionSaga() {
+export function* getAllSubscriptionPlansActionSaga(
+  action: GetAllSubscriptionPlansAction
+) {
   try {
-    const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions`
+    const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getAllSubscriptionPlansActionUrl,
@@ -113,25 +103,7 @@ export function* getAllSubscriptionPlansActionSaga() {
       priceOfSubscriptionPlan: subscriptionPlan.price,
     }))
 
-    const sortedSubscriptionPlans = allSubscriptionPlans.sort(
-      (subscriptionPlanOne, subscriptionPlanTwo) => {
-        if (
-          subscriptionPlanOne.priceOfSubscriptionPlan <
-          subscriptionPlanTwo.priceOfSubscriptionPlan
-        ) {
-          return -1
-        } else if (
-          subscriptionPlanOne.priceOfSubscriptionPlan >
-          subscriptionPlanTwo.priceOfSubscriptionPlan
-        ) {
-          return 1
-        } else {
-          return 0
-        }
-      }
-    )
-
-    yield put(getAllSubscriptionPlansActionSuccess(sortedSubscriptionPlans))
+    yield put(getAllSubscriptionPlansActionSuccess(allSubscriptionPlans))
   } catch (error) {
     console.log('Error fetching all subscription plans.')
   }
