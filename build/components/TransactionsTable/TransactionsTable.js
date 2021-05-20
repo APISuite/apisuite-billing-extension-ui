@@ -2,10 +2,10 @@ import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded';
+import { convertDateAndTime } from '../../util/convertDateAndTime';
+import { currencyConverter } from '../../util/currencyConverter';
 import { useTranslation } from '@apisuite/fe-base';
 import useStyles from './styles';
-import { convertDate } from '../../util/convertDate';
-import { currencyConverter } from '../../util/currencyConverter';
 const TransactionsTable = ({ transactions, }) => {
     const classes = useStyles();
     const trans = useTranslation();
@@ -22,7 +22,7 @@ const TransactionsTable = ({ transactions, }) => {
                     React.createElement("p", { className: classes.transactionIDText }, transaction.transactionID),
                     React.createElement(CopyToClipboard, { text: transaction.transactionID },
                         React.createElement(FileCopyRoundedIcon, { className: classes.transactionIDIcon }))),
-                React.createElement("p", { className: classes.transactionDate }, convertDate(trans.i18n.language, transaction.transactionDate)),
+                React.createElement("p", { className: classes.transactionDate }, convertDateAndTime(trans.i18n.language, transaction.transactionDate)),
                 React.createElement("p", { className: clsx({
                         [classes.completeTransactionStatus]: transaction.transactionStatus === 'authorized' ||
                             transaction.transactionStatus === 'paid',

@@ -15,6 +15,7 @@ export default makeStyles((theme) => ({
     },
     creditPacksCatalogEntriesContainer: {
         display: 'flex',
+        flexFlow: 'wrap',
         marginBottom: 40,
     },
     creditPacksTitle: {
@@ -32,7 +33,7 @@ export default makeStyles((theme) => ({
         display: 'flex',
         height: 55,
         margin: '0px 12px 12px 0px',
-        maxWidth: 145,
+        maxWidth: 135,
         padding: 8,
         width: '100%',
     },
@@ -50,7 +51,7 @@ export default makeStyles((theme) => ({
         display: 'flex',
         height: 55,
         margin: '0px 12px 12px 0px',
-        maxWidth: 145,
+        maxWidth: 135,
         padding: 8,
         width: '100%',
     },

@@ -1,7 +1,7 @@
-import { BILLING_API_URL } from '../../constants/endpoints';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_DETAILS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getAllCreditPacksActionSuccess, getAllSubscriptionPlansActionSuccess, getAllUserDetailsActionSuccess, getAllUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, startSubscriptionActionError, START_SUBSCRIPTION_ACTION, cancelSubscriptionActionSuccess, cancelSubscriptionActionError, CANCEL_SUBSCRIPTION, startSubscriptionActionSuccess, } from './ducks';
+import { BILLING_API_URL } from '../../constants/endpoints';
 import request from '../../util/request';
+import { CANCEL_SUBSCRIPTION, cancelSubscriptionActionError, cancelSubscriptionActionSuccess, GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_DETAILS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getAllCreditPacksActionSuccess, getAllSubscriptionPlansActionSuccess, getAllUserDetailsActionSuccess, getAllUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, START_SUBSCRIPTION_ACTION, startSubscriptionActionError, startSubscriptionActionSuccess, } from './ducks';
 export function* getAllUserDetailsActionSaga(action) {
     try {
         const getAllUserDetailsActionUrl = `${BILLING_API_URL}/users/${action.userID}`;
@@ -24,9 +24,9 @@ export function* getAllUserDetailsActionSaga(action) {
         console.log('Error fetching all user details.');
     }
 }
-export function* getAllCreditPacksActionSaga() {
+export function* getAllCreditPacksActionSaga(action) {
     try {
-        const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages`;
+        const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`;
         const response = yield call(request, {
             url: getAllCreditPacksActionUrl,
             method: 'GET',
@@ -46,9 +46,9 @@ export function* getAllCreditPacksActionSaga() {
         console.log('Error fetching all credit packs.');
     }
 }
-export function* getAllSubscriptionPlansActionSaga() {
+export function* getAllSubscriptionPlansActionSaga(action) {
     try {
-        const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions`;
+        const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`;
         const response = yield call(request, {
             url: getAllSubscriptionPlansActionUrl,
             method: 'GET',

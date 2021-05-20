@@ -1,5 +1,7 @@
 import { Action } from 'redux';
 import { GET_ALL_CREDIT_PACKS_ACTION_SUCCESS, GET_ALL_CREDIT_PACKS_ACTION, GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_ALL_SUBSCRIPTION_PLANS_ACTION, GET_ALL_USER_DETAILS_ACTION_SUCCESS, GET_ALL_USER_DETAILS_ACTION, GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, GET_ALL_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION_SUCCESS, GET_TRANSACTION_DETAILS_ACTION, PURCHASE_CREDITS_ACTION_ERROR, PURCHASE_CREDITS_ACTION_SUCCESS, PURCHASE_CREDITS_ACTION, START_SUBSCRIPTION_ACTION_ERROR, START_SUBSCRIPTION_ACTION_SUCCESS, START_SUBSCRIPTION_ACTION, CANCEL_SUBSCRIPTION, CANCEL_SUBSCRIPTION_SUCCESS, CANCEL_SUBSCRIPTION_ERROR, CLEAR_SUBSCRIPTION_INFO } from './ducks';
+export declare type PackageSortMode = 'name' | 'price' | 'credits';
+export declare type PackageOrderMode = 'asc' | 'desc';
 export interface User {
     fName: string;
     id: number;
@@ -64,8 +66,8 @@ export interface BillingProps {
     allUserTransactions: TransactionDetails[];
     dialogInfo: BillingStore['subscriptionsDialogInfo'];
     clearSubscriptionInfoAction: () => void;
-    getAllCreditPacksAction: () => void;
-    getAllSubscriptionPlansAction: () => void;
+    getAllCreditPacksAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
+    getAllSubscriptionPlansAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
     getAllUserDetailsAction: (userID: number) => void;
     getAllUserTransactionsAction: () => void;
     purchaseCreditsAction: (creditPackID: number) => void;
@@ -84,6 +86,8 @@ export interface GetAllUserDetailsActionSuccess extends Action {
 }
 export interface GetAllCreditPacksAction extends Action {
     type: typeof GET_ALL_CREDIT_PACKS_ACTION;
+    sortBy: PackageSortMode;
+    orderBy: PackageOrderMode;
 }
 export interface GetAllCreditPacksActionSuccess extends Action {
     type: typeof GET_ALL_CREDIT_PACKS_ACTION_SUCCESS;
@@ -91,6 +95,8 @@ export interface GetAllCreditPacksActionSuccess extends Action {
 }
 export interface GetAllSubscriptionPlansAction extends Action {
     type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION;
+    sortBy: PackageSortMode;
+    orderBy: PackageOrderMode;
 }
 export interface GetAllSubscriptionPlansActionSuccess extends Action {
     type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS;

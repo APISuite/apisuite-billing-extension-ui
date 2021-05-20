@@ -1,4 +1,4 @@
-import { BillingActions, BillingStore, CreditPackDetails, TransactionDetails, UserDetails } from './types';
+import { BillingActions, BillingStore, CreditPackDetails, PackageOrderMode, PackageSortMode, TransactionDetails, UserDetails } from './types';
 /** Action types */
 export declare const GET_ALL_USER_DETAILS_ACTION = "Billing/GET_ALL_USER_DETAILS_ACTION";
 export declare const GET_ALL_USER_DETAILS_ACTION_SUCCESS = "Billing/GET_ALL_USER_DETAILS_ACTION_SUCCESS";
@@ -31,15 +31,19 @@ export declare function getAllUserDetailsActionSuccess(allUserDetails: UserDetai
     type: string;
     allUserDetails: UserDetails;
 };
-export declare function getAllCreditPacksAction(): {
+export declare function getAllCreditPacksAction(sortBy: PackageSortMode, orderBy: PackageOrderMode): {
     type: string;
+    sortBy: PackageSortMode;
+    orderBy: "desc" | "asc";
 };
 export declare function getAllCreditPacksActionSuccess(allCreditPacks: CreditPackDetails[]): {
     type: string;
     allCreditPacks: CreditPackDetails[];
 };
-export declare function getAllSubscriptionPlansAction(): {
+export declare function getAllSubscriptionPlansAction(sortBy: PackageSortMode, orderBy: PackageOrderMode): {
     type: string;
+    sortBy: PackageSortMode;
+    orderBy: "desc" | "asc";
 };
 export declare function getAllSubscriptionPlansActionSuccess(allSubscriptionPlans: CreditPackDetails[]): {
     type: string;

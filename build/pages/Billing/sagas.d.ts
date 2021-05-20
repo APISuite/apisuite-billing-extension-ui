@@ -1,13 +1,13 @@
-import { GetAllUserDetailsAction, GetTransactionDetailsAction, PurchaseCreditsAction, StartSubscriptionAction } from './types';
+import { GetAllCreditPacksAction, GetAllSubscriptionPlansAction, GetAllUserDetailsAction, GetTransactionDetailsAction, PurchaseCreditsAction, StartSubscriptionAction } from './types';
 export declare function getAllUserDetailsActionSaga(action: GetAllUserDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allUserDetails: import("./types").UserDetails;
 }>, void, unknown>;
-export declare function getAllCreditPacksActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+export declare function getAllCreditPacksActionSaga(action: GetAllCreditPacksAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allCreditPacks: import("./types").CreditPackDetails[];
 }>, void, unknown>;
-export declare function getAllSubscriptionPlansActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+export declare function getAllSubscriptionPlansActionSaga(action: GetAllSubscriptionPlansAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allSubscriptionPlans: import("./types").CreditPackDetails[];
 }>, void, unknown>;

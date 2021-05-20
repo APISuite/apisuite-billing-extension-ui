@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from '@apisuite/fe-base';
-import Link from '../../components/Link';
-import useStyles from './styles';
+import { BASE_URI } from '../../helpers/constants';
 import { convertDate } from '../../util/convertDate';
 import { currencyConverter } from '../../util/currencyConverter';
+import Link from '../../components/Link';
+import useStyles from './styles';
 const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, }) => {
     const classes = useStyles();
     const trans = useTranslation();
@@ -22,7 +23,7 @@ const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, 
             t('transactionComplete.subtitlePartTwo')),
         React.createElement("div", { className: classes.buttonsContainer },
             React.createElement(Link, { className: classes.goToMarketplaceButton, href: "/marketplace" }, t('transactionComplete.goToMarketplaceButtonLabel')),
-            React.createElement(Link, { className: classes.goToBillingButton, href: "/billing" }, t('transactionComplete.goToBillingButtonLabel'))),
+            React.createElement(Link, { className: classes.goToBillingButton, href: BASE_URI }, t('transactionComplete.goToBillingButtonLabel'))),
         React.createElement("hr", { className: classes.separator }),
         React.createElement("p", { className: classes.transactionDetailsTitle }, t('transactionComplete.transactionDetails.title')),
         React.createElement("div", { className: classes.allTransactionDetailsContainer },

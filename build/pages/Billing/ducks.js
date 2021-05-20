@@ -140,14 +140,14 @@ export function getAllUserDetailsAction(userID) {
 export function getAllUserDetailsActionSuccess(allUserDetails) {
     return { type: GET_ALL_USER_DETAILS_ACTION_SUCCESS, allUserDetails };
 }
-export function getAllCreditPacksAction() {
-    return { type: GET_ALL_CREDIT_PACKS_ACTION };
+export function getAllCreditPacksAction(sortBy, orderBy) {
+    return { type: GET_ALL_CREDIT_PACKS_ACTION, sortBy, orderBy };
 }
 export function getAllCreditPacksActionSuccess(allCreditPacks) {
     return { type: GET_ALL_CREDIT_PACKS_ACTION_SUCCESS, allCreditPacks };
 }
-export function getAllSubscriptionPlansAction() {
-    return { type: GET_ALL_SUBSCRIPTION_PLANS_ACTION };
+export function getAllSubscriptionPlansAction(sortBy, orderBy) {
+    return { type: GET_ALL_SUBSCRIPTION_PLANS_ACTION, sortBy, orderBy };
 }
 export function getAllSubscriptionPlansActionSuccess(allSubscriptionPlans) {
     return {
