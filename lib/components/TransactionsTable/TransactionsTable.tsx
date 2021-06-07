@@ -1,116 +1,137 @@
 import React from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import clsx from 'clsx'
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  useTheme,
+  useTranslation,
+} from '@apisuite/fe-base'
 import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded'
 
 import { convertDateAndTime } from '../../util/convertDateAndTime'
 import { currencyConverter } from '../../util/currencyConverter'
 import { TransactionsTableProps } from './types'
-import { useTranslation } from '@apisuite/fe-base'
 import useStyles from './styles'
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({
   transactions,
 }) => {
   const classes = useStyles()
-
   const trans = useTranslation()
+  const { spacing } = useTheme()
 
   const t = (str: string) => {
     return trans.t(`extensions.billing.${str}`)
   }
 
-  const generateTransactionsTableEntries = () => {
-    const arrayOfTableEntries = transactions.map((transaction, index) => {
-      return (
-        <div
-          className={
-            index % 2 === 0
-              ? classes.regularTransactionsTableEntry
-              : classes.alternativeTransactionsTableEntry
-          }
-          key={`transactionsTableEntry${index}`}
-        >
-          <p className={classes.transactionDescription}>
-            {transaction.transactionDescription}
-          </p>
-
-          <div className={classes.transactionID}>
-            <p className={classes.transactionIDText}>
-              {transaction.transactionID}
-            </p>
-
-            <CopyToClipboard text={transaction.transactionID}>
-              <FileCopyRoundedIcon className={classes.transactionIDIcon} />
-            </CopyToClipboard>
-          </div>
-
-          <p className={classes.transactionDate}>
-            {convertDateAndTime(
-              trans.i18n.language,
-              transaction.transactionDate
-            )}
-          </p>
-
-          <p
-            className={clsx({
-              [classes.completeTransactionStatus]:
-                transaction.transactionStatus === 'authorized' ||
-                transaction.transactionStatus === 'paid',
-              [classes.failedTransactionStatus]:
-                transaction.transactionStatus === 'failed',
-              [classes.incompleteTransactionStatus]:
-                transaction.transactionStatus === 'canceled' ||
-                transaction.transactionStatus === 'expired',
-              [classes.openTransactionStatus]:
-                transaction.transactionStatus === 'open',
-              [classes.pendingTransactionStatus]:
-                transaction.transactionStatus === 'pending',
-            })}
-          >
-            {transaction.transactionStatus}
-          </p>
-
-          <p className={classes.transactionAmount}>
-            {currencyConverter(
-              trans.i18n.language,
-              transaction.transactionAmount.transactionValue,
-              transaction.transactionAmount.transactionCurrency
-            )}
-          </p>
-        </div>
-      )
-    })
-
-    return arrayOfTableEntries
-  }
-
   return (
-    <div className={classes.transactionsTable}>
-      <div className={classes.transactionsTableHeader}>
-        <p className={classes.transactionDescription}>
-          {t('transactionsTable.description')}
-        </p>
+    <TableContainer component={Paper} variant="outlined">
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell style={{ paddingLeft: spacing(5) }}>
+              <Typography variant="body1">
+                <b>{t('transactionsTable.description')}</b>
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="body1">
+                <b>{t('transactionsTable.reference')}</b>
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="body1">
+                <b>{t('transactionsTable.dateOfPurchase')}</b>
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="body1">
+                <b>{t('transactionsTable.status')}</b>
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="body1">
+                <b>{t('transactionsTable.price')}</b>
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
 
-        <p className={classes.transactionID}>
-          {t('transactionsTable.reference')}
-        </p>
+        <TableBody>
+          {transactions.map((transaction) => (
+            <TableRow key={transaction.transactionID}>
+              <TableCell style={{ paddingLeft: spacing(5) }}>
+                <Typography variant="body2">
+                  {transaction.transactionDescription}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Box display="flex">
+                  <Box mr={1.5}>
+                    <Typography variant="body2">
+                      {transaction.transactionID}
+                    </Typography>
+                  </Box>
 
-        <p className={classes.transactionDate}>
-          {t('transactionsTable.dateOfPurchase')}
-        </p>
-
-        <p className={classes.transactionStatus}>
-          {t('transactionsTable.status')}
-        </p>
-
-        <p className={classes.transactionAmount}>
-          {t('transactionsTable.price')}
-        </p>
-      </div>
-
-      {generateTransactionsTableEntries()}
-    </div>
+                  <CopyToClipboard text={transaction.transactionID}>
+                    <FileCopyRoundedIcon
+                      className={classes.transactionIDIcon}
+                    />
+                  </CopyToClipboard>
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body2">
+                  {convertDateAndTime(
+                    trans.i18n.language,
+                    transaction.transactionDate
+                  )}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  variant="body2"
+                  // TODO: revise this
+                  className={clsx({
+                    [classes.completeTransactionStatus]:
+                      transaction.transactionStatus === 'authorized' ||
+                      transaction.transactionStatus === 'paid',
+                    [classes.failedTransactionStatus]:
+                      transaction.transactionStatus === 'failed',
+                    [classes.incompleteTransactionStatus]:
+                      transaction.transactionStatus === 'canceled' ||
+                      transaction.transactionStatus === 'expired',
+                    [classes.openTransactionStatus]:
+                      transaction.transactionStatus === 'open',
+                    [classes.pendingTransactionStatus]:
+                      transaction.transactionStatus === 'pending',
+                  })}
+                >
+                  {transaction.transactionStatus}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body2">
+                  {currencyConverter(
+                    trans.i18n.language,
+                    transaction.transactionAmount.transactionValue,
+                    transaction.transactionAmount.transactionCurrency
+                  )}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 

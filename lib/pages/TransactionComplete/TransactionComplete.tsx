@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react'
-import { useTranslation } from '@apisuite/fe-base'
+import {
+  Box,
+  Button,
+  Divider,
+  Typography,
+  useTheme,
+  useTranslation,
+} from '@apisuite/fe-base'
 
 import { BASE_URI } from '../../helpers/constants'
 import { convertDate } from '../../util/convertDate'
@@ -13,8 +20,8 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   transactionDetails,
 }) => {
   const classes = useStyles()
-
   const trans = useTranslation()
+  const { palette } = useTheme()
 
   const t = (str: string) => {
     return trans.t(`extensions.billing.${str}`)
@@ -29,28 +36,45 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      <p className={classes.title}>{t('transactionComplete.title')}</p>
+      <Typography variant="h1">{t('transactionComplete.title')}</Typography>
 
-      <p className={classes.subtitle}>
-        <span>{t('transactionComplete.subtitlePartOne')}</span>
-        {t('transactionComplete.subtitlePartTwo')}
-      </p>
+      <Box my={3}>
+        <Typography variant="h5">
+          {t('transactionComplete.subtitle')}
+        </Typography>
+      </Box>
 
-      <div className={classes.buttonsContainer}>
-        <Link className={classes.goToMarketplaceButton} href="/marketplace">
+      <Box display="flex">
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          href="/marketplace"
+        >
           {t('transactionComplete.goToMarketplaceButtonLabel')}
-        </Link>
+        </Button>
 
-        <Link className={classes.goToBillingButton} href={BASE_URI}>
-          {t('transactionComplete.goToBillingButtonLabel')}
-        </Link>
-      </div>
+        <Box ml={1.5}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            href={BASE_URI}
+          >
+            {t('transactionComplete.goToBillingButtonLabel')}
+          </Button>
+        </Box>
+      </Box>
 
-      <hr className={classes.separator} />
+      <Box my={5}>
+        <Divider style={{ backgroundColor: palette.primary.main }} />
+      </Box>
 
-      <p className={classes.transactionDetailsTitle}>
-        {t('transactionComplete.transactionDetails.title')}
-      </p>
+      <Box mb={3}>
+        <Typography variant="h3">
+          {t('transactionComplete.transactionDetails.title')}
+        </Typography>
+      </Box>
 
       <div className={classes.allTransactionDetailsContainer}>
         <p className={classes.transactionTitle}>

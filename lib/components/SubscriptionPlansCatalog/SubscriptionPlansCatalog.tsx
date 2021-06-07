@@ -5,6 +5,7 @@ import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUnche
 import { SubscriptionPlansCatalogProps } from './types'
 import clsx from 'clsx'
 import useStyles from './styles'
+import { Typography } from '@material-ui/core'
 
 const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
   activeSubscriptionPlanID,
@@ -52,34 +53,24 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
             )}
 
             <div className={classes.subscriptionPlanDetailsContainer}>
-              <div
-                className={clsx({
-                  [classes.enabledLeftDetailsContainer]:
-                    subscriptionPlan.idOfSubscriptionPlan !==
-                    activeSubscriptionPlanID,
-                  [classes.disabledLeftDetailsContainer]:
-                    subscriptionPlan.idOfSubscriptionPlan ===
-                    activeSubscriptionPlanID,
-                })}
-              >
-                <p>{subscriptionPlan.nameOfSubscriptionPlan}</p>
+              <div>
+                <Typography variant="body2">
+                  {subscriptionPlan.nameOfSubscriptionPlan}
+                </Typography>
 
-                <p>{subscriptionPlan.creditsInSubscriptionPlan} credits</p>
+                <Typography variant="body1">
+                  <b>{subscriptionPlan.creditsInSubscriptionPlan} credits</b>
+                </Typography>
               </div>
 
-              <div
-                className={clsx({
-                  [classes.enabledRightDetailsContainer]:
-                    subscriptionPlan.idOfSubscriptionPlan !==
-                    activeSubscriptionPlanID,
-                  [classes.disabledRightDetailsContainer]:
-                    subscriptionPlan.idOfSubscriptionPlan ===
-                    activeSubscriptionPlanID,
-                })}
-              >
-                <p>€ {subscriptionPlan.priceOfSubscriptionPlan}</p>
+              <div>
+                <Typography variant="body1">
+                  <b>€ {subscriptionPlan.priceOfSubscriptionPlan}</b>
+                </Typography>
 
-                <p>{subscriptionPlan.periodicityOfSubscriptionPlan}</p>
+                <Typography variant="body2">
+                  {subscriptionPlan.periodicityOfSubscriptionPlan}
+                </Typography>
               </div>
             </div>
 
