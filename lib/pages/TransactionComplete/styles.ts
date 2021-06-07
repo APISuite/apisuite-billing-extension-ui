@@ -8,79 +8,18 @@ export default makeStyles((theme) => ({
     padding: 24,
   },
 
-  buttonsContainer: {
-    display: 'flex',
-  },
-
-  goToBillingButton: {
-    backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: theme.shape.borderRadius,
-    color: `${theme.palette.text.hint} !important`,
-    fontSize: 16,
-    fontWeight: 500,
-    height: 45,
-    padding: '8px 0px',
-    textAlign: 'center',
-    textDecoration: 'none',
-    textTransform: 'none',
-    width: 180,
-
-    '&:hover': {
-      backgroundColor: theme.palette.background.paper,
-    },
-  },
-
-  goToMarketplaceButton: {
-    backgroundColor: theme.palette.primary.main,
-    border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: theme.shape.borderRadius,
-    color: `${theme.palette.primary.contrastText} !important`,
-    fontSize: 16,
-    fontWeight: 500,
-    height: 45,
-    marginRight: 12,
-    padding: '8px 0px',
-    textAlign: 'center',
-    textDecoration: 'none',
-    textTransform: 'none',
-    width: 220,
-
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
-
   pageContentContainer: {
-    margin: '0px auto',
-    maxWidth: 550,
-    width: '100%',
-  },
-
-  separator: {
-    border: `1px solid ${theme.palette.grey[200]}`,
-    borderRadius: theme.shape.borderRadius,
-    margin: '40px 0px',
-    width: '100%',
-  },
-
-  subtitle: {
-    color: theme.palette.text.secondary,
-    fontSize: 20,
-    fontWeight: 300,
-    marginBottom: 40,
-
-    '& > span': {
-      display: 'block',
-      fontWeight: 500,
+    margin: '0 auto',
+    width: 'calc(100% - 24px)',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: theme.breakpoints.values.md - 24,
     },
-  },
-
-  title: {
-    color: theme.palette.text.primary,
-    fontSize: 42,
-    fontWeight: 700,
-    marginBottom: 24,
+    [theme.breakpoints.up('lg')]: {
+      maxWidth: theme.breakpoints.values.md - 24,
+    },
+    [theme.breakpoints.up('xl')]: {
+      maxWidth: theme.breakpoints.values.md - 24,
+    },
   },
 
   transactionDetailContainer: {
@@ -89,35 +28,24 @@ export default makeStyles((theme) => ({
     marginTop: 5,
 
     '& > :first-child': {
+      ...theme.typography.body1,
       color: theme.palette.text.secondary,
-      fontSize: 16,
-      fontWeight: 300,
       maxWidth: 140,
       textAlign: 'left',
       width: '100%',
     },
 
     '& > :last-child': {
-      color: theme.palette.text.hint,
-      fontSize: 14,
-      fontWeight: 400,
+      ...theme.typography.body1,
       maxWidth: 325,
       textAlign: 'right',
       width: '100%',
     },
   },
 
-  transactionDetailsTitle: {
-    color: theme.palette.text.primary,
-    fontSize: 22,
-    fontWeight: 400,
-    marginBottom: 24,
-  },
-
   transactionTitle: {
-    color: theme.palette.text.primary,
-    fontSize: 18,
-    fontWeight: 500,
+    ...theme.typography.body1,
+    fontWeight: 700,
     marginBottom: 15,
 
     '& > span': {
