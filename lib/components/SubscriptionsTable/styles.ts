@@ -3,17 +3,11 @@ import { makeStyles } from '@apisuite/fe-base'
 export default makeStyles((theme) => ({
   subsTableEntry: {
     '& > :first-child': {
-      color: theme.palette.text.primary,
-      fontSize: 14,
-      fontWeight: 500,
       textAlign: 'left',
       paddingLeft: 40,
     },
 
     '& > :nth-child(2)': {
-      color: theme.palette.text.primary,
-      fontSize: 14,
-      fontWeight: 500,
       textAlign: 'right',
     },
 
@@ -31,17 +25,11 @@ export default makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.grey[100]}`,
 
     '& > :first-child': {
-      color: theme.palette.text.primary,
-      fontSize: 16,
-      fontWeight: 500,
       textAlign: 'left',
       padding: '12px 0px 12px 40px',
     },
 
     '& > :nth-child(2)': {
-      color: theme.palette.text.primary,
-      fontSize: 16,
-      fontWeight: 500,
       textAlign: 'right',
       padding: '12px 0px 12px 0px',
     },

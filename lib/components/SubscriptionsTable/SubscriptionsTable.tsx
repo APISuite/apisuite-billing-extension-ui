@@ -6,6 +6,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Typography,
   useTranslation,
 } from '@apisuite/fe-base'
 import { convertDate } from '../../util/convertDate'
@@ -58,8 +59,13 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
       <div className={classes.subsTableWrapper}>
         <table className={classes.subsTable}>
           <tr className={classes.subsTableHeader}>
-            <th>{t('subscriptionsTable.title')}</th>
-            <th>{t('subscriptionsTable.subtitle')}</th>
+            <Typography component="th" variant="body1">
+              <b>{t('subscriptionsTable.title')}</b>
+            </Typography>
+
+            <Typography component="th" variant="body1">
+              <b>{t('subscriptionsTable.subtitle')}</b>
+            </Typography>
             <th />
           </tr>
 
@@ -69,10 +75,14 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                 className={classes.subsTableEntry}
                 key={`subTableEntry${index}`}
               >
-                <td>{sub.subName}</td>
-                <td>
+                <Typography component="td" variant="body2">
+                  {sub.subName}
+                </Typography>
+
+                <Typography component="td" variant="body2">
                   {convertDate(trans.i18n.language, sub.subNextBillingDate)}
-                </td>
+                </Typography>
+
                 <td>
                   <IconButton onClick={handleMenuClick}>
                     <MoreVertIcon />

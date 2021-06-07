@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, useTranslation } from '@apisuite/fe-base'
+import {
+  Box,
+  Button,
+  Typography,
+  useTheme,
+  useTranslation,
+} from '@apisuite/fe-base'
 
 import { BillingProps } from './types'
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog'
@@ -28,6 +34,7 @@ const Billing: React.FC<BillingProps> = ({
 }) => {
   const classes = useStyles()
   const trans = useTranslation()
+  const { palette } = useTheme()
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const t = (str: string, ...args) => {
@@ -180,13 +187,17 @@ const Billing: React.FC<BillingProps> = ({
   return (
     <>
       <main className={`page-container ${classes.billingContentContainer}`}>
-        <p className={classes.title}>{t('title')}</p>
+        <Typography variant="h2">{t('title')}</Typography>
 
-        <p className={classes.subtitle}>{t('subtitle')}</p>
+        <Typography variant="body1" color="textSecondary">
+          {t('subtitle')}
+        </Typography>
 
         {/* 'Your balance' section */}
 
-        <p className={classes.sectionTitle}>{t('yourBalance')}</p>
+        <Box mt={1.5} mb={3}>
+          <Typography variant="h3">{t('yourBalance')}</Typography>
+        </Box>
 
         <div
           className={
@@ -195,21 +206,25 @@ const Billing: React.FC<BillingProps> = ({
               : classes.yourCreditBalanceContainerWithoutCreditPacks
           }
         >
-          <div className={classes.creditBalanceContainer}>
-            <p>{t('availableCredits')}</p>
+          <Box color={palette.common.white}>
+            <Typography variant="body1" color="inherit">
+              {t('availableCredits')}
+            </Typography>
 
-            <p>{allUserDetails.userCredits}</p>
-          </div>
+            <Typography variant="h1" color="inherit">
+              {allUserDetails.userCredits}
+            </Typography>
+          </Box>
 
           {wantsToTopUpCredits ? (
-            <div>
+            <Box color={palette.common.white}>
               <hr className={classes.separator} />
 
               {allCreditPacks.length !== 0 ? (
                 <>
-                  <p className={classes.creditPacksTitle}>
+                  <Typography variant="body2" color="inherit" gutterBottom>
                     {t('creditPacksTitle')}
-                  </p>
+                  </Typography>
 
                   <CreditPacksCatalog
                     arrayOfCreditPacks={allCreditPacks}
@@ -218,18 +233,18 @@ const Billing: React.FC<BillingProps> = ({
                   />
                 </>
               ) : (
-                <p className={classes.retrievingAllAvailableCreditPacks}>
+                <Typography variant="body2">
                   {t('retrievingCreditPacks')}
-                </p>
+                </Typography>
               )}
 
               <div>
                 <Button
-                  className={
-                    currentlySelectedCreditPack.idOfCreditPack
-                      ? classes.enabledPurchaseCreditsButton
-                      : classes.disabledPurchaseCreditsButton
-                  }
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  disableElevation
+                  disabled={!currentlySelectedCreditPack.idOfCreditPack}
                   onClick={() => {
                     purchaseCreditsAction(
                       currentlySelectedCreditPack.idOfCreditPack
@@ -239,17 +254,29 @@ const Billing: React.FC<BillingProps> = ({
                   {t('purchaseCreditsButtonLabel')}
                 </Button>
 
-                <Button
-                  className={classes.cancelCreditsPurchaseButton}
-                  onClick={handleWantsToTopUpCredits}
+                <Box
+                  clone
+                  ml={1}
+                  style={{ backgroundColor: palette.common.white }}
                 >
-                  {t('cancelCreditsPurchaseButtonLabel')}
-                </Button>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    color="primary"
+                    disableElevation
+                    onClick={handleWantsToTopUpCredits}
+                  >
+                    {t('cancelCreditsPurchaseButtonLabel')}
+                  </Button>
+                </Box>
               </div>
-            </div>
+            </Box>
           ) : (
             <Button
-              className={classes.addCreditsButton}
+              variant="contained"
+              size="large"
+              color="primary"
+              disableElevation
               onClick={handleWantsToTopUpCredits}
             >
               {t('addCreditsButtonLabel')}
@@ -258,8 +285,9 @@ const Billing: React.FC<BillingProps> = ({
         </div>
 
         {/* 'Your subscription' section */}
-
-        <p className={classes.sectionTitle}>{t('yourSubscriptionsTitle')}</p>
+        <Box clone mb={3}>
+          <Typography variant="h3">{t('yourSubscriptionsTitle')}</Typography>
+        </Box>
 
         {allUserDetails.subscriptionID ? (
           <>
@@ -278,9 +306,9 @@ const Billing: React.FC<BillingProps> = ({
               onCancelSubscription={cancelSubscriptionAction}
             />
 
-            <p className={classes.subscriptionSelectionTitle}>
-              {t('chooseNewSubscription')}
-            </p>
+            <Box clone mb={3}>
+              <Typography variant="h3">{t('chooseNewSubscription')}</Typography>
+            </Box>
 
             <SubscriptionPlansCatalog
               activeSubscriptionPlanID={parseInt(allUserDetails.subscriptionID)}
@@ -292,11 +320,11 @@ const Billing: React.FC<BillingProps> = ({
             />
 
             <Button
-              className={
-                hasSelectedSubscriptionPlan
-                  ? classes.enabledStartSubscriptionButton
-                  : classes.disabledStartSubscriptionButton
-              }
+              variant="contained"
+              color="primary"
+              size="large"
+              disableElevation
+              disabled={!hasSelectedSubscriptionPlan}
               onClick={handleWantsToChangeSubscriptionPlan}
             >
               {t('startNewSubscriptionButtonLabel')}
@@ -304,15 +332,19 @@ const Billing: React.FC<BillingProps> = ({
           </>
         ) : (
           <>
-            <p className={classes.noActiveSubscriptionText}>
-              {t('noActiveSubscriptions')}
-            </p>
+            <Box clone mb={3}>
+              <Typography variant="body1">
+                {t('noActiveSubscriptions')}
+              </Typography>
+            </Box>
 
             {allSubscriptionPlans.length !== 0 ? (
               <>
-                <p className={classes.subscriptionSelectionTitle}>
-                  {t('chooseSubscription')}
-                </p>
+                <Box clone mb={3}>
+                  <Typography variant="h3">
+                    {t('chooseSubscription')}
+                  </Typography>
+                </Box>
 
                 <SubscriptionPlansCatalog
                   arrayOfSubscriptionPlans={allSubscriptionPlans}
@@ -330,12 +362,13 @@ const Billing: React.FC<BillingProps> = ({
               </p>
             )}
 
+            {/* FIXME */}
             <Button
-              className={
-                hasSelectedSubscriptionPlan
-                  ? classes.enabledStartSubscriptionButton
-                  : classes.disabledStartSubscriptionButton
-              }
+              variant="contained"
+              color="primary"
+              size="large"
+              disableElevation
+              disabled={!hasSelectedSubscriptionPlan}
               onClick={() => {
                 startSubscriptionAction(
                   currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
@@ -351,13 +384,17 @@ const Billing: React.FC<BillingProps> = ({
 
         {allUserTransactions.length !== 0 && (
           <>
-            <p className={classes.sectionTitle}>
-              {t('transactionHistoryTitle')}
-            </p>
+            <Box clone mt={5} mb={1.5}>
+              <Typography variant="h3">
+                {t('transactionHistoryTitle')}
+              </Typography>
+            </Box>
 
-            <p className={classes.sectionSubtitle}>
-              {t('transactionHistorySubtitle')}
-            </p>
+            <Box clone mb={3}>
+              <Typography variant="body1" color="textSecondary">
+                {t('transactionHistorySubtitle')}
+              </Typography>
+            </Box>
 
             <TransactionsTable transactions={allUserTransactions} />
           </>

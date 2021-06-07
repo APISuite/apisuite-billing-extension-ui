@@ -4,6 +4,7 @@ import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUnche
 
 import { CreditPacksCatalogProps } from './types'
 import useStyles from './styles'
+import { Box, Typography, useTheme } from '@material-ui/core'
 
 const CreditPacksCatalog: React.FC<CreditPacksCatalogProps> = ({
   arrayOfCreditPacks,
@@ -11,6 +12,7 @@ const CreditPacksCatalog: React.FC<CreditPacksCatalogProps> = ({
   handleCreditPackSelection,
 }) => {
   const classes = useStyles()
+  const { palette } = useTheme()
 
   const generateCatalogEntries = () => {
     const arrayOfCatalogEntries = arrayOfCreditPacks.map(
@@ -37,11 +39,15 @@ const CreditPacksCatalog: React.FC<CreditPacksCatalogProps> = ({
               />
             )}
 
-            <div className={classes.creditPackDetailsContainer}>
-              <p>€ {creditPack.priceOfCreditPack}</p>
+            <Box color={palette.text.primary}>
+              <Typography variant="body1" color="inherit">
+                <b>€ {creditPack.priceOfCreditPack}</b>
+              </Typography>
 
-              <p>{creditPack.creditsInCreditPack} Cr</p>
-            </div>
+              <Typography variant="body2" color="inherit">
+                {creditPack.creditsInCreditPack} Cr
+              </Typography>
+            </Box>
           </div>
         )
       }
