@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Button, IconButton, Menu, MenuItem, useTranslation, } from '@apisuite/fe-base';
+import { Button, IconButton, Menu, MenuItem, Typography, useTranslation, } from '@apisuite/fe-base';
 import { convertDate } from '../../util/convertDate';
 import { CustomizableDialog } from '../CustomizableDialog/CustomizableDialog';
 import useStyles from './styles';
@@ -35,13 +35,15 @@ const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
         React.createElement("div", { className: classes.subsTableWrapper },
             React.createElement("table", { className: classes.subsTable },
                 React.createElement("tr", { className: classes.subsTableHeader },
-                    React.createElement("th", null, t('subscriptionsTable.title')),
-                    React.createElement("th", null, t('subscriptionsTable.subtitle')),
+                    React.createElement(Typography, { component: "th", variant: "body1" },
+                        React.createElement("b", null, t('subscriptionsTable.title'))),
+                    React.createElement(Typography, { component: "th", variant: "body1" },
+                        React.createElement("b", null, t('subscriptionsTable.subtitle'))),
                     React.createElement("th", null)),
                 arrayOfSubs.map((sub, index) => {
                     return (React.createElement("tr", { className: classes.subsTableEntry, key: `subTableEntry${index}` },
-                        React.createElement("td", null, sub.subName),
-                        React.createElement("td", null, convertDate(trans.i18n.language, sub.subNextBillingDate)),
+                        React.createElement(Typography, { component: "td", variant: "body2" }, sub.subName),
+                        React.createElement(Typography, { component: "td", variant: "body2" }, convertDate(trans.i18n.language, sub.subNextBillingDate)),
                         React.createElement("td", null,
                             React.createElement(IconButton, { onClick: handleMenuClick },
                                 React.createElement(MoreVertIcon, null)),

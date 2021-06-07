@@ -1,37 +1,5 @@
 import { makeStyles } from '@apisuite/fe-base';
 export default makeStyles((theme) => ({
-    enabledLeftDetailsContainer: {
-        '& > :first-child': {
-            color: theme.palette.text.hint,
-            fontSize: 14,
-            fontWeight: 400,
-            marginBottom: -6,
-        },
-        '& > :last-child': {
-            color: theme.palette.text.primary,
-            fontSize: 16,
-            fontWeight: 500,
-        },
-    },
-    disabledLeftDetailsContainer: {
-        '& > :first-child': {
-            color: theme.palette.action.disabled,
-            fontSize: 14,
-            fontWeight: 400,
-            marginBottom: -6,
-        },
-        '& > :last-child': {
-            color: theme.palette.action.disabled,
-            fontSize: 16,
-            fontWeight: 500,
-        },
-    },
-    noActiveSubscriptionText: {
-        color: theme.palette.text.hint,
-        fontSize: 16,
-        fontWeight: 400,
-        marginBottom: 40,
-    },
     notSelectedSubscriptionPlanContainer: {
         alignItems: 'center',
         backgroundColor: theme.palette.background.paper,
@@ -50,32 +18,6 @@ export default makeStyles((theme) => ({
         color: theme.palette.text.primary,
         fontSize: 24,
         marginRight: 12,
-    },
-    enabledRightDetailsContainer: {
-        '& > :first-child': {
-            color: theme.palette.text.primary,
-            fontSize: 16,
-            fontWeight: 500,
-            marginBottom: -6,
-        },
-        '& > :last-child': {
-            color: theme.palette.text.hint,
-            fontSize: 14,
-            fontWeight: 400,
-        },
-    },
-    disabledRightDetailsContainer: {
-        '& > :first-child': {
-            color: theme.palette.action.disabled,
-            fontSize: 16,
-            fontWeight: 500,
-            marginBottom: -6,
-        },
-        '& > :last-child': {
-            color: theme.palette.action.disabled,
-            fontSize: 14,
-            fontWeight: 400,
-        },
     },
     selectedSubscriptionPlanContainer: {
         alignItems: 'center',
@@ -104,16 +46,10 @@ export default makeStyles((theme) => ({
     },
     subscriptionPlansCatalogEntriesContainer: {
         display: 'flex',
-        marginBottom: 40,
-    },
-    subscriptionSelectionTitle: {
-        color: theme.palette.text.primary,
-        fontSize: 18,
-        fontWeight: 500,
-        marginBottom: 24,
     },
     disabledSubscriptionPlanContainer: {
-        backgroundColor: theme.palette.action.disabled,
+        background: '#000',
+        opacity: theme.palette.action.disabledOpacity,
         borderRadius: 4,
         bottom: 0,
         cursor: 'default',

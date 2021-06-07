@@ -1,28 +1,9 @@
 import { makeStyles } from '@apisuite/fe-base';
 export default makeStyles((theme) => ({
-    creditPackDetailsContainer: {
-        '& > :first-child': {
-            color: theme.palette.text.primary,
-            fontSize: 16,
-            fontWeight: 500,
-            marginBottom: -10,
-        },
-        '& > :last-child': {
-            color: theme.palette.text.hint,
-            fontSize: 14,
-            fontWeight: 300,
-        },
-    },
     creditPacksCatalogEntriesContainer: {
         display: 'flex',
         flexFlow: 'wrap',
         marginBottom: 40,
-    },
-    creditPacksTitle: {
-        color: theme.palette.common.white,
-        fontSize: 14,
-        fontWeight: 300,
-        marginBottom: 12,
     },
     notSelectedCreditPackContainer: {
         alignItems: 'center',

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { useTranslation } from '@apisuite/fe-base';
+import { Box, Button, Divider, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
 import { BASE_URI } from '../../helpers/constants';
 import { convertDate } from '../../util/convertDate';
 import { currencyConverter } from '../../util/currencyConverter';
-import Link from '../../components/Link';
 import useStyles from './styles';
 const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, }) => {
     const classes = useStyles();
     const trans = useTranslation();
+    const { palette } = useTheme();
     const t = (str) => {
         return trans.t(`extensions.billing.${str}`);
     };
@@ -17,15 +17,17 @@ const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, 
         getTransactionDetailsAction(idOfTransaction);
     }, []);
     return (React.createElement("main", { className: `page-container ${classes.pageContentContainer}` },
-        React.createElement("p", { className: classes.title }, t('transactionComplete.title')),
-        React.createElement("p", { className: classes.subtitle },
-            React.createElement("span", null, t('transactionComplete.subtitlePartOne')),
-            t('transactionComplete.subtitlePartTwo')),
-        React.createElement("div", { className: classes.buttonsContainer },
-            React.createElement(Link, { className: classes.goToMarketplaceButton, href: "/marketplace" }, t('transactionComplete.goToMarketplaceButtonLabel')),
-            React.createElement(Link, { className: classes.goToBillingButton, href: BASE_URI }, t('transactionComplete.goToBillingButtonLabel'))),
-        React.createElement("hr", { className: classes.separator }),
-        React.createElement("p", { className: classes.transactionDetailsTitle }, t('transactionComplete.transactionDetails.title')),
+        React.createElement(Typography, { variant: "h1" }, t('transactionComplete.title')),
+        React.createElement(Box, { my: 3 },
+            React.createElement(Typography, { variant: "h5" }, t('transactionComplete.subtitle'))),
+        React.createElement(Box, { display: "flex" },
+            React.createElement(Button, { variant: "contained", color: "primary", size: "large", href: "/marketplace" }, t('transactionComplete.goToMarketplaceButtonLabel')),
+            React.createElement(Box, { ml: 1.5 },
+                React.createElement(Button, { variant: "outlined", color: "primary", size: "large", href: BASE_URI }, t('transactionComplete.goToBillingButtonLabel')))),
+        React.createElement(Box, { my: 5 },
+            React.createElement(Divider, { style: { backgroundColor: palette.primary.main } })),
+        React.createElement(Box, { mb: 3 },
+            React.createElement(Typography, { variant: "h3" }, t('transactionComplete.transactionDetails.title'))),
         React.createElement("div", { className: classes.allTransactionDetailsContainer },
             React.createElement("p", { className: classes.transactionTitle },
                 transactionDetails.transactionType === 'topup'

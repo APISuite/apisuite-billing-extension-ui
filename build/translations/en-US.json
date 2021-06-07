@@ -50,8 +50,7 @@
             },
             "transactionComplete": {
                 "title": "Thank you for your payment!",
-                "subtitlePartOne": "Your payment is currently being processed.",
-                "subtitlePartTwo": "Once it is approved, your credit balance will be updated.",
+                "subtitle": "Your payment is currently being processed.\nOnce it is approved, your credit balance will be updated.",
                 "goToMarketplaceButtonLabel": "Go to the Marketplace",
                 "goToBillingButtonLabel": "Go back to Billing",
                 "transactionDetails": {

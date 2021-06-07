@@ -3,6 +3,7 @@ import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonChecked
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded';
 import clsx from 'clsx';
 import useStyles from './styles';
+import { Typography } from '@material-ui/core';
 const SubscriptionPlansCatalog = ({ activeSubscriptionPlanID, arrayOfSubscriptionPlans, currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection, }) => {
     const classes = useStyles();
     const generateCatalogEntries = () => {
@@ -21,26 +22,18 @@ const SubscriptionPlansCatalog = ({ activeSubscriptionPlanID, arrayOfSubscriptio
                             activeSubscriptionPlanID,
                     }) })) : (React.createElement(RadioButtonUncheckedRoundedIcon, { className: classes.notSelectedSubscriptionPlanIcon })),
                 React.createElement("div", { className: classes.subscriptionPlanDetailsContainer },
-                    React.createElement("div", { className: clsx({
-                            [classes.enabledLeftDetailsContainer]: subscriptionPlan.idOfSubscriptionPlan !==
-                                activeSubscriptionPlanID,
-                            [classes.disabledLeftDetailsContainer]: subscriptionPlan.idOfSubscriptionPlan ===
-                                activeSubscriptionPlanID,
-                        }) },
-                        React.createElement("p", null, subscriptionPlan.nameOfSubscriptionPlan),
-                        React.createElement("p", null,
-                            subscriptionPlan.creditsInSubscriptionPlan,
-                            " credits")),
-                    React.createElement("div", { className: clsx({
-                            [classes.enabledRightDetailsContainer]: subscriptionPlan.idOfSubscriptionPlan !==
-                                activeSubscriptionPlanID,
-                            [classes.disabledRightDetailsContainer]: subscriptionPlan.idOfSubscriptionPlan ===
-                                activeSubscriptionPlanID,
-                        }) },
-                        React.createElement("p", null,
-                            "\u20AC ",
-                            subscriptionPlan.priceOfSubscriptionPlan),
-                        React.createElement("p", null, subscriptionPlan.periodicityOfSubscriptionPlan))),
+                    React.createElement("div", null,
+                        React.createElement(Typography, { variant: "body2" }, subscriptionPlan.nameOfSubscriptionPlan),
+                        React.createElement(Typography, { variant: "body1" },
+                            React.createElement("b", null,
+                                subscriptionPlan.creditsInSubscriptionPlan,
+                                " credits"))),
+                    React.createElement("div", null,
+                        React.createElement(Typography, { variant: "body1" },
+                            React.createElement("b", null,
+                                "\u20AC ",
+                                subscriptionPlan.priceOfSubscriptionPlan)),
+                        React.createElement(Typography, { variant: "body2" }, subscriptionPlan.periodicityOfSubscriptionPlan))),
                 subscriptionPlan.idOfSubscriptionPlan ===
                     activeSubscriptionPlanID && (React.createElement("div", { className: classes.disabledSubscriptionPlanContainer, onClick: (event) => {
                         event.stopPropagation();

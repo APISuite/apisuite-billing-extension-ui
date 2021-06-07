@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, useTranslation } from '@apisuite/fe-base';
+import { Box, Button, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog';
 import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog';
 import SubscriptionsTable from '../../components/SubscriptionsTable';
@@ -9,6 +9,7 @@ import { CustomizableDialog } from '../../components/CustomizableDialog/Customiz
 const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUserTransactions, dialogInfo, getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, purchaseCreditsAction, startSubscriptionAction, cancelSubscriptionAction, clearSubscriptionInfoAction, successfullySubscribedToPlan, user, }) => {
     const classes = useStyles();
     const trans = useTranslation();
+    const { palette } = useTheme();
     const [dialogOpen, setDialogOpen] = useState(false);
     const t = (str, ...args) => {
         return trans.t(`extensions.billing.${str}`, ...args);
@@ -115,28 +116,29 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
     }, [successfullySubscribedToPlan]);
     return (React.createElement(React.Fragment, null,
         React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
-            React.createElement("p", { className: classes.title }, t('title')),
-            React.createElement("p", { className: classes.subtitle }, t('subtitle')),
-            React.createElement("p", { className: classes.sectionTitle }, t('yourBalance')),
+            React.createElement(Typography, { variant: "h2" }, t('title')),
+            React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('subtitle')),
+            React.createElement(Box, { mt: 1.5, mb: 3 },
+                React.createElement(Typography, { variant: "h3" }, t('yourBalance'))),
             React.createElement("div", { className: wantsToTopUpCredits
                     ? classes.yourCreditBalanceContainerWithCreditPacks
                     : classes.yourCreditBalanceContainerWithoutCreditPacks },
-                React.createElement("div", { className: classes.creditBalanceContainer },
-                    React.createElement("p", null, t('availableCredits')),
-                    React.createElement("p", null, allUserDetails.userCredits)),
-                wantsToTopUpCredits ? (React.createElement("div", null,
+                React.createElement(Box, { color: palette.common.white },
+                    React.createElement(Typography, { variant: "body1", color: "inherit" }, t('availableCredits')),
+                    React.createElement(Typography, { variant: "h1", color: "inherit" }, allUserDetails.userCredits)),
+                wantsToTopUpCredits ? (React.createElement(Box, { color: palette.common.white },
                     React.createElement("hr", { className: classes.separator }),
                     allCreditPacks.length !== 0 ? (React.createElement(React.Fragment, null,
-                        React.createElement("p", { className: classes.creditPacksTitle }, t('creditPacksTitle')),
-                        React.createElement(CreditPacksCatalog, { arrayOfCreditPacks: allCreditPacks, currentlySelectedCreditPack: currentlySelectedCreditPack, handleCreditPackSelection: handleCreditPackSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableCreditPacks }, t('retrievingCreditPacks'))),
+                        React.createElement(Typography, { variant: "body2", color: "inherit", gutterBottom: true }, t('creditPacksTitle')),
+                        React.createElement(CreditPacksCatalog, { arrayOfCreditPacks: allCreditPacks, currentlySelectedCreditPack: currentlySelectedCreditPack, handleCreditPackSelection: handleCreditPackSelection }))) : (React.createElement(Typography, { variant: "body2" }, t('retrievingCreditPacks'))),
                     React.createElement("div", null,
-                        React.createElement(Button, { className: currentlySelectedCreditPack.idOfCreditPack
-                                ? classes.enabledPurchaseCreditsButton
-                                : classes.disabledPurchaseCreditsButton, onClick: () => {
+                        React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, disabled: !currentlySelectedCreditPack.idOfCreditPack, onClick: () => {
                                 purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack);
                             } }, t('purchaseCreditsButtonLabel')),
-                        React.createElement(Button, { className: classes.cancelCreditsPurchaseButton, onClick: handleWantsToTopUpCredits }, t('cancelCreditsPurchaseButtonLabel'))))) : (React.createElement(Button, { className: classes.addCreditsButton, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
-            React.createElement("p", { className: classes.sectionTitle }, t('yourSubscriptionsTitle')),
+                        React.createElement(Box, { clone: true, ml: 1, style: { backgroundColor: palette.common.white } },
+                            React.createElement(Button, { variant: "outlined", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('cancelCreditsPurchaseButtonLabel')))))) : (React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
+            React.createElement(Box, { clone: true, mb: 3 },
+                React.createElement(Typography, { variant: "h3" }, t('yourSubscriptionsTitle'))),
             allUserDetails.subscriptionID ? (React.createElement(React.Fragment, null,
                 React.createElement(SubscriptionsTable, { arrayOfSubs: [
                         {
@@ -147,23 +149,24 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                             subNextBillingDate: allUserDetails.nextPaymentDate,
                         },
                     ], onCancelSubscription: cancelSubscriptionAction }),
-                React.createElement("p", { className: classes.subscriptionSelectionTitle }, t('chooseNewSubscription')),
+                React.createElement(Box, { clone: true, mb: 3 },
+                    React.createElement(Typography, { variant: "h3" }, t('chooseNewSubscription'))),
                 React.createElement(SubscriptionPlansCatalog, { activeSubscriptionPlanID: parseInt(allUserDetails.subscriptionID), arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection }),
-                React.createElement(Button, { className: hasSelectedSubscriptionPlan
-                        ? classes.enabledStartSubscriptionButton
-                        : classes.disabledStartSubscriptionButton, onClick: handleWantsToChangeSubscriptionPlan }, t('startNewSubscriptionButtonLabel')))) : (React.createElement(React.Fragment, null,
-                React.createElement("p", { className: classes.noActiveSubscriptionText }, t('noActiveSubscriptions')),
+                React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan }, t('startNewSubscriptionButtonLabel')))) : (React.createElement(React.Fragment, null,
+                React.createElement(Box, { clone: true, mb: 3 },
+                    React.createElement(Typography, { variant: "body1" }, t('noActiveSubscriptions'))),
                 allSubscriptionPlans.length !== 0 ? (React.createElement(React.Fragment, null,
-                    React.createElement("p", { className: classes.subscriptionSelectionTitle }, t('chooseSubscription')),
+                    React.createElement(Box, { clone: true, mb: 3 },
+                        React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
                     React.createElement(SubscriptionPlansCatalog, { arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableSubscriptionPlans }, t('retrievingSubscriptionPlans'))),
-                React.createElement(Button, { className: hasSelectedSubscriptionPlan
-                        ? classes.enabledStartSubscriptionButton
-                        : classes.disabledStartSubscriptionButton, onClick: () => {
+                React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: () => {
                         startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
                     } }, t('startSubscriptionButtonLabel')))),
             allUserTransactions.length !== 0 && (React.createElement(React.Fragment, null,
-                React.createElement("p", { className: classes.sectionTitle }, t('transactionHistoryTitle')),
-                React.createElement("p", { className: classes.sectionSubtitle }, t('transactionHistorySubtitle')),
+                React.createElement(Box, { clone: true, mt: 5, mb: 1.5 },
+                    React.createElement(Typography, { variant: "h3" }, t('transactionHistoryTitle'))),
+                React.createElement(Box, { clone: true, mb: 3 },
+                    React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('transactionHistorySubtitle'))),
                 React.createElement(TransactionsTable, { transactions: allUserTransactions })))),
         React.createElement(CustomizableDialog, { open: dialogOpen, onClose: handleDialogClose, icon: dialogInfo.type, title: t(dialogInfo.transKeys.title), text: t(dialogInfo.transKeys.text), subText: t(dialogInfo.transKeys.subText), actions: [
                 React.createElement(Button, { key: "cancel-sub-confirm", variant: "outlined", onClick: handleDialogClose }, t('closeCTA')),
