@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/APISuite/apisuite-marketplace-extension-ui.git"
+    "url": "git+https://github.com/APISuite/apisuite-billing-extension-ui.git"
   },
   "keywords": [
     "React",
@@ -48,13 +48,13 @@
   "author": "APISuite",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/APISuite/apisuite-marketplace-extension-ui/issues"
+    "url": "https://github.com/APISuite/apisuite-billing-extension-ui/issues"
   },
   "prettier": {
     "semi": false,
     "singleQuote": true
   },
-  "homepage": "https://github.com/APISuite/apisuite-marketplace-extension-ui#readme",
+  "homepage": "https://github.com/APISuite/apisuite-billing-extension-ui#readme",
   "peerDependencies": {
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
