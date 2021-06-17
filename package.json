@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HarveyD/react-component-library.git"
+    "url": "git+https://github.com/APISuite/apisuite-marketplace-extension-ui.git"
   },
   "keywords": [
     "React",
@@ -45,16 +45,16 @@
     "Typescript",
     "Sass"
   ],
-  "author": "Harvey Delaney",
+  "author": "APISuite",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/HarveyD/react-component-library/issues"
+    "url": "https://github.com/APISuite/apisuite-marketplace-extension-ui/issues"
   },
   "prettier": {
     "semi": false,
     "singleQuote": true
   },
-  "homepage": "https://github.com/HarveyD/react-component-library#readme",
+  "homepage": "https://github.com/APISuite/apisuite-marketplace-extension-ui#readme",
   "peerDependencies": {
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
