@@ -7,28 +7,30 @@ import {
   useTranslation,
 } from '@apisuite/fe-base'
 
-import { BillingProps } from './types'
+import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog'
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog'
 import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog'
 import SubscriptionsTable from '../../components/SubscriptionsTable'
 import TransactionsTable from '../../components/TransactionsTable'
+import { BillingProps } from './types'
 import useStyles from './styles'
-import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog'
 
 const Billing: React.FC<BillingProps> = ({
   allCreditPacks,
   allSubscriptionPlans,
   allUserDetails,
   allUserTransactions,
+  cancelSubscriptionAction,
+  clearSubscriptionInfoAction,
   dialogInfo,
   getAllCreditPacksAction,
   getAllSubscriptionPlansAction,
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
+  hasRetrievedAllCreditPacks,
+  hasRetrievedAllSubscriptionPlans,
   purchaseCreditsAction,
   startSubscriptionAction,
-  cancelSubscriptionAction,
-  clearSubscriptionInfoAction,
   successfullySubscribedToPlan,
   user,
 }) => {
@@ -58,6 +60,40 @@ const Billing: React.FC<BillingProps> = ({
   }, [dialogInfo.transKeys.title])
 
   /* Credits logic */
+
+  const showAllCreditPacks = () => {
+    if (!hasRetrievedAllCreditPacks) {
+      return (
+        <Box clone mb={3}>
+          <Typography variant="body2">{t('retrievingCreditPacks')}</Typography>
+        </Box>
+      )
+    }
+
+    if (allCreditPacks.length) {
+      return (
+        <>
+          <Typography variant="body2" color="inherit" gutterBottom>
+            {t('creditPacksTitle')}
+          </Typography>
+
+          <CreditPacksCatalog
+            arrayOfCreditPacks={allCreditPacks}
+            currentlySelectedCreditPack={currentlySelectedCreditPack}
+            handleCreditPackSelection={handleCreditPackSelection}
+          />
+        </>
+      )
+    } else {
+      return (
+        <Box clone mb={3}>
+          <Typography gutterBottom variant="body2">
+            {t('noCreditPacksAvailable')}
+          </Typography>
+        </Box>
+      )
+    }
+  }
 
   const [wantsToTopUpCredits, setWantsToTopUpCredits] = useState(false)
 
@@ -102,6 +138,41 @@ const Billing: React.FC<BillingProps> = ({
   }
 
   /* Subscriptions logic */
+
+  const showAllSubscriptionPlans = () => {
+    console.log('allSubscriptionPlans', allSubscriptionPlans)
+    if (!hasRetrievedAllSubscriptionPlans) {
+      return (
+        <Box clone mb={3}>
+          <Typography gutterBottom variant="body2">
+            {t('retrievingSubscriptionPlans')}
+          </Typography>
+        </Box>
+      )
+    }
+
+    if (allSubscriptionPlans.length) {
+      return (
+        <>
+          <SubscriptionPlansCatalog
+            arrayOfSubscriptionPlans={allSubscriptionPlans}
+            currentlySelectedSubscriptionPlan={
+              currentlySelectedSubscriptionPlan
+            }
+            handleSubscriptionPlanSelection={handleSubscriptionPlanSelection}
+          />
+        </>
+      )
+    } else {
+      return (
+        <Box clone mb={3}>
+          <Typography gutterBottom variant="body2">
+            {t('noSubscriptionPlansAvailable')}
+          </Typography>
+        </Box>
+      )
+    }
+  }
 
   const [
     hasSelectedSubscriptionPlan,
@@ -220,23 +291,7 @@ const Billing: React.FC<BillingProps> = ({
             <Box color={palette.common.white}>
               <hr className={classes.separator} />
 
-              {allCreditPacks.length !== 0 ? (
-                <>
-                  <Typography variant="body2" color="inherit" gutterBottom>
-                    {t('creditPacksTitle')}
-                  </Typography>
-
-                  <CreditPacksCatalog
-                    arrayOfCreditPacks={allCreditPacks}
-                    currentlySelectedCreditPack={currentlySelectedCreditPack}
-                    handleCreditPackSelection={handleCreditPackSelection}
-                  />
-                </>
-              ) : (
-                <Typography variant="body2">
-                  {t('retrievingCreditPacks')}
-                </Typography>
-              )}
+              {showAllCreditPacks()}
 
               <div>
                 <Button
@@ -310,14 +365,7 @@ const Billing: React.FC<BillingProps> = ({
               <Typography variant="h3">{t('chooseNewSubscription')}</Typography>
             </Box>
 
-            <SubscriptionPlansCatalog
-              activeSubscriptionPlanID={parseInt(allUserDetails.subscriptionID)}
-              arrayOfSubscriptionPlans={allSubscriptionPlans}
-              currentlySelectedSubscriptionPlan={
-                currentlySelectedSubscriptionPlan
-              }
-              handleSubscriptionPlanSelection={handleSubscriptionPlanSelection}
-            />
+            {showAllSubscriptionPlans()}
 
             <Button
               variant="contained"
@@ -338,29 +386,11 @@ const Billing: React.FC<BillingProps> = ({
               </Typography>
             </Box>
 
-            {allSubscriptionPlans.length !== 0 ? (
-              <>
-                <Box clone mb={3}>
-                  <Typography variant="h3">
-                    {t('chooseSubscription')}
-                  </Typography>
-                </Box>
+            <Box clone mb={3}>
+              <Typography variant="h3">{t('chooseSubscription')}</Typography>
+            </Box>
 
-                <SubscriptionPlansCatalog
-                  arrayOfSubscriptionPlans={allSubscriptionPlans}
-                  currentlySelectedSubscriptionPlan={
-                    currentlySelectedSubscriptionPlan
-                  }
-                  handleSubscriptionPlanSelection={
-                    handleSubscriptionPlanSelection
-                  }
-                />
-              </>
-            ) : (
-              <p className={classes.retrievingAllAvailableSubscriptionPlans}>
-                {t('retrievingSubscriptionPlans')}
-              </p>
-            )}
+            {showAllSubscriptionPlans()}
 
             {/* FIXME */}
             <Button
