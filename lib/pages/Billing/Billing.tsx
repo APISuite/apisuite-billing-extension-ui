@@ -140,7 +140,6 @@ const Billing: React.FC<BillingProps> = ({
   /* Subscriptions logic */
 
   const showAllSubscriptionPlans = () => {
-    console.log('allSubscriptionPlans', allSubscriptionPlans)
     if (!hasRetrievedAllSubscriptionPlans) {
       return (
         <Box clone mb={3}>
