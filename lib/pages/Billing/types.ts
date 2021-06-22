@@ -77,8 +77,8 @@ export interface BillingStore {
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
   error?: string
-  successfullySubscribedToPlan: boolean
-  transactionDetails: TransactionDetails
+  hasRetrievedAllCreditPacks: boolean
+  hasRetrievedAllSubscriptionPlans: boolean
   subscriptionsDialogInfo: {
     type: 'success' | 'warning'
     transKeys: {
@@ -87,6 +87,8 @@ export interface BillingStore {
       subText: string
     }
   }
+  successfullySubscribedToPlan: boolean
+  transactionDetails: TransactionDetails
 }
 
 export interface BillingProps {
@@ -106,6 +108,8 @@ export interface BillingProps {
   ) => void
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
+  hasRetrievedAllCreditPacks: boolean
+  hasRetrievedAllSubscriptionPlans: boolean
   purchaseCreditsAction: (creditPackID: number) => void
   startSubscriptionAction: (subscriptionPlanID: number) => void
   cancelSubscriptionAction: () => void

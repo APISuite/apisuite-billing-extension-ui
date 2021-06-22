@@ -44,6 +44,8 @@ const initialState: BillingStore = {
     },
   },
   successfullySubscribedToPlan: false,
+  hasRetrievedAllCreditPacks: false,
+  hasRetrievedAllSubscriptionPlans: false,
 }
 
 /** Action types */
@@ -105,12 +107,14 @@ export default function billingReducer(
     case GET_ALL_CREDIT_PACKS_ACTION_SUCCESS: {
       return update(state, {
         allCreditPacks: { $set: action.allCreditPacks },
+        hasRetrievedAllCreditPacks: { $set: true },
       })
     }
 
     case GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS: {
       return update(state, {
         allSubscriptionPlans: { $set: action.allSubscriptionPlans },
+        hasRetrievedAllSubscriptionPlans: { $set: true },
       })
     }
 
