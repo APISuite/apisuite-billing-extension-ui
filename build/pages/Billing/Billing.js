@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
+import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog';
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog';
 import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog';
 import SubscriptionsTable from '../../components/SubscriptionsTable';
 import TransactionsTable from '../../components/TransactionsTable';
 import useStyles from './styles';
-import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog';
-const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUserTransactions, dialogInfo, getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, purchaseCreditsAction, startSubscriptionAction, cancelSubscriptionAction, clearSubscriptionInfoAction, successfullySubscribedToPlan, user, }) => {
+const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUserTransactions, cancelSubscriptionAction, clearSubscriptionInfoAction, dialogInfo, getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptionPlans, purchaseCreditsAction, startSubscriptionAction, successfullySubscribedToPlan, user, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const { palette } = useTheme();
@@ -29,6 +29,21 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
         }
     }, [dialogInfo.transKeys.title]);
     /* Credits logic */
+    const showAllCreditPacks = () => {
+        if (!hasRetrievedAllCreditPacks) {
+            return (React.createElement(Box, { clone: true, mb: 3 },
+                React.createElement(Typography, { variant: "body2" }, t('retrievingCreditPacks'))));
+        }
+        if (allCreditPacks.length) {
+            return (React.createElement(React.Fragment, null,
+                React.createElement(Typography, { variant: "body2", color: "inherit", gutterBottom: true }, t('creditPacksTitle')),
+                React.createElement(CreditPacksCatalog, { arrayOfCreditPacks: allCreditPacks, currentlySelectedCreditPack: currentlySelectedCreditPack, handleCreditPackSelection: handleCreditPackSelection })));
+        }
+        else {
+            return (React.createElement(Box, { clone: true, mb: 3 },
+                React.createElement(Typography, { gutterBottom: true, variant: "body2" }, t('noCreditPacksAvailable'))));
+        }
+    };
     const [wantsToTopUpCredits, setWantsToTopUpCredits] = useState(false);
     const handleWantsToTopUpCredits = () => {
         setWantsToTopUpCredits(!wantsToTopUpCredits);
@@ -60,6 +75,20 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
         }
     };
     /* Subscriptions logic */
+    const showAllSubscriptionPlans = () => {
+        if (!hasRetrievedAllSubscriptionPlans) {
+            return (React.createElement(Box, { clone: true, mb: 3 },
+                React.createElement(Typography, { gutterBottom: true, variant: "body2" }, t('retrievingSubscriptionPlans'))));
+        }
+        if (allSubscriptionPlans.length) {
+            return (React.createElement(React.Fragment, null,
+                React.createElement(SubscriptionPlansCatalog, { arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection })));
+        }
+        else {
+            return (React.createElement(Box, { clone: true, mb: 3 },
+                React.createElement(Typography, { gutterBottom: true, variant: "body2" }, t('noSubscriptionPlansAvailable'))));
+        }
+    };
     const [hasSelectedSubscriptionPlan, setHasSelectedSubscriptionPlan,] = useState(false);
     const [currentlySelectedSubscriptionPlan, setCurrentlySelectedSubscriptionPlan,] = useState({
         creditsInSubscriptionPlan: 0,
@@ -128,9 +157,7 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                     React.createElement(Typography, { variant: "h1", color: "inherit" }, allUserDetails.userCredits)),
                 wantsToTopUpCredits ? (React.createElement(Box, { color: palette.common.white },
                     React.createElement("hr", { className: classes.separator }),
-                    allCreditPacks.length !== 0 ? (React.createElement(React.Fragment, null,
-                        React.createElement(Typography, { variant: "body2", color: "inherit", gutterBottom: true }, t('creditPacksTitle')),
-                        React.createElement(CreditPacksCatalog, { arrayOfCreditPacks: allCreditPacks, currentlySelectedCreditPack: currentlySelectedCreditPack, handleCreditPackSelection: handleCreditPackSelection }))) : (React.createElement(Typography, { variant: "body2" }, t('retrievingCreditPacks'))),
+                    showAllCreditPacks(),
                     React.createElement("div", null,
                         React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, disabled: !currentlySelectedCreditPack.idOfCreditPack, onClick: () => {
                                 purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack);
@@ -151,14 +178,13 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                     ], onCancelSubscription: cancelSubscriptionAction }),
                 React.createElement(Box, { clone: true, mb: 3 },
                     React.createElement(Typography, { variant: "h3" }, t('chooseNewSubscription'))),
-                React.createElement(SubscriptionPlansCatalog, { activeSubscriptionPlanID: parseInt(allUserDetails.subscriptionID), arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection }),
+                showAllSubscriptionPlans(),
                 React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan }, t('startNewSubscriptionButtonLabel')))) : (React.createElement(React.Fragment, null,
                 React.createElement(Box, { clone: true, mb: 3 },
                     React.createElement(Typography, { variant: "body1" }, t('noActiveSubscriptions'))),
-                allSubscriptionPlans.length !== 0 ? (React.createElement(React.Fragment, null,
-                    React.createElement(Box, { clone: true, mb: 3 },
-                        React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
-                    React.createElement(SubscriptionPlansCatalog, { arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection }))) : (React.createElement("p", { className: classes.retrievingAllAvailableSubscriptionPlans }, t('retrievingSubscriptionPlans'))),
+                React.createElement(Box, { clone: true, mb: 3 },
+                    React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
+                showAllSubscriptionPlans(),
                 React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: () => {
                         startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
                     } }, t('startSubscriptionButtonLabel')))),

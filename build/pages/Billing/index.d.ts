@@ -9,6 +9,8 @@ export declare const mapStateToProps: ({ auth, billing }: {
     allUserDetails: any;
     allUserTransactions: import("./types").TransactionDetails;
     dialogInfo: any;
+    hasRetrievedAllCreditPacks: any;
+    hasRetrievedAllSubscriptionPlans: any;
     successfullySubscribedToPlan: any;
     user: any;
 };

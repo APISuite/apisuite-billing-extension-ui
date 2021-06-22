@@ -8,6 +8,8 @@ export const mapStateToProps = ({ auth, billing }) => ({
     allUserDetails: billing.allUserDetails,
     allUserTransactions: billing.allUserTransactions,
     dialogInfo: billing.subscriptionsDialogInfo,
+    hasRetrievedAllCreditPacks: billing.hasRetrievedAllCreditPacks,
+    hasRetrievedAllSubscriptionPlans: billing.hasRetrievedAllSubscriptionPlans,
     successfullySubscribedToPlan: billing.successfullySubscribedToPlan,
     user: auth.user,
 });

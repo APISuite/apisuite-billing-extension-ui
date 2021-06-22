@@ -32,6 +32,8 @@ const initialState = {
         },
     },
     successfullySubscribedToPlan: false,
+    hasRetrievedAllCreditPacks: false,
+    hasRetrievedAllSubscriptionPlans: false,
 };
 /** Action types */
 export const GET_ALL_USER_DETAILS_ACTION = 'Billing/GET_ALL_USER_DETAILS_ACTION';
@@ -65,11 +67,13 @@ export default function billingReducer(state = initialState, action) {
         case GET_ALL_CREDIT_PACKS_ACTION_SUCCESS: {
             return update(state, {
                 allCreditPacks: { $set: action.allCreditPacks },
+                hasRetrievedAllCreditPacks: { $set: true },
             });
         }
         case GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS: {
             return update(state, {
                 allSubscriptionPlans: { $set: action.allSubscriptionPlans },
+                hasRetrievedAllSubscriptionPlans: { $set: true },
             });
         }
         case GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS: {
