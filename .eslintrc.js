@@ -39,5 +39,6 @@ module.exports = {
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'no-console': 'warn',
   },
 }
