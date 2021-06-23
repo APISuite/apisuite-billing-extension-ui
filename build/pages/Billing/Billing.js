@@ -82,7 +82,7 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
         }
         if (allSubscriptionPlans.length) {
             return (React.createElement(React.Fragment, null,
-                React.createElement(SubscriptionPlansCatalog, { arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection })));
+                React.createElement(SubscriptionPlansCatalog, { activeSubscriptionPlanID: parseInt(allUserDetails.subscriptionID, 10), arrayOfSubscriptionPlans: allSubscriptionPlans, currentlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan, handleSubscriptionPlanSelection: handleSubscriptionPlanSelection })));
         }
         else {
             return (React.createElement(Box, { clone: true, mb: 3 },
@@ -146,7 +146,8 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
     return (React.createElement(React.Fragment, null,
         React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
             React.createElement(Typography, { variant: "h2" }, t('title')),
-            React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('subtitle')),
+            React.createElement(Box, { clone: true, mb: 5 },
+                React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('subtitle'))),
             React.createElement(Box, { mt: 1.5, mb: 3 },
                 React.createElement(Typography, { variant: "h3" }, t('yourBalance'))),
             React.createElement("div", { className: wantsToTopUpCredits
@@ -176,8 +177,8 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                             subNextBillingDate: allUserDetails.nextPaymentDate,
                         },
                     ], onCancelSubscription: cancelSubscriptionAction }),
-                React.createElement(Box, { clone: true, mb: 3 },
-                    React.createElement(Typography, { variant: "h3" }, t('chooseNewSubscription'))),
+                React.createElement(Box, { clone: true, mb: 5 },
+                    React.createElement(Typography, { variant: "h6" }, t('chooseNewSubscription'))),
                 showAllSubscriptionPlans(),
                 React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan }, t('startNewSubscriptionButtonLabel')))) : (React.createElement(React.Fragment, null,
                 React.createElement(Box, { clone: true, mb: 3 },

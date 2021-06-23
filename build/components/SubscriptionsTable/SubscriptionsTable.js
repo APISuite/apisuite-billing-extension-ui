@@ -22,11 +22,7 @@ const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
             setCancelSubDialogOpen(true);
         }
     };
-    const menuOptions = [
-        'Subscription options',
-        'Edit payment information',
-        'Cancel subscription plan',
-    ];
+    const menuOptions = ['Edit payment information', 'Cancel subscription plan'];
     const handleConfirmCancelSubscription = () => {
         setCancelSubDialogOpen(false);
         onCancelSubscription();
@@ -48,12 +44,10 @@ const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
                             React.createElement(IconButton, { onClick: handleMenuClick },
                                 React.createElement(MoreVertIcon, null)),
                             React.createElement(Menu, { anchorEl: anchorElement, keepMounted: true, open: open, onClose: handleMenuClose(-1) }, menuOptions.map((menuOption, index) => (React.createElement(MenuItem
-                            // We want to disable the first option (because we're using it as a title),
-                            // and the second option as well (because we have yet to implement it).
+                            // We want to disable the first option as well (because we have yet to implement it).
                             , { 
-                                // We want to disable the first option (because we're using it as a title),
-                                // and the second option as well (because we have yet to implement it).
-                                disabled: !index || index === 1, key: menuOption, onClick: handleMenuClose(index) }, menuOption)))))));
+                                // We want to disable the first option as well (because we have yet to implement it).
+                                disabled: !index, key: menuOption, onClick: handleMenuClose(index) }, menuOption)))))));
                 }))),
         React.createElement(CustomizableDialog, { icon: "warning", open: cancelSubDialogOpen, onClose: () => setCancelSubDialogOpen(false), title: t('subscriptionsTable.cancel.title'), text: t('subscriptionsTable.cancel.text'), subText: t('subscriptionsTable.cancel.subText'), actions: [
                 React.createElement(Button, { variant: "outlined", key: "cancel-sub-cancel", onClick: () => setCancelSubDialogOpen(false) }, t('subscriptionsTable.cancel.cta')),

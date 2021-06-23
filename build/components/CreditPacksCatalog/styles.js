@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
         width: '100%',
     },
     notSelectedCreditPackIcon: {
-        color: theme.palette.text.primary,
+        color: theme.palette.text.secondary,
         fontSize: 24,
         marginRight: 8,
     },
