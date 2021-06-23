@@ -43,11 +43,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
     }
   }
 
-  const menuOptions = [
-    'Subscription options',
-    'Edit payment information',
-    'Cancel subscription plan',
-  ]
+  const menuOptions = ['Edit payment information', 'Cancel subscription plan']
 
   const handleConfirmCancelSubscription = () => {
     setCancelSubDialogOpen(false)
@@ -95,9 +91,8 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                   >
                     {menuOptions.map((menuOption, index) => (
                       <MenuItem
-                        // We want to disable the first option (because we're using it as a title),
-                        // and the second option as well (because we have yet to implement it).
-                        disabled={!index || index === 1}
+                        // We want to disable the first option as well (because we have yet to implement it).
+                        disabled={!index}
                         key={menuOption}
                         onClick={handleMenuClose(index)}
                       >

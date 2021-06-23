@@ -154,6 +154,10 @@ const Billing: React.FC<BillingProps> = ({
       return (
         <>
           <SubscriptionPlansCatalog
+            activeSubscriptionPlanID={parseInt(
+              allUserDetails.subscriptionID,
+              10
+            )}
             arrayOfSubscriptionPlans={allSubscriptionPlans}
             currentlySelectedSubscriptionPlan={
               currentlySelectedSubscriptionPlan
@@ -259,9 +263,11 @@ const Billing: React.FC<BillingProps> = ({
       <main className={`page-container ${classes.billingContentContainer}`}>
         <Typography variant="h2">{t('title')}</Typography>
 
-        <Typography variant="body1" color="textSecondary">
-          {t('subtitle')}
-        </Typography>
+        <Box clone mb={5}>
+          <Typography variant="body1" color="textSecondary">
+            {t('subtitle')}
+          </Typography>
+        </Box>
 
         {/* 'Your balance' section */}
 
@@ -360,8 +366,8 @@ const Billing: React.FC<BillingProps> = ({
               onCancelSubscription={cancelSubscriptionAction}
             />
 
-            <Box clone mb={3}>
-              <Typography variant="h3">{t('chooseNewSubscription')}</Typography>
+            <Box clone mb={5}>
+              <Typography variant="h6">{t('chooseNewSubscription')}</Typography>
             </Box>
 
             {showAllSubscriptionPlans()}
