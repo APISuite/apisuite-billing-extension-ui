@@ -17,7 +17,7 @@ export default makeStyles((theme) => ({
   },
 
   notSelectedSubscriptionPlanIcon: {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.secondary,
     fontSize: 24,
     marginRight: 12,
   },
@@ -55,7 +55,7 @@ export default makeStyles((theme) => ({
   },
 
   disabledSubscriptionPlanContainer: {
-    background: '#000',
+    background: theme.palette.action.disabledBackground,
     opacity: theme.palette.action.disabledOpacity,
     borderRadius: 4,
     bottom: 0,

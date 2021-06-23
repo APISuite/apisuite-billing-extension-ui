@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
   },
 
   notSelectedCreditPackIcon: {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.secondary,
     fontSize: 24,
     marginRight: 8,
   },
