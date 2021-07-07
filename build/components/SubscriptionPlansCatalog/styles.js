@@ -41,11 +41,12 @@ export default makeStyles((theme) => ({
     subscriptionPlanDetailsContainer: {
         display: 'flex',
         justifyContent: 'space-between',
-        maxWidth: 220,
-        width: '100%',
+        width: 220,
     },
     subscriptionPlansCatalogEntriesContainer: {
         display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     disabledSubscriptionPlanContainer: {
         background: theme.palette.action.disabledBackground,
