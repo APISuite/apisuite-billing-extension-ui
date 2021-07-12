@@ -41,7 +41,8 @@
           "subText": "You can still use all of your current credits after you cancel your subscription plan.",
           "cta": "Cancel",
           "confirmCTA": "Cancel subscription plan"
-        }
+        },
+        "awaitingConfirmation": "Awaiting payment confirmation"
       },
       "transactionsTable": {
         "description": "Description",
