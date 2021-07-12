@@ -76,7 +76,9 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                 </Typography>
 
                 <Typography component="td" variant="body2">
-                  {convertDate(trans.i18n.language, sub.subNextBillingDate)}
+                  {sub.subNextBillingDate
+                    ? convertDate(trans.i18n.language, sub.subNextBillingDate)
+                    : t('subscriptionsTable.awaitingConfirmation')}
                 </Typography>
 
                 <td>
