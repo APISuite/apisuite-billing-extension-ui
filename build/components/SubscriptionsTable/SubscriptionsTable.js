@@ -39,7 +39,9 @@ const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
                 arrayOfSubs.map((sub, index) => {
                     return (React.createElement("tr", { className: classes.subsTableEntry, key: `subTableEntry${index}` },
                         React.createElement(Typography, { component: "td", variant: "body2" }, sub.subName),
-                        React.createElement(Typography, { component: "td", variant: "body2" }, convertDate(trans.i18n.language, sub.subNextBillingDate)),
+                        React.createElement(Typography, { component: "td", variant: "body2" }, sub.subNextBillingDate
+                            ? convertDate(trans.i18n.language, sub.subNextBillingDate)
+                            : t('subscriptionsTable.awaitingConfirmation')),
                         React.createElement("td", null,
                             React.createElement(IconButton, { onClick: handleMenuClick },
                                 React.createElement(MoreVertIcon, null)),
