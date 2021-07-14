@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
+  Trans,
   Typography,
   useTheme,
   useTranslation,
@@ -14,6 +15,8 @@ import SubscriptionsTable from '../../components/SubscriptionsTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { BillingProps } from './types'
 import useStyles from './styles'
+import config from '../../helpers/config'
+import Link from '../../components/Link'
 
 const Billing: React.FC<BillingProps> = ({
   allCreditPacks,
@@ -258,6 +261,38 @@ const Billing: React.FC<BillingProps> = ({
     }
   }, [successfullySubscribedToPlan])
 
+  const generateWarning = () => {
+    return (
+      <Typography
+        style={{ color: palette.text.primary, fontWeight: 300 }}
+        variant="body2"
+      >
+        {/* The following translation includes a replacement tag (<0>...</0>).
+            This tag will be replaced by a <Link> tag if a URL for our warning is provided,
+            or by an empty tag otherwise.
+        */}
+        <Trans i18nKey="changeSubscriptionDialog.warning.text" t={t}>
+          {[
+            t('changeSubscriptionDialog.warning.url') ? (
+              <Link
+                style={{
+                  color: palette.info.main,
+                  fontWeight: 400,
+                }}
+                key="warningUrl"
+                rel="noopener noreferrer"
+                target="_blank"
+                to={t('changeSubscriptionDialog.warning.url')}
+              />
+            ) : (
+              <></>
+            ),
+          ]}
+        </Trans>
+      </Typography>
+    )
+  }
+
   return (
     <>
       <main className={`page-container ${classes.billingContentContainer}`}>
@@ -485,7 +520,9 @@ const Billing: React.FC<BillingProps> = ({
             {t('changeSubscriptionDialog.confirmButtonLabel')}
           </Button>,
         ]}
-      />
+      >
+        {generateWarning()}
+      </CustomizableDialog>
     </>
   )
 }
