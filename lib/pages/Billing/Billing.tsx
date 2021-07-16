@@ -263,12 +263,10 @@ const Billing: React.FC<BillingProps> = ({
   const generateWarning = () => {
     const replacementTagsArray = []
 
-    {
-      /* The '...changeSubscriptionDialog.warning.text' translation includes a replacement tag (<0>...</0>).
-      If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
-      replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
-      */
-    }
+    /* The '...changeSubscriptionDialog.warning.text' translation includes a replacement tag (<0>...</0>).
+    If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
+    replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
+    */
     if (t('changeSubscriptionDialog.warning.url')) {
       replacementTagsArray.push(
         <Link

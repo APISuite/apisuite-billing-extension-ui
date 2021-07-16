@@ -32,7 +32,7 @@
         "cancelButtonLabel": "Cancel",
         "confirmButtonLabel": "Start new subscription",
         "warning": {
-          "url": "https://www.google.com",
+          "url": "https://cloudoki.atlassian.net/wiki/spaces/APIEC/pages/774111233/Terms+of+Service",
           "text": "By starting a new subscription, you hereby agree to our <0>Terms of Service</0>."
         }
       },
