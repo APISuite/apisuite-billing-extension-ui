@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
+import { Box, Button, Trans, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
 import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog';
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog';
 import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog';
 import SubscriptionsTable from '../../components/SubscriptionsTable';
 import TransactionsTable from '../../components/TransactionsTable';
 import useStyles from './styles';
+import Link from '../../components/Link';
 const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUserTransactions, cancelSubscriptionAction, clearSubscriptionInfoAction, dialogInfo, getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptionPlans, purchaseCreditsAction, startSubscriptionAction, successfullySubscribedToPlan, user, }) => {
     const classes = useStyles();
     const trans = useTranslation();
@@ -143,6 +144,21 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
             setWantsToChangeSubscriptionPlan(false);
         }
     }, [successfullySubscribedToPlan]);
+    const generateWarning = () => {
+        const replacementTagsArray = [];
+        /* The '...changeSubscriptionDialog.warning.text' translation includes a replacement tag (<0>...</0>).
+        If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
+        replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
+        */
+        if (t('changeSubscriptionDialog.warning.url')) {
+            replacementTagsArray.push(React.createElement(Link, { style: {
+                    color: palette.info.main,
+                    fontWeight: 400,
+                }, key: "warningUrl", rel: "noopener noreferrer", target: "_blank", to: t('changeSubscriptionDialog.warning.url') }));
+        }
+        return (React.createElement(Typography, { style: { color: palette.text.primary, fontWeight: 300 }, variant: "body2" },
+            React.createElement(Trans, { i18nKey: "changeSubscriptionDialog.warning.text", t: t }, replacementTagsArray)));
+    };
     return (React.createElement(React.Fragment, null,
         React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
             React.createElement(Typography, { variant: "h2" }, t('title')),
@@ -205,6 +221,6 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                 React.createElement(Button, { className: classes.confirmSubscriptionPlanChangeButton, key: "confirmSubscriptionPlanChange", onClick: () => {
                         startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
                     } }, t('changeSubscriptionDialog.confirmButtonLabel')),
-            ] })));
+            ] }, generateWarning())));
 };
 export default Billing;
