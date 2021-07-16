@@ -32,8 +32,8 @@
         "cancelButtonLabel": "Cancel",
         "confirmButtonLabel": "Start new subscription",
         "warning": {
-          "url": "https://google.com",
-          "text": "By starting a new subscription, you also hereby agree to our <0>Terms of Service</0>."
+          "url": "https://www.google.com",
+          "text": "By starting a new subscription, you hereby agree to our <0>Terms of Service</0>."
         }
       },
       "subscriptionsTable": {

@@ -15,7 +15,6 @@ import SubscriptionsTable from '../../components/SubscriptionsTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { BillingProps } from './types'
 import useStyles from './styles'
-import config from '../../helpers/config'
 import Link from '../../components/Link'
 
 const Billing: React.FC<BillingProps> = ({
@@ -262,32 +261,36 @@ const Billing: React.FC<BillingProps> = ({
   }, [successfullySubscribedToPlan])
 
   const generateWarning = () => {
+    const replacementTagsArray = []
+
+    {
+      /* The '...changeSubscriptionDialog.warning.text' translation includes a replacement tag (<0>...</0>).
+      If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
+      replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
+      */
+    }
+    if (t('changeSubscriptionDialog.warning.url')) {
+      replacementTagsArray.push(
+        <Link
+          style={{
+            color: palette.info.main,
+            fontWeight: 400,
+          }}
+          key="warningUrl"
+          rel="noopener noreferrer"
+          target="_blank"
+          to={t('changeSubscriptionDialog.warning.url')}
+        />
+      )
+    }
+
     return (
       <Typography
         style={{ color: palette.text.primary, fontWeight: 300 }}
         variant="body2"
       >
-        {/* The following translation includes a replacement tag (<0>...</0>).
-            This tag will be replaced by a <Link> tag if a URL for our warning is provided,
-            or by an empty tag otherwise.
-        */}
         <Trans i18nKey="changeSubscriptionDialog.warning.text" t={t}>
-          {[
-            t('changeSubscriptionDialog.warning.url') ? (
-              <Link
-                style={{
-                  color: palette.info.main,
-                  fontWeight: 400,
-                }}
-                key="warningUrl"
-                rel="noopener noreferrer"
-                target="_blank"
-                to={t('changeSubscriptionDialog.warning.url')}
-              />
-            ) : (
-              <></>
-            ),
-          ]}
+          {replacementTagsArray}
         </Trans>
       </Typography>
     )
