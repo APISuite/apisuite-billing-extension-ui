@@ -33,7 +33,7 @@
         "confirmButtonLabel": "Start new subscription",
         "warning": {
           "url": "",
-          "text": "By starting a new subscription, you hereby agree to our <0>Terms of Service</0>."
+          "text": ""
         }
       },
       "subscriptionsTable": {

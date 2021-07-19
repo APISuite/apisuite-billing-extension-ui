@@ -267,18 +267,20 @@ const Billing: React.FC<BillingProps> = ({
     If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
     replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
     */
-    replacementTagsArray.push(
-      <Link
-        style={{
-          color: palette.info.main,
-          fontWeight: 400,
-        }}
-        key="warningUrl"
-        rel="noopener noreferrer"
-        target="_blank"
-        to={t('changeSubscriptionDialog.warning.url')}
-      />
-    )
+    if (t('changeSubscriptionDialog.warning.url')) {
+      replacementTagsArray.push(
+        <Link
+          style={{
+            color: palette.info.main,
+            fontWeight: 400,
+          }}
+          key="warningUrl"
+          rel="noopener noreferrer"
+          target="_blank"
+          to={t('changeSubscriptionDialog.warning.url')}
+        />
+      )
+    }
 
     return (
       <Typography
@@ -520,7 +522,7 @@ const Billing: React.FC<BillingProps> = ({
           </Button>,
         ]}
       >
-        {t('changeSubscriptionDialog.warning.url') && generateWarning()}
+        {generateWarning()}
       </CustomizableDialog>
     </>
   )
