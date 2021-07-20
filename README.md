@@ -71,3 +71,16 @@ You can then install your library into other projects by running:
 ```
 npm i --save github:APISuite/apisuite-billing-extension-ui#branch-name
 ```
+
+### Translations
+
+Some of this extension's translation strings may contain replacement tags that follow a pattern of <some_number>...</some_number> (e.g., <0>...</0>).
+
+These are used to replace these tags with some others to e.g., turn some translated plain text into a link.
+
+Translations keys where this is available:
+
+- `extensions.billing.changeSubscriptionDialog.warning`:
+  - `extensions.billing.changeSubscriptionDialog.warning.text`: Placeholder text where a replacement tag can be inserted;
+  - `extensions.billing.changeSubscriptionDialog.warning.url`: URL to replace in `warning.text`
+
