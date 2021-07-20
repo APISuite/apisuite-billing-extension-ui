@@ -1,2 +1,2 @@
 export declare const name = "@apisuite/apisuite-billing-extension-ui";
-export declare const version = "1.1.0";
+export declare const version = "1.1.1";
