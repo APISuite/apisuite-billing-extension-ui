@@ -71,3 +71,18 @@ You can then install your library into other projects by running:
 ```
 npm i --save github:APISuite/apisuite-billing-extension-ui#branch-name
 ```
+
+### Translations
+
+Some of this extension's translation strings might contain replacement tags that follow a pattern of <some_number>...</some_number> (e.g., <0>...</0>).
+
+These are used so we can, under certain circumstances, replace these tags with some others to e.g., turn some translated plain text into a link.
+
+Example:
+
+- Translation A: 'You hereby agree to our <0>Terms and Conditions</0>';
+- Translation B: Either '', or "https://...';
+
+If B amounts to '', replace <0> and </0> with <> and </>; if B amounts to 'https://...', replace them by <a href='https://...'> and </a>.
+
+This might mean that, in order to turn some translated plain text into something else entirely, you might need to fill in an accompanying translation.
