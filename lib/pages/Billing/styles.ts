@@ -101,7 +101,7 @@ export default makeStyles((theme) => ({
     width: '100%',
   },
 
-  confirmSubscriptionPlanChangeButton: {
+  dialogConfirmButton: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
     textTransform: 'none',

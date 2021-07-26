@@ -228,6 +228,15 @@ const Billing: React.FC<BillingProps> = ({
     }
   }
 
+  const [
+    wantsToStartSubscriptionPlan,
+    setWantsToStartSubscriptionPlan,
+  ] = useState(false)
+
+  const handleWantsToStartSubscriptionPlan = () => {
+    setWantsToStartSubscriptionPlan(!wantsToStartSubscriptionPlan)
+  }
+
   const handleDialogClose = () => {
     setDialogOpen(false)
 
@@ -263,11 +272,10 @@ const Billing: React.FC<BillingProps> = ({
   const generateWarning = () => {
     const replacementTagsArray = []
 
-    /* The '...changeSubscriptionDialog.warning.text' translation includes a replacement tag (<0>...</0>).
-    If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
-    replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
-    */
-    if (t('changeSubscriptionDialog.warning.url')) {
+    /* The 'dialogToSWarning.text' translation includes a replacement tag (<0></0>).
+    If a 'dialogToSWarning.url' translation exists and is not empty, thisg will be
+    replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally. */
+    if (t('dialogToSWarning.url')) {
       replacementTagsArray.push(
         <Link
           style={{
@@ -277,7 +285,7 @@ const Billing: React.FC<BillingProps> = ({
           key="warningUrl"
           rel="noopener noreferrer"
           target="_blank"
-          to={t('changeSubscriptionDialog.warning.url')}
+          to={t('dialogToSWarning.url')}
         />
       )
     }
@@ -287,7 +295,7 @@ const Billing: React.FC<BillingProps> = ({
         style={{ color: palette.text.primary, fontWeight: 300 }}
         variant="body2"
       >
-        <Trans i18nKey="changeSubscriptionDialog.warning.text" t={t}>
+        <Trans i18nKey="dialogToSWarning.text" t={t}>
           {replacementTagsArray}
         </Trans>
       </Typography>
@@ -440,11 +448,7 @@ const Billing: React.FC<BillingProps> = ({
               size="large"
               disableElevation
               disabled={!hasSelectedSubscriptionPlan}
-              onClick={() => {
-                startSubscriptionAction(
-                  currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
-                )
-              }}
+              onClick={handleWantsToStartSubscriptionPlan}
             >
               {t('startSubscriptionButtonLabel')}
             </Button>
@@ -471,6 +475,40 @@ const Billing: React.FC<BillingProps> = ({
           </>
         )}
       </main>
+
+      <CustomizableDialog
+        icon="warning"
+        open={wantsToStartSubscriptionPlan}
+        onClose={handleWantsToStartSubscriptionPlan}
+        title={t('startSubscriptionDialog.title')}
+        text={t('startSubscriptionDialog.text', {
+          selectedSubscriptionPlan:
+            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+        })}
+        subText={t('startSubscriptionDialog.subText')}
+        actions={[
+          <Button
+            key="cancelSubscriptionPlanStart"
+            variant="outlined"
+            onClick={handleDialogClose}
+          >
+            {t('startSubscriptionDialog.cancelButtonLabel')}
+          </Button>,
+          <Button
+            className={classes.dialogConfirmButton}
+            key="confirmSubscriptionPlanStart"
+            onClick={() => {
+              startSubscriptionAction(
+                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
+              )
+            }}
+          >
+            {t('startSubscriptionDialog.confirmButtonLabel')}
+          </Button>,
+        ]}
+      >
+        {generateWarning()}
+      </CustomizableDialog>
 
       <CustomizableDialog
         open={dialogOpen}
@@ -510,7 +548,7 @@ const Billing: React.FC<BillingProps> = ({
             {t('changeSubscriptionDialog.cancelButtonLabel')}
           </Button>,
           <Button
-            className={classes.confirmSubscriptionPlanChangeButton}
+            className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanChange"
             onClick={() => {
               startSubscriptionAction(
