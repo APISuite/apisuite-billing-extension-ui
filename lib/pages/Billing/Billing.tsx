@@ -142,10 +142,10 @@ const Billing: React.FC<BillingProps> = ({
   }
 
   // Controls the visibility of the 'Confirm credit top-up' dialog
-  const [confirmCreditTopUp, setConfirmCreditTopUp] = useState(false)
+  const [openTopUpDialog, setOpenTopUpDialog] = useState(false)
 
-  const handleConfirmCreditTopUp = () => {
-    setConfirmCreditTopUp(!confirmCreditTopUp)
+  const handleOpenTopUpDialog = () => {
+    setOpenTopUpDialog(!openTopUpDialog)
   }
 
   /* Subscriptions logic */
@@ -350,7 +350,7 @@ const Billing: React.FC<BillingProps> = ({
                   color="primary"
                   disableElevation
                   disabled={!currentlySelectedCreditPack.idOfCreditPack}
-                  onClick={handleConfirmCreditTopUp}
+                  onClick={handleOpenTopUpDialog}
                 >
                   {t('purchaseCreditsButtonLabel')}
                 </Button>
@@ -480,8 +480,8 @@ const Billing: React.FC<BillingProps> = ({
       {/* Credit top-up dialog */}
       <CustomizableDialog
         icon="warning"
-        open={confirmCreditTopUp}
-        onClose={handleConfirmCreditTopUp}
+        open={openTopUpDialog}
+        onClose={handleOpenTopUpDialog}
         title={t('confirmCreditTopUpDialog.title')}
         text={t('confirmCreditTopUpDialog.text', {
           creditAmount: currentlySelectedCreditPack.creditsInCreditPack,
@@ -492,13 +492,13 @@ const Billing: React.FC<BillingProps> = ({
             variant="outlined"
             className={classes.dialogCancelButton}
             key="cancelCreditTopUp"
-            onClick={handleConfirmCreditTopUp}
+            onClick={handleOpenTopUpDialog}
           >
             {t('confirmCreditTopUpDialog.cancelButtonLabel')}
           </Button>,
           <Button
             className={classes.dialogConfirmButton}
-            key="confirmCreditTopUp"
+            key="openTopUpDialog"
             onClick={() => {
               purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack)
             }}
