@@ -25,6 +25,13 @@
       "generalWording": {
         "credits": "credits"
       },
+      "confirmCreditTopUpDialog": {
+        "title": "Confirm credit top-up",
+        "text": "Are you sure you want to top-up your account with {{creditAmount}} credits?",
+        "subText": "This pack's cost will be charged using your selected payment method (if any was previously set up or used), otherwise you will be directed to a new payment page.",
+        "cancelButtonLabel": "Cancel",
+        "confirmButtonLabel": "Confirm credit top-up"
+      },
       "startSubscriptionDialog": {
         "title": "Start subscription plan",
         "text": "Are you sure you want to start the {{selectedSubscriptionPlan}} subscription plan?",

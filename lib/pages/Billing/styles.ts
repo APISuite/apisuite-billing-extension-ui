@@ -42,6 +42,16 @@ export default makeStyles((theme) => ({
     marginBottom: 12,
   },
 
+  dialogCancelButton: {
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.text.primary,
+    textTransform: 'none',
+
+    '&:hover': {
+      backgroundColor: theme.palette.common.white,
+    },
+  },
+
   dialogConfirmButton: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
