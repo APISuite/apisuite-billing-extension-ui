@@ -21,11 +21,27 @@ export default makeStyles((theme) => ({
         maxWidth: 900,
         width: '100%',
     },
+    cancelSubscriptionPlanChangeButton: {
+        backgroundColor: theme.palette.common.white,
+        color: theme.palette.text.primary,
+        textTransform: 'none',
+        '&:hover': {
+            backgroundColor: theme.palette.common.white,
+        },
+    },
     creditPacksTitle: {
         color: theme.palette.primary.contrastText,
         fontSize: 14,
         fontWeight: 300,
         marginBottom: 12,
+    },
+    dialogConfirmButton: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+        textTransform: 'none',
+        '&:hover': {
+            backgroundColor: theme.palette.primary.dark,
+        },
     },
     editPaymentDetailsButton: {
         backgroundColor: theme.palette.background.paper,
@@ -87,21 +103,5 @@ export default makeStyles((theme) => ({
         maxWidth: 500,
         padding: 24,
         width: '100%',
-    },
-    confirmSubscriptionPlanChangeButton: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.common.white,
-        textTransform: 'none',
-        '&:hover': {
-            backgroundColor: theme.palette.primary.dark,
-        },
-    },
-    cancelSubscriptionPlanChangeButton: {
-        backgroundColor: theme.palette.common.white,
-        color: theme.palette.text.primary,
-        textTransform: 'none',
-        '&:hover': {
-            backgroundColor: theme.palette.common.white,
-        },
     },
 }));

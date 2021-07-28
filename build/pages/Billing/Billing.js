@@ -11,7 +11,6 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
     const classes = useStyles();
     const trans = useTranslation();
     const { palette } = useTheme();
-    const [dialogOpen, setDialogOpen] = useState(false);
     const t = (str, ...args) => {
         return trans.t(`extensions.billing.${str}`, ...args);
     };
@@ -24,11 +23,6 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
         getAllUserDetailsAction(user.id);
         getAllUserTransactionsAction();
     }, [successfullySubscribedToPlan]);
-    useEffect(() => {
-        if (dialogInfo.transKeys.title.length) {
-            setDialogOpen(true);
-        }
-    }, [dialogInfo.transKeys.title]);
     /* Credits logic */
     const showAllCreditPacks = () => {
         if (!hasRetrievedAllCreditPacks) {
@@ -120,12 +114,9 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
             setCurrentlySelectedSubscriptionPlan(selectedSubscriptionPlan);
         }
     };
-    const handleDialogClose = () => {
-        setDialogOpen(false);
-        // defer clear
-        setTimeout(() => {
-            clearSubscriptionInfoAction();
-        }, 500);
+    const [wantsToStartSubscriptionPlan, setWantsToStartSubscriptionPlan,] = useState(false);
+    const handleWantsToStartSubscriptionPlan = () => {
+        setWantsToStartSubscriptionPlan(!wantsToStartSubscriptionPlan);
     };
     const [wantsToChangeSubscriptionPlan, setWantsToChangeSubscriptionPlan,] = useState(false);
     const handleWantsToChangeSubscriptionPlan = () => {
@@ -144,20 +135,33 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
             setWantsToChangeSubscriptionPlan(false);
         }
     }, [successfullySubscribedToPlan]);
+    /* Dialog-related logic */
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+        // defer clear
+        setTimeout(() => {
+            clearSubscriptionInfoAction();
+        }, 500);
+    };
+    useEffect(() => {
+        if (dialogInfo.transKeys.title.length) {
+            setDialogOpen(true);
+        }
+    }, [dialogInfo.transKeys.title]);
     const generateWarning = () => {
         const replacementTagsArray = [];
-        /* The '...changeSubscriptionDialog.warning.text' translation includes a replacement tag (<0>...</0>).
-        If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
-        replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
-        */
-        if (t('changeSubscriptionDialog.warning.url')) {
+        /* The 'dialogToSWarning.text' translation includes a replacement tag (<0></0>).
+        If a 'dialogToSWarning.url' translation exists and is not empty, thisg will be
+        replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally. */
+        if (t('dialogToSWarning.url')) {
             replacementTagsArray.push(React.createElement(Link, { style: {
                     color: palette.info.main,
                     fontWeight: 400,
-                }, key: "warningUrl", rel: "noopener noreferrer", target: "_blank", to: t('changeSubscriptionDialog.warning.url') }));
+                }, key: "warningUrl", rel: "noopener noreferrer", target: "_blank", to: t('dialogToSWarning.url') }));
         }
         return (React.createElement(Typography, { style: { color: palette.text.primary, fontWeight: 300 }, variant: "body2" },
-            React.createElement(Trans, { i18nKey: "changeSubscriptionDialog.warning.text", t: t }, replacementTagsArray)));
+            React.createElement(Trans, { i18nKey: "dialogToSWarning.text", t: t }, replacementTagsArray)));
     };
     return (React.createElement(React.Fragment, null,
         React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
@@ -202,25 +206,31 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                 React.createElement(Box, { clone: true, mb: 3 },
                     React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
                 showAllSubscriptionPlans(),
-                React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: () => {
-                        startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
-                    } }, t('startSubscriptionButtonLabel')))),
+                React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToStartSubscriptionPlan }, t('startSubscriptionButtonLabel')))),
             allUserTransactions.length !== 0 && (React.createElement(React.Fragment, null,
                 React.createElement(Box, { clone: true, mt: 5, mb: 1.5 },
                     React.createElement(Typography, { variant: "h3" }, t('transactionHistoryTitle'))),
                 React.createElement(Box, { clone: true, mb: 3 },
                     React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('transactionHistorySubtitle'))),
                 React.createElement(TransactionsTable, { transactions: allUserTransactions })))),
-        React.createElement(CustomizableDialog, { open: dialogOpen, onClose: handleDialogClose, icon: dialogInfo.type, title: t(dialogInfo.transKeys.title), text: t(dialogInfo.transKeys.text), subText: t(dialogInfo.transKeys.subText), actions: [
-                React.createElement(Button, { key: "cancel-sub-confirm", variant: "outlined", onClick: handleDialogClose }, t('closeCTA')),
-            ] }),
-        React.createElement(CustomizableDialog, { icon: "warning", open: wantsToChangeSubscriptionPlan, onClose: handleWantsToChangeSubscriptionPlan, title: t('changeSubscriptionDialog.title'), text: t('changeSubscriptionDialog.text', {
-                newlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
-            }), subText: t('changeSubscriptionDialog.subText'), actions: [
-                React.createElement(Button, { variant: "outlined", className: classes.cancelSubscriptionPlanChangeButton, key: "cancelSubscriptionPlanChange", onClick: handleWantsToChangeSubscriptionPlan }, t('changeSubscriptionDialog.cancelButtonLabel')),
-                React.createElement(Button, { className: classes.confirmSubscriptionPlanChangeButton, key: "confirmSubscriptionPlanChange", onClick: () => {
+        React.createElement(CustomizableDialog, { actions: [
+                React.createElement(Button, { key: "cancelSubscriptionPlanStart", onClick: handleDialogClose, variant: "outlined" }, t('startSubscriptionDialog.cancelButtonLabel')),
+                React.createElement(Button, { className: classes.dialogConfirmButton, key: "confirmSubscriptionPlanStart", onClick: () => {
+                        startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
+                    } }, t('startSubscriptionDialog.confirmButtonLabel')),
+            ], icon: "warning", onClose: handleWantsToStartSubscriptionPlan, open: wantsToStartSubscriptionPlan, subText: t('startSubscriptionDialog.subText'), text: t('startSubscriptionDialog.text', {
+                selectedSubscriptionPlan: currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+            }), title: t('startSubscriptionDialog.title') }, generateWarning()),
+        React.createElement(CustomizableDialog, { actions: [
+                React.createElement(Button, { key: "cancel-sub-confirm", onClick: handleDialogClose, variant: "outlined" }, t('closeCTA')),
+            ], icon: dialogInfo.type, onClose: handleDialogClose, open: dialogOpen, subText: t(dialogInfo.transKeys.subText), text: t(dialogInfo.transKeys.text), title: t(dialogInfo.transKeys.title) }),
+        React.createElement(CustomizableDialog, { actions: [
+                React.createElement(Button, { className: classes.cancelSubscriptionPlanChangeButton, key: "cancelSubscriptionPlanChange", onClick: handleWantsToChangeSubscriptionPlan, variant: "outlined" }, t('changeSubscriptionDialog.cancelButtonLabel')),
+                React.createElement(Button, { className: classes.dialogConfirmButton, key: "confirmSubscriptionPlanChange", onClick: () => {
                         startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
                     } }, t('changeSubscriptionDialog.confirmButtonLabel')),
-            ] }, generateWarning())));
+            ], icon: "warning", onClose: handleWantsToChangeSubscriptionPlan, open: wantsToChangeSubscriptionPlan, subText: t('changeSubscriptionDialog.subText'), text: t('changeSubscriptionDialog.text', {
+                newlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+            }), title: t('changeSubscriptionDialog.title') }, generateWarning())));
 };
 export default Billing;
