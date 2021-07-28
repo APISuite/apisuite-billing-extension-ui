@@ -223,7 +223,7 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "openTopUpDialog", onClick: () => {
                         purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack);
                     } }, t('confirmCreditTopUpDialog.confirmButtonLabel')),
-            ], icon: "warning", onClose: handleOpenTopUpDialog, open: openTopUpDialog, text: t('confirmCreditTopUpDialog.text', {
+            ], icon: "warning", onClose: handleOpenTopUpDialog, open: openTopUpDialog, subText: t('confirmCreditTopUpDialog.subText'), text: t('confirmCreditTopUpDialog.text', {
                 creditAmount: currentlySelectedCreditPack.creditsInCreditPack,
             }), title: t('confirmCreditTopUpDialog.title') }, generateWarning()),
         React.createElement(CustomizableDialog, { actions: [
