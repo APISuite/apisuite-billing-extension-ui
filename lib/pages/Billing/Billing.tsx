@@ -39,7 +39,6 @@ const Billing: React.FC<BillingProps> = ({
   const classes = useStyles()
   const trans = useTranslation()
   const { palette } = useTheme()
-  const [dialogOpen, setDialogOpen] = useState(false)
 
   const t = (str: string, ...args) => {
     return trans.t(`extensions.billing.${str}`, ...args)
@@ -54,12 +53,6 @@ const Billing: React.FC<BillingProps> = ({
     getAllUserDetailsAction(user.id)
     getAllUserTransactionsAction()
   }, [successfullySubscribedToPlan])
-
-  useEffect(() => {
-    if (dialogInfo.transKeys.title.length) {
-      setDialogOpen(true)
-    }
-  }, [dialogInfo.transKeys.title])
 
   /* Credits logic */
 
@@ -228,13 +221,13 @@ const Billing: React.FC<BillingProps> = ({
     }
   }
 
-  const handleDialogClose = () => {
-    setDialogOpen(false)
+  const [
+    wantsToStartSubscriptionPlan,
+    setWantsToStartSubscriptionPlan,
+  ] = useState(false)
 
-    // defer clear
-    setTimeout(() => {
-      clearSubscriptionInfoAction()
-    }, 500)
+  const handleWantsToStartSubscriptionPlan = () => {
+    setWantsToStartSubscriptionPlan(!wantsToStartSubscriptionPlan)
   }
 
   const [
@@ -260,14 +253,32 @@ const Billing: React.FC<BillingProps> = ({
     }
   }, [successfullySubscribedToPlan])
 
+  /* Dialog-related logic */
+
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+
+    // defer clear
+    setTimeout(() => {
+      clearSubscriptionInfoAction()
+    }, 500)
+  }
+
+  useEffect(() => {
+    if (dialogInfo.transKeys.title.length) {
+      setDialogOpen(true)
+    }
+  }, [dialogInfo.transKeys.title])
+
   const generateWarning = () => {
     const replacementTagsArray = []
 
-    /* The '...changeSubscriptionDialog.warning.text' translation includes a replacement tag (<0>...</0>).
-    If a '...changeSubscriptionDialog.warning.url' translation exists and is not empty, this tag will be
-    replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally.
-    */
-    if (t('changeSubscriptionDialog.warning.url')) {
+    /* The 'dialogToSWarning.text' translation includes a replacement tag (<0></0>).
+    If a 'dialogToSWarning.url' translation exists and is not empty, thisg will be
+    replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally. */
+    if (t('dialogToSWarning.url')) {
       replacementTagsArray.push(
         <Link
           style={{
@@ -277,7 +288,7 @@ const Billing: React.FC<BillingProps> = ({
           key="warningUrl"
           rel="noopener noreferrer"
           target="_blank"
-          to={t('changeSubscriptionDialog.warning.url')}
+          to={t('dialogToSWarning.url')}
         />
       )
     }
@@ -287,7 +298,7 @@ const Billing: React.FC<BillingProps> = ({
         style={{ color: palette.text.primary, fontWeight: 300 }}
         variant="body2"
       >
-        <Trans i18nKey="changeSubscriptionDialog.warning.text" t={t}>
+        <Trans i18nKey="dialogToSWarning.text" t={t}>
           {replacementTagsArray}
         </Trans>
       </Typography>
@@ -440,11 +451,7 @@ const Billing: React.FC<BillingProps> = ({
               size="large"
               disableElevation
               disabled={!hasSelectedSubscriptionPlan}
-              onClick={() => {
-                startSubscriptionAction(
-                  currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
-                )
-              }}
+              onClick={handleWantsToStartSubscriptionPlan}
             >
               {t('startSubscriptionButtonLabel')}
             </Button>
@@ -473,44 +480,69 @@ const Billing: React.FC<BillingProps> = ({
       </main>
 
       <CustomizableDialog
-        open={dialogOpen}
-        onClose={handleDialogClose}
-        icon={dialogInfo.type}
-        title={t(dialogInfo.transKeys.title)}
-        text={t(dialogInfo.transKeys.text)}
-        subText={t(dialogInfo.transKeys.subText)}
+        actions={[
+          <Button
+            key="cancelSubscriptionPlanStart"
+            onClick={handleDialogClose}
+            variant="outlined"
+          >
+            {t('startSubscriptionDialog.cancelButtonLabel')}
+          </Button>,
+          <Button
+            className={classes.dialogConfirmButton}
+            key="confirmSubscriptionPlanStart"
+            onClick={() => {
+              startSubscriptionAction(
+                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
+              )
+            }}
+          >
+            {t('startSubscriptionDialog.confirmButtonLabel')}
+          </Button>,
+        ]}
+        icon="warning"
+        onClose={handleWantsToStartSubscriptionPlan}
+        open={wantsToStartSubscriptionPlan}
+        subText={t('startSubscriptionDialog.subText')}
+        text={t('startSubscriptionDialog.text', {
+          selectedSubscriptionPlan:
+            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+        })}
+        title={t('startSubscriptionDialog.title')}
+      >
+        {generateWarning()}
+      </CustomizableDialog>
+
+      <CustomizableDialog
         actions={[
           <Button
             key="cancel-sub-confirm"
-            variant="outlined"
             onClick={handleDialogClose}
+            variant="outlined"
           >
             {t('closeCTA')}
           </Button>,
         ]}
+        icon={dialogInfo.type}
+        onClose={handleDialogClose}
+        open={dialogOpen}
+        subText={t(dialogInfo.transKeys.subText)}
+        text={t(dialogInfo.transKeys.text)}
+        title={t(dialogInfo.transKeys.title)}
       />
 
       <CustomizableDialog
-        icon="warning"
-        open={wantsToChangeSubscriptionPlan}
-        onClose={handleWantsToChangeSubscriptionPlan}
-        title={t('changeSubscriptionDialog.title')}
-        text={t('changeSubscriptionDialog.text', {
-          newlySelectedSubscriptionPlan:
-            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
-        })}
-        subText={t('changeSubscriptionDialog.subText')}
         actions={[
           <Button
-            variant="outlined"
             className={classes.cancelSubscriptionPlanChangeButton}
             key="cancelSubscriptionPlanChange"
             onClick={handleWantsToChangeSubscriptionPlan}
+            variant="outlined"
           >
             {t('changeSubscriptionDialog.cancelButtonLabel')}
           </Button>,
           <Button
-            className={classes.confirmSubscriptionPlanChangeButton}
+            className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanChange"
             onClick={() => {
               startSubscriptionAction(
@@ -521,6 +553,15 @@ const Billing: React.FC<BillingProps> = ({
             {t('changeSubscriptionDialog.confirmButtonLabel')}
           </Button>,
         ]}
+        icon="warning"
+        onClose={handleWantsToChangeSubscriptionPlan}
+        open={wantsToChangeSubscriptionPlan}
+        subText={t('changeSubscriptionDialog.subText')}
+        text={t('changeSubscriptionDialog.text', {
+          newlySelectedSubscriptionPlan:
+            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+        })}
+        title={t('changeSubscriptionDialog.title')}
       >
         {generateWarning()}
       </CustomizableDialog>
