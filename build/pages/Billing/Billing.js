@@ -39,10 +39,12 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                 React.createElement(Typography, { gutterBottom: true, variant: "body2" }, t('noCreditPacksAvailable'))));
         }
     };
+    // Controls the visibility of all credit top-up packs
     const [wantsToTopUpCredits, setWantsToTopUpCredits] = useState(false);
     const handleWantsToTopUpCredits = () => {
         setWantsToTopUpCredits(!wantsToTopUpCredits);
     };
+    // Controls the selection of credit top-up packs
     const [hasSelectedCreditPack, setHasSelectedCreditPack] = useState(false);
     const [currentlySelectedCreditPack, setCurrentlySelectedCreditPack,] = useState({
         creditsInCreditPack: 0,
@@ -68,6 +70,11 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
             setHasSelectedCreditPack(true);
             setCurrentlySelectedCreditPack(selectedCreditPack);
         }
+    };
+    // Controls the visibility of the 'Confirm credit top-up' dialog
+    const [openTopUpDialog, setOpenTopUpDialog] = useState(false);
+    const handleOpenTopUpDialog = () => {
+        setOpenTopUpDialog(!openTopUpDialog);
     };
     /* Subscriptions logic */
     const showAllSubscriptionPlans = () => {
@@ -180,9 +187,7 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                     React.createElement("hr", { className: classes.separator }),
                     showAllCreditPacks(),
                     React.createElement("div", null,
-                        React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, disabled: !currentlySelectedCreditPack.idOfCreditPack, onClick: () => {
-                                purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack);
-                            } }, t('purchaseCreditsButtonLabel')),
+                        React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, disabled: !currentlySelectedCreditPack.idOfCreditPack, onClick: handleOpenTopUpDialog }, t('purchaseCreditsButtonLabel')),
                         React.createElement(Box, { clone: true, ml: 1, style: { backgroundColor: palette.common.white } },
                             React.createElement(Button, { variant: "outlined", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('cancelCreditsPurchaseButtonLabel')))))) : (React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
             React.createElement(Box, { clone: true, mb: 3 },
@@ -214,7 +219,15 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                     React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('transactionHistorySubtitle'))),
                 React.createElement(TransactionsTable, { transactions: allUserTransactions })))),
         React.createElement(CustomizableDialog, { actions: [
-                React.createElement(Button, { key: "cancelSubscriptionPlanStart", onClick: handleDialogClose, variant: "outlined" }, t('startSubscriptionDialog.cancelButtonLabel')),
+                React.createElement(Button, { className: classes.dialogCancelButton, key: "cancelCreditTopUp", onClick: handleOpenTopUpDialog, variant: "outlined" }, t('confirmCreditTopUpDialog.cancelButtonLabel')),
+                React.createElement(Button, { className: classes.dialogConfirmButton, key: "openTopUpDialog", onClick: () => {
+                        purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack);
+                    } }, t('confirmCreditTopUpDialog.confirmButtonLabel')),
+            ], icon: "warning", onClose: handleOpenTopUpDialog, open: openTopUpDialog, text: t('confirmCreditTopUpDialog.text', {
+                creditAmount: currentlySelectedCreditPack.creditsInCreditPack,
+            }), title: t('confirmCreditTopUpDialog.title') }, generateWarning()),
+        React.createElement(CustomizableDialog, { actions: [
+                React.createElement(Button, { key: "cancelSubscriptionPlanStart", onClick: handleWantsToStartSubscriptionPlan, variant: "outlined" }, t('startSubscriptionDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "confirmSubscriptionPlanStart", onClick: () => {
                         startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
                     } }, t('startSubscriptionDialog.confirmButtonLabel')),
@@ -225,7 +238,7 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                 React.createElement(Button, { key: "cancel-sub-confirm", onClick: handleDialogClose, variant: "outlined" }, t('closeCTA')),
             ], icon: dialogInfo.type, onClose: handleDialogClose, open: dialogOpen, subText: t(dialogInfo.transKeys.subText), text: t(dialogInfo.transKeys.text), title: t(dialogInfo.transKeys.title) }),
         React.createElement(CustomizableDialog, { actions: [
-                React.createElement(Button, { className: classes.cancelSubscriptionPlanChangeButton, key: "cancelSubscriptionPlanChange", onClick: handleWantsToChangeSubscriptionPlan, variant: "outlined" }, t('changeSubscriptionDialog.cancelButtonLabel')),
+                React.createElement(Button, { className: classes.dialogCancelButton, key: "cancelSubscriptionPlanChange", onClick: handleWantsToChangeSubscriptionPlan, variant: "outlined" }, t('changeSubscriptionDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "confirmSubscriptionPlanChange", onClick: () => {
                         startSubscriptionAction(currentlySelectedSubscriptionPlan.idOfSubscriptionPlan);
                     } }, t('changeSubscriptionDialog.confirmButtonLabel')),
