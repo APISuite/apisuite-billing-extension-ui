@@ -508,6 +508,7 @@ const Billing: React.FC<BillingProps> = ({
         icon="warning"
         onClose={handleOpenTopUpDialog}
         open={openTopUpDialog}
+        subText={t('confirmCreditTopUpDialog.subText')}
         text={t('confirmCreditTopUpDialog.text', {
           creditAmount: currentlySelectedCreditPack.creditsInCreditPack,
         })}
