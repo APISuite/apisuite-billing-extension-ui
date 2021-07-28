@@ -32,16 +32,23 @@
         "cancelButtonLabel": "Cancel",
         "confirmButtonLabel": "Confirm credit top-up"
       },
+      "startSubscriptionDialog": {
+        "title": "Start subscription plan",
+        "text": "Are you sure you want to start the {{selectedSubscriptionPlan}} subscription plan?",
+        "subText": "This plan's cost will be charged using your selected payment method (if any was previously set up or used), otherwise you will be directed to a new payment page.",
+        "cancelButtonLabel": "Cancel",
+        "confirmButtonLabel": "Start subscription"
+      },
       "changeSubscriptionDialog": {
         "title": "Change subscription plan",
         "text": "Are you sure you want to change your subscription to {{newlySelectedSubscriptionPlan}}?",
         "subText": "By starting a new subscription, your current plan will be automatically canceled. The new plan's cost will be charged using your selected payment method and, if no longer valid, you will be directed to a new payment page.",
         "cancelButtonLabel": "Cancel",
-        "confirmButtonLabel": "Start new subscription",
-        "warning": {
-          "url": "",
-          "text": ""
-        }
+        "confirmButtonLabel": "Start new subscription"
+      },
+      "dialogToSWarning": {
+        "url": "",
+        "text": ""
       },
       "subscriptionsTable": {
         "title": "Subscription",
@@ -84,7 +91,7 @@
           "subText": "You can still use all the credits in your account and subscribe to a new subscription plan anytime you want."
         }
       },
-      "closeCTA": "close"
+      "closeCTA": "Close"
     }
   }
 }

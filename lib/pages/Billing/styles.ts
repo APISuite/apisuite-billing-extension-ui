@@ -25,6 +25,16 @@ export default makeStyles((theme) => ({
     width: '100%',
   },
 
+  cancelSubscriptionPlanChangeButton: {
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.text.primary,
+    textTransform: 'none',
+
+    '&:hover': {
+      backgroundColor: theme.palette.common.white,
+    },
+  },
+
   creditPacksTitle: {
     color: theme.palette.primary.contrastText,
     fontSize: 14,
