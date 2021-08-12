@@ -465,23 +465,17 @@ const Billing: React.FC<BillingProps> = ({
 
         {/* 'Transaction history' section */}
 
-        {allUserTransactions.length !== 0 && (
-          <>
-            <Box clone mt={5} mb={1.5}>
-              <Typography variant="h3">
-                {t('transactionHistoryTitle')}
-              </Typography>
-            </Box>
+        <Box clone mt={5} mb={1.5}>
+          <Typography variant="h3">{t('transactionHistoryTitle')}</Typography>
+        </Box>
 
-            <Box clone mb={3}>
-              <Typography variant="body1" color="textSecondary">
-                {t('transactionHistorySubtitle')}
-              </Typography>
-            </Box>
+        <Box clone mb={3}>
+          <Typography variant="body1" color="textSecondary">
+            {t('transactionHistorySubtitle')}
+          </Typography>
+        </Box>
 
-            <TransactionsTable transactions={allUserTransactions} />
-          </>
-        )}
+        <TransactionsTable transactions={allUserTransactions} />
       </main>
 
       {/* Credit top-up dialog */}
