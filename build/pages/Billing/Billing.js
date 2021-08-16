@@ -220,12 +220,11 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                     React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
                 showAllSubscriptionPlans(),
                 React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToStartSubscriptionPlan }, t('startSubscriptionButtonLabel')))),
-            allUserTransactions.length !== 0 && (React.createElement(React.Fragment, null,
-                React.createElement(Box, { clone: true, mt: 5, mb: 1.5 },
-                    React.createElement(Typography, { variant: "h3" }, t('transactionHistoryTitle'))),
-                React.createElement(Box, { clone: true, mb: 3 },
-                    React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('transactionHistorySubtitle'))),
-                React.createElement(TransactionsTable, { transactions: allUserTransactions })))),
+            React.createElement(Box, { clone: true, mt: 5, mb: 1.5 },
+                React.createElement(Typography, { variant: "h3" }, t('transactionHistoryTitle'))),
+            React.createElement(Box, { clone: true, mb: 3 },
+                React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('transactionHistorySubtitle'))),
+            React.createElement(TransactionsTable, { transactions: allUserTransactions })),
         React.createElement(CustomizableDialog, { actions: [
                 React.createElement(Button, { className: classes.dialogCancelButton, key: "cancelCreditTopUp", onClick: handleOpenTopUpDialog, variant: "outlined" }, t('confirmCreditTopUpDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "openTopUpDialog", onClick: () => {

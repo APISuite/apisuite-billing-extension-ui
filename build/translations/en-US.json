@@ -69,7 +69,8 @@
                 "reference": "Reference",
                 "dateOfPurchase": "Date of purchase",
                 "status": "Payment status",
-                "price": "Price"
+                "price": "Price",
+                "noEntriesAvailable": "No entries available"
             },
             "transactionComplete": {
                 "title": "Thank you for your payment!",
