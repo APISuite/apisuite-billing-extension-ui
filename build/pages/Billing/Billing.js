@@ -10,7 +10,7 @@ import Link from '../../components/Link';
 const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUserTransactions, cancelSubscriptionAction, clearSubscriptionInfoAction, dialogInfo, getAllCreditPacksAction, getAllSubscriptionPlansAction, getAllUserDetailsAction, getAllUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptionPlans, purchaseCreditsAction, startSubscriptionAction, successfullySubscribedToPlan, user, }) => {
     const classes = useStyles();
     const trans = useTranslation();
-    const { palette } = useTheme();
+    const { palette, spacing } = useTheme();
     const t = (str, ...args) => {
         return trans.t(`extensions.billing.${str}`, ...args);
     };
@@ -125,6 +125,10 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
     const handleWantsToStartSubscriptionPlan = () => {
         setWantsToStartSubscriptionPlan(!wantsToStartSubscriptionPlan);
     };
+    const [wantsToCheckAllSubPlans, setWantsToCheckAllSubPlans] = useState(false);
+    const handleWantsToCheckAllSubPlans = () => {
+        setWantsToCheckAllSubPlans(!wantsToCheckAllSubPlans);
+    };
     const [wantsToChangeSubscriptionPlan, setWantsToChangeSubscriptionPlan,] = useState(false);
     const handleWantsToChangeSubscriptionPlan = () => {
         setWantsToChangeSubscriptionPlan(!wantsToChangeSubscriptionPlan);
@@ -202,10 +206,14 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
                             subNextBillingDate: allUserDetails.nextPaymentDate,
                         },
                     ], onCancelSubscription: cancelSubscriptionAction }),
-                React.createElement(Box, { clone: true, mb: 5 },
-                    React.createElement(Typography, { variant: "h6" }, t('chooseNewSubscription'))),
-                showAllSubscriptionPlans(),
-                React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan }, t('startNewSubscriptionButtonLabel')))) : (React.createElement(React.Fragment, null,
+                !wantsToCheckAllSubPlans && (React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('checkSubPlansButtonLabel'))),
+                wantsToCheckAllSubPlans && (React.createElement(React.Fragment, null,
+                    React.createElement(Box, { clone: true, mb: 3 },
+                        React.createElement(Typography, { variant: "h6" }, t('chooseNewSubPlan'))),
+                    showAllSubscriptionPlans(),
+                    React.createElement(Box, { mt: 2 },
+                        React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan, style: { marginRight: spacing(1.5) } }, t('startNewSubPlanButtonLabel')),
+                        React.createElement(Button, { variant: "outlined", color: "secondary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('cancelSubPlansCheckingButtonLabel'))))))) : (React.createElement(React.Fragment, null,
                 React.createElement(Box, { clone: true, mb: 3 },
                     React.createElement(Typography, { variant: "body1" }, t('noActiveSubscriptions'))),
                 React.createElement(Box, { clone: true, mb: 3 },
