@@ -38,7 +38,7 @@ const Billing: React.FC<BillingProps> = ({
 }) => {
   const classes = useStyles()
   const trans = useTranslation()
-  const { palette } = useTheme()
+  const { palette, spacing } = useTheme()
 
   const t = (str: string, ...args) => {
     return trans.t(`extensions.billing.${str}`, ...args)
@@ -239,6 +239,12 @@ const Billing: React.FC<BillingProps> = ({
     setWantsToStartSubscriptionPlan(!wantsToStartSubscriptionPlan)
   }
 
+  const [wantsToCheckAllSubPlans, setWantsToCheckAllSubPlans] = useState(false)
+
+  const handleWantsToCheckAllSubPlans = () => {
+    setWantsToCheckAllSubPlans(!wantsToCheckAllSubPlans)
+  }
+
   const [
     wantsToChangeSubscriptionPlan,
     setWantsToChangeSubscriptionPlan,
@@ -397,6 +403,7 @@ const Billing: React.FC<BillingProps> = ({
         </div>
 
         {/* 'Your subscription' section */}
+
         <Box clone mb={3}>
           <Typography variant="h3">{t('yourSubscriptionsTitle')}</Typography>
         </Box>
@@ -418,22 +425,51 @@ const Billing: React.FC<BillingProps> = ({
               onCancelSubscription={cancelSubscriptionAction}
             />
 
-            <Box clone mb={5}>
-              <Typography variant="h6">{t('chooseNewSubscription')}</Typography>
-            </Box>
+            {!wantsToCheckAllSubPlans && (
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                disableElevation
+                onClick={handleWantsToCheckAllSubPlans}
+              >
+                {t('checkSubPlansButtonLabel')}
+              </Button>
+            )}
 
-            {showAllSubscriptionPlans()}
+            {wantsToCheckAllSubPlans && (
+              <>
+                <Box clone mb={3}>
+                  <Typography variant="h6">{t('chooseNewSubPlan')}</Typography>
+                </Box>
 
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              disableElevation
-              disabled={!hasSelectedSubscriptionPlan}
-              onClick={handleWantsToChangeSubscriptionPlan}
-            >
-              {t('startNewSubscriptionButtonLabel')}
-            </Button>
+                {showAllSubscriptionPlans()}
+
+                <Box mt={2}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    disableElevation
+                    disabled={!hasSelectedSubscriptionPlan}
+                    onClick={handleWantsToChangeSubscriptionPlan}
+                    style={{ marginRight: spacing(1.5) }}
+                  >
+                    {t('startNewSubPlanButtonLabel')}
+                  </Button>
+
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="large"
+                    disableElevation
+                    onClick={handleWantsToCheckAllSubPlans}
+                  >
+                    {t('cancelSubPlansCheckingButtonLabel')}
+                  </Button>
+                </Box>
+              </>
+            )}
           </>
         ) : (
           <>
