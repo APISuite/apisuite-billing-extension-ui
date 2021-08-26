@@ -80,7 +80,7 @@ These are used to replace these tags with some others to e.g., turn some transla
 
 Translations keys where this is available:
 
-- `extensions.billing.changeSubscriptionDialog.warning`:
-  - `extensions.billing.changeSubscriptionDialog.warning.text`: Placeholder text where a replacement tag can be inserted;
-  - `extensions.billing.changeSubscriptionDialog.warning.url`: URL to replace in `warning.text`
+- `extensions.billing.dialogToSWarning`:
+  - `extensions.billing.dialogToSWarning.text`: Placeholder text where a replacement tag can be inserted;
+  - `extensions.billing.dialogToSWarning.url`: URL to replace in `warning.text`
 
