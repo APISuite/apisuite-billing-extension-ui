@@ -52,7 +52,7 @@ const Billing: React.FC<BillingProps> = ({
     getAllSubscriptionPlansAction('price', 'asc')
     getAllUserDetailsAction(user.id)
     getAllUserTransactionsAction()
-  }, [successfullySubscribedToPlan])
+  }, [])
 
   /* Credits logic */
 
@@ -265,6 +265,16 @@ const Billing: React.FC<BillingProps> = ({
       })
       setHasSelectedSubscriptionPlan(false)
       setWantsToChangeSubscriptionPlan(false)
+    }
+  }, [successfullySubscribedToPlan])
+
+  /* Triggers the retrieval and storage (on the app's Store, under 'billing')
+  of all information we have on a user and his transactions AFTER the user
+  starts or changes his subscription plan. */
+  useEffect(() => {
+    if (successfullySubscribedToPlan) {
+      getAllUserDetailsAction(user.id)
+      getAllUserTransactionsAction()
     }
   }, [successfullySubscribedToPlan])
 
