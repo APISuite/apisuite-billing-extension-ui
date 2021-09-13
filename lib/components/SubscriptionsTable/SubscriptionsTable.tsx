@@ -38,7 +38,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
   const handleMenuClose = (idx: number) => () => {
     setAnchorElement(null)
 
-    if (idx === 2) {
+    if (idx === 1) {
       setCancelSubDialogOpen(true)
     }
   }
@@ -85,6 +85,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                   <IconButton onClick={handleMenuClick}>
                     <MoreVertIcon />
                   </IconButton>
+
                   <Menu
                     anchorEl={anchorElement}
                     keepMounted
