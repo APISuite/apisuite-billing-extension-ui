@@ -22,7 +22,7 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
         getAllSubscriptionPlansAction('price', 'asc');
         getAllUserDetailsAction(user.id);
         getAllUserTransactionsAction();
-    }, [successfullySubscribedToPlan]);
+    }, []);
     /* Credits logic */
     const showAllCreditPacks = () => {
         if (!hasRetrievedAllCreditPacks) {
@@ -144,6 +144,15 @@ const Billing = ({ allCreditPacks, allSubscriptionPlans, allUserDetails, allUser
             });
             setHasSelectedSubscriptionPlan(false);
             setWantsToChangeSubscriptionPlan(false);
+        }
+    }, [successfullySubscribedToPlan]);
+    /* Triggers the retrieval and storage (on the app's Store, under 'billing')
+    of all information we have on a user and his transactions AFTER the user
+    starts or changes his subscription plan. */
+    useEffect(() => {
+        if (successfullySubscribedToPlan) {
+            getAllUserDetailsAction(user.id);
+            getAllUserTransactionsAction();
         }
     }, [successfullySubscribedToPlan]);
     /* Dialog-related logic */
