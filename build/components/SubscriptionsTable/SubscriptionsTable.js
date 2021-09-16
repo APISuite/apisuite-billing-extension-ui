@@ -18,7 +18,7 @@ const SubscriptionsTable = ({ arrayOfSubs, onCancelSubscription, }) => {
     };
     const handleMenuClose = (idx) => () => {
         setAnchorElement(null);
-        if (idx === 2) {
+        if (idx === 1) {
             setCancelSubDialogOpen(true);
         }
     };
