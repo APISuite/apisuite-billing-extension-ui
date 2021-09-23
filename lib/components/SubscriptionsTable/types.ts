@@ -1,9 +1,9 @@
 export type SubscriptionsTableProps = {
-  arrayOfSubs: SubDetails[]
+  subscriptions: SubscriptionDetails[]
   onCancelSubscription: () => void
 }
 
-export type SubDetails = {
-  subName: string
-  subNextBillingDate: string
+export type SubscriptionDetails = {
+  name: string
+  nextBillingDate: string
 }

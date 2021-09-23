@@ -15,7 +15,7 @@ import { SubscriptionsTableProps } from './types'
 import useStyles from './styles'
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
-  arrayOfSubs,
+  subscriptions,
   onCancelSubscription,
 }) => {
   const classes = useStyles()
@@ -65,19 +65,19 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
             <th />
           </tr>
 
-          {arrayOfSubs.map((sub, index) => {
+          {subscriptions.map((sub, index) => {
             return (
               <tr
                 className={classes.subsTableEntry}
                 key={`subTableEntry${index}`}
               >
                 <Typography component="td" variant="body2">
-                  {sub.subName}
+                  {sub.name}
                 </Typography>
 
                 <Typography component="td" variant="body2">
-                  {sub.subNextBillingDate
-                    ? convertDate(trans.i18n.language, sub.subNextBillingDate)
+                  {sub.nextBillingDate
+                    ? convertDate(trans.i18n.language, sub.nextBillingDate)
                     : t('subscriptionsTable.awaitingConfirmation')}
                 </Typography>
 
