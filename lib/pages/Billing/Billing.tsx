@@ -421,15 +421,15 @@ const Billing: React.FC<BillingProps> = ({
         {allUserDetails.subscriptionID ? (
           <>
             <SubscriptionsTable
-              arrayOfSubs={[
+              subscriptions={[
                 {
-                  subName: allSubscriptionPlans.find((subscriptionPlan) => {
+                  name: allSubscriptionPlans.find((subscriptionPlan) => {
                     return (
                       subscriptionPlan.idOfSubscriptionPlan ===
                       parseInt(allUserDetails.subscriptionID)
                     )
                   })?.nameOfSubscriptionPlan,
-                  subNextBillingDate: allUserDetails.nextPaymentDate,
+                  nextBillingDate: allUserDetails.nextPaymentDate,
                 },
               ]}
               onCancelSubscription={cancelSubscriptionAction}
