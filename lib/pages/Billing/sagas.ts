@@ -96,11 +96,11 @@ export function* getAllSubscriptionPlansActionSaga(
     })
 
     const allSubscriptionPlans = response.data.map((subscriptionPlan: any) => ({
-      creditsInSubscriptionPlan: subscriptionPlan.credits,
-      idOfSubscriptionPlan: subscriptionPlan.id,
-      nameOfSubscriptionPlan: subscriptionPlan.name,
-      periodicityOfSubscriptionPlan: subscriptionPlan.periodicity,
-      priceOfSubscriptionPlan: subscriptionPlan.price,
+      credits: subscriptionPlan.credits,
+      id: subscriptionPlan.id,
+      name: subscriptionPlan.name,
+      periodicity: subscriptionPlan.periodicity,
+      price: subscriptionPlan.price,
     }))
 
     yield put(getAllSubscriptionPlansActionSuccess(allSubscriptionPlans))

@@ -22,28 +22,19 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
           <div
             className={clsx({
               [classes.selectedSubscriptionPlanContainer]:
-                subscriptionPlan.idOfSubscriptionPlan ===
-                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan,
+                subscriptionPlan.id === currentlySelectedSubscriptionPlan.id,
               [classes.notSelectedSubscriptionPlanContainer]:
-                subscriptionPlan.idOfSubscriptionPlan !==
-                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan,
+                subscriptionPlan.id !== currentlySelectedSubscriptionPlan.id,
             })}
             key={`subscriptionPlansCatalogEntry${index}`}
-            onClick={() =>
-              handleSubscriptionPlanSelection(
-                subscriptionPlan.idOfSubscriptionPlan
-              )
-            }
+            onClick={() => handleSubscriptionPlanSelection(subscriptionPlan.id)}
           >
-            {subscriptionPlan.idOfSubscriptionPlan ===
-              currentlySelectedSubscriptionPlan.idOfSubscriptionPlan ||
-            subscriptionPlan.idOfSubscriptionPlan ===
-              activeSubscriptionPlanID ? (
+            {subscriptionPlan.id === currentlySelectedSubscriptionPlan.id ||
+            subscriptionPlan.id === activeSubscriptionPlanID ? (
               <RadioButtonCheckedRoundedIcon
                 className={clsx(classes.selectedSubscriptionPlanIcon, {
                   [classes.disabledSubscriptionPlanIcon]:
-                    subscriptionPlan.idOfSubscriptionPlan ===
-                    activeSubscriptionPlanID,
+                    subscriptionPlan.id === activeSubscriptionPlanID,
                 })}
               />
             ) : (
@@ -54,28 +45,25 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
 
             <div className={classes.subscriptionPlanDetailsContainer}>
               <div>
-                <Typography variant="body2">
-                  {subscriptionPlan.nameOfSubscriptionPlan}
-                </Typography>
+                <Typography variant="body2">{subscriptionPlan.name}</Typography>
 
                 <Typography variant="body1">
-                  <b>{subscriptionPlan.creditsInSubscriptionPlan} credits</b>
+                  <b>{subscriptionPlan.credits} credits</b>
                 </Typography>
               </div>
 
               <div>
                 <Typography variant="body1">
-                  <b>€ {subscriptionPlan.priceOfSubscriptionPlan}</b>
+                  <b>€ {subscriptionPlan.price}</b>
                 </Typography>
 
                 <Typography variant="body2">
-                  {subscriptionPlan.periodicityOfSubscriptionPlan}
+                  {subscriptionPlan.periodicity}
                 </Typography>
               </div>
             </div>
 
-            {subscriptionPlan.idOfSubscriptionPlan ===
-              activeSubscriptionPlanID && (
+            {subscriptionPlan.id === activeSubscriptionPlanID && (
               <div
                 className={classes.disabledSubscriptionPlanContainer}
                 onClick={(event) => {
