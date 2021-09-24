@@ -51,11 +51,11 @@ export interface CreditPackDetails {
 }
 
 export interface SubscriptionPlanDetails {
-  creditsInSubscriptionPlan: number
-  idOfSubscriptionPlan: number
-  nameOfSubscriptionPlan: string
-  periodicityOfSubscriptionPlan: string
-  priceOfSubscriptionPlan: number
+  credits: number
+  id: number
+  name: string
+  periodicity: string
+  price: number
 }
 
 export interface TransactionDetails {

@@ -190,11 +190,11 @@ const Billing: React.FC<BillingProps> = ({
     currentlySelectedSubscriptionPlan,
     setCurrentlySelectedSubscriptionPlan,
   ] = useState({
-    creditsInSubscriptionPlan: 0,
-    idOfSubscriptionPlan: 0,
-    nameOfSubscriptionPlan: '',
-    periodicityOfSubscriptionPlan: '',
-    priceOfSubscriptionPlan: 0,
+    credits: 0,
+    id: 0,
+    name: '',
+    periodicity: '',
+    price: 0,
   })
 
   const handleSubscriptionPlanSelection = (
@@ -202,26 +202,21 @@ const Billing: React.FC<BillingProps> = ({
   ) => {
     if (
       hasSelectedSubscriptionPlan &&
-      currentlySelectedSubscriptionPlan.idOfSubscriptionPlan ===
-        idOfSelectedSubscriptionPlan
+      currentlySelectedSubscriptionPlan.id === idOfSelectedSubscriptionPlan
     ) {
       setHasSelectedSubscriptionPlan(false)
 
       setCurrentlySelectedSubscriptionPlan({
-        creditsInSubscriptionPlan: 0,
-        idOfSubscriptionPlan: 0,
-        nameOfSubscriptionPlan: '',
-        periodicityOfSubscriptionPlan: '',
-        priceOfSubscriptionPlan: 0,
+        credits: 0,
+        id: 0,
+        name: '',
+        periodicity: '',
+        price: 0,
       })
     } else {
       const selectedSubscriptionPlan = allSubscriptionPlans.find(
-        (subscriptionPlan) => {
-          return (
-            subscriptionPlan.idOfSubscriptionPlan ===
-            idOfSelectedSubscriptionPlan
-          )
-        }
+        (subscriptionPlan) =>
+          subscriptionPlan.id === idOfSelectedSubscriptionPlan
       )
 
       setHasSelectedSubscriptionPlan(true)
@@ -257,11 +252,11 @@ const Billing: React.FC<BillingProps> = ({
   useEffect(() => {
     if (successfullySubscribedToPlan) {
       setCurrentlySelectedSubscriptionPlan({
-        creditsInSubscriptionPlan: 0,
-        idOfSubscriptionPlan: 0,
-        nameOfSubscriptionPlan: '',
-        periodicityOfSubscriptionPlan: '',
-        priceOfSubscriptionPlan: 0,
+        credits: 0,
+        id: 0,
+        name: '',
+        periodicity: '',
+        price: 0,
       })
       setHasSelectedSubscriptionPlan(false)
       setWantsToChangeSubscriptionPlan(false)
@@ -425,10 +420,10 @@ const Billing: React.FC<BillingProps> = ({
                 {
                   name: allSubscriptionPlans.find((subscriptionPlan) => {
                     return (
-                      subscriptionPlan.idOfSubscriptionPlan ===
+                      subscriptionPlan.id ===
                       parseInt(allUserDetails.subscriptionID)
                     )
-                  })?.nameOfSubscriptionPlan,
+                  })?.name,
                   nextBillingDate: allUserDetails.nextPaymentDate,
                 },
               ]}
@@ -571,9 +566,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanStart"
             onClick={() => {
-              startSubscriptionAction(
-                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
-              )
+              startSubscriptionAction(currentlySelectedSubscriptionPlan.id)
             }}
           >
             {t('startSubscriptionDialog.confirmButtonLabel')}
@@ -584,8 +577,7 @@ const Billing: React.FC<BillingProps> = ({
         open={wantsToStartSubscriptionPlan}
         subText={t('startSubscriptionDialog.subText')}
         text={t('startSubscriptionDialog.text', {
-          selectedSubscriptionPlan:
-            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+          selectedSubscriptionPlan: currentlySelectedSubscriptionPlan.name,
         })}
         title={t('startSubscriptionDialog.title')}
       >
@@ -624,9 +616,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanChange"
             onClick={() => {
-              startSubscriptionAction(
-                currentlySelectedSubscriptionPlan.idOfSubscriptionPlan
-              )
+              startSubscriptionAction(currentlySelectedSubscriptionPlan.id)
             }}
           >
             {t('changeSubscriptionDialog.confirmButtonLabel')}
@@ -637,8 +627,7 @@ const Billing: React.FC<BillingProps> = ({
         open={wantsToChangeSubscriptionPlan}
         subText={t('changeSubscriptionDialog.subText')}
         text={t('changeSubscriptionDialog.text', {
-          newlySelectedSubscriptionPlan:
-            currentlySelectedSubscriptionPlan.nameOfSubscriptionPlan,
+          newlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan.name,
         })}
         title={t('changeSubscriptionDialog.title')}
       >
