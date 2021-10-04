@@ -1,14 +1,14 @@
 import { Action } from 'redux'
 
 import {
-  GET_ALL_CREDIT_PACKS_ACTION_SUCCESS,
-  GET_ALL_CREDIT_PACKS_ACTION,
-  GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
-  GET_ALL_SUBSCRIPTION_PLANS_ACTION,
-  GET_ALL_USER_DETAILS_ACTION_SUCCESS,
-  GET_ALL_USER_DETAILS_ACTION,
-  GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS,
-  GET_ALL_USER_TRANSACTIONS_ACTION,
+  GET_CREDIT_PACKS_ACTION_SUCCESS,
+  GET_CREDIT_PACKS_ACTION,
+  GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
+  GET_SUBSCRIPTION_PLANS_ACTION,
+  GET_USER_DETAILS_ACTION_SUCCESS,
+  GET_USER_DETAILS_ACTION,
+  GET_USER_TRANSACTIONS_ACTION_SUCCESS,
+  GET_USER_TRANSACTIONS_ACTION,
   GET_TRANSACTION_DETAILS_ACTION_SUCCESS,
   GET_TRANSACTION_DETAILS_ACTION,
   PURCHASE_CREDITS_ACTION_ERROR,
@@ -44,10 +44,10 @@ export interface UserDetails {
 }
 
 export interface CreditPackDetails {
-  creditsInCreditPack: number
-  idOfCreditPack: number
-  nameOfCreditPack: string
-  priceOfCreditPack: number
+  credits: number
+  id: number
+  name: string
+  price: number
 }
 
 export interface SubscriptionPlanDetails {
@@ -72,7 +72,7 @@ export interface TransactionDetails {
 }
 
 export interface BillingStore {
-  allCreditPacks: CreditPackDetails[]
+  creditPacks: CreditPackDetails[]
   subscriptions: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
@@ -92,22 +92,22 @@ export interface BillingStore {
 }
 
 export interface BillingProps {
-  allCreditPacks: CreditPackDetails[]
+  creditPacks: CreditPackDetails[]
   subscriptions: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
   dialogInfo: BillingStore['subscriptionsDialogInfo']
   clearSubscriptionInfoAction: () => void
-  getAllCreditPacksAction: (
+  getCreditPacksAction: (
     sortBy: PackageSortMode,
     orderBy: PackageOrderMode
   ) => void
-  getAllSubscriptionPlansAction: (
+  getSubscriptionPlansAction: (
     sortBy: PackageSortMode,
     orderBy: PackageOrderMode
   ) => void
-  getAllUserDetailsAction: (userID: number) => void
-  getAllUserTransactionsAction: () => void
+  getUserDetailsAction: (userID: number) => void
+  getUserTransactionsAction: () => void
   hasRetrievedAllCreditPacks: boolean
   hasRetrievedAllSubscriptions: boolean
   purchaseCreditsAction: (creditPackID: number) => void
@@ -117,44 +117,44 @@ export interface BillingProps {
   user: User
 }
 
-export interface GetAllUserDetailsAction extends Action {
-  type: typeof GET_ALL_USER_DETAILS_ACTION
+export interface GetUserDetailsAction extends Action {
+  type: typeof GET_USER_DETAILS_ACTION
   userID: number
 }
 
-export interface GetAllUserDetailsActionSuccess extends Action {
-  type: typeof GET_ALL_USER_DETAILS_ACTION_SUCCESS
+export interface GetUserDetailsActionSuccess extends Action {
+  type: typeof GET_USER_DETAILS_ACTION_SUCCESS
   allUserDetails: UserDetails
 }
 
-export interface GetAllCreditPacksAction extends Action {
-  type: typeof GET_ALL_CREDIT_PACKS_ACTION
+export interface GetCreditPacksAction extends Action {
+  type: typeof GET_CREDIT_PACKS_ACTION
   sortBy: PackageSortMode
   orderBy: PackageOrderMode
 }
 
-export interface GetAllCreditPacksActionSuccess extends Action {
-  type: typeof GET_ALL_CREDIT_PACKS_ACTION_SUCCESS
-  allCreditPacks: CreditPackDetails[]
+export interface GetCreditPacksActionSuccess extends Action {
+  type: typeof GET_CREDIT_PACKS_ACTION_SUCCESS
+  creditPacks: CreditPackDetails[]
 }
 
-export interface GetAllSubscriptionPlansAction extends Action {
-  type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION
+export interface GetSubscriptionPlansAction extends Action {
+  type: typeof GET_SUBSCRIPTION_PLANS_ACTION
   sortBy: PackageSortMode
   orderBy: PackageOrderMode
 }
 
-export interface GetAllSubscriptionPlansActionSuccess extends Action {
-  type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS
+export interface GetSubscriptionPlansActionSuccess extends Action {
+  type: typeof GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS
   subscriptions: SubscriptionPlanDetails[]
 }
 
-export interface GetAllUserTransactionsAction extends Action {
-  type: typeof GET_ALL_USER_TRANSACTIONS_ACTION
+export interface GetUserTransactionsAction extends Action {
+  type: typeof GET_USER_TRANSACTIONS_ACTION
 }
 
-export interface GetAllUserTransactionsActionSuccess extends Action {
-  type: typeof GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS
+export interface GetUserTransactionsActionSuccess extends Action {
+  type: typeof GET_USER_TRANSACTIONS_ACTION_SUCCESS
   allUserTransactions: TransactionDetails[]
 }
 
@@ -214,14 +214,14 @@ export interface ClearSubscriptionInfoAction {
 }
 
 export type BillingActions =
-  | GetAllCreditPacksAction
-  | GetAllCreditPacksActionSuccess
-  | GetAllSubscriptionPlansAction
-  | GetAllSubscriptionPlansActionSuccess
-  | GetAllUserDetailsAction
-  | GetAllUserDetailsActionSuccess
-  | GetAllUserTransactionsAction
-  | GetAllUserTransactionsActionSuccess
+  | GetCreditPacksAction
+  | GetCreditPacksActionSuccess
+  | GetSubscriptionPlansAction
+  | GetSubscriptionPlansActionSuccess
+  | GetUserDetailsAction
+  | GetUserDetailsActionSuccess
+  | GetUserTransactionsAction
+  | GetUserTransactionsActionSuccess
   | GetTransactionDetailsAction
   | GetTransactionDetailsActionSuccess
   | PurchaseCreditsAction

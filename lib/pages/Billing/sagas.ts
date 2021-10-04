@@ -6,15 +6,15 @@ import {
   CANCEL_SUBSCRIPTION,
   cancelSubscriptionActionError,
   cancelSubscriptionActionSuccess,
-  GET_ALL_CREDIT_PACKS_ACTION,
-  GET_ALL_SUBSCRIPTION_PLANS_ACTION,
-  GET_ALL_USER_DETAILS_ACTION,
-  GET_ALL_USER_TRANSACTIONS_ACTION,
+  GET_CREDIT_PACKS_ACTION,
+  GET_SUBSCRIPTION_PLANS_ACTION,
+  GET_USER_DETAILS_ACTION,
+  GET_USER_TRANSACTIONS_ACTION,
   GET_TRANSACTION_DETAILS_ACTION,
-  getAllCreditPacksActionSuccess,
-  getAllSubscriptionPlansActionSuccess,
-  getAllUserDetailsActionSuccess,
-  getAllUserTransactionsActionSuccess,
+  getCreditPacksActionSuccess,
+  getSubscriptionPlansActionSuccess,
+  getUserDetailsActionSuccess,
+  getUserTransactionsActionSuccess,
   getTransactionDetailsActionSuccess,
   PURCHASE_CREDITS_ACTION,
   purchaseCreditsActionError,
@@ -23,66 +23,66 @@ import {
   startSubscriptionActionSuccess,
 } from './ducks'
 import {
-  GetAllCreditPacksAction,
-  GetAllSubscriptionPlansAction,
-  GetAllUserDetailsAction,
+  GetCreditPacksAction,
+  GetSubscriptionPlansAction,
+  GetUserDetailsAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
   StartSubscriptionAction,
 } from './types'
 
-export function* getAllUserDetailsActionSaga(action: GetAllUserDetailsAction) {
+export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
   try {
-    const getAllUserDetailsActionUrl = `${BILLING_API_URL}/users/${action.userID}`
+    const getUserDetailsUrl = `${BILLING_API_URL}/users/${action.userID}`
 
     const response = yield call(request, {
-      url: getAllUserDetailsActionUrl,
+      url: getUserDetailsUrl,
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
 
-    const allUserDetails = {
+    const userDetails = {
       subscriptionID: response.data.subscriptionId,
       userCredits: response.data.credits,
       userID: response.data.id,
       nextPaymentDate: response.data.nextPaymentDate,
     }
 
-    yield put(getAllUserDetailsActionSuccess(allUserDetails))
+    yield put(getUserDetailsActionSuccess(userDetails))
   } catch (error) {
     console.log('Error fetching all user details.')
   }
 }
 
-export function* getAllCreditPacksActionSaga(action: GetAllCreditPacksAction) {
+export function* getCreditPacksActionSaga(action: GetCreditPacksAction) {
   try {
-    const getAllCreditPacksActionUrl = `${BILLING_API_URL}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`
+    const getCreditPacksUrl = `${BILLING_API_URL}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
-      url: getAllCreditPacksActionUrl,
+      url: getCreditPacksUrl,
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
 
-    const allCreditPacks = response.data.map((creditPack: any) => ({
-      creditsInCreditPack: creditPack.credits,
-      idOfCreditPack: creditPack.id,
-      nameOfCreditPack: creditPack.name,
-      priceOfCreditPack: creditPack.price,
+    const creditPacks = response.data.map((creditPack: any) => ({
+      credits: creditPack.credits,
+      id: creditPack.id,
+      name: creditPack.name,
+      price: creditPack.price,
     }))
 
-    yield put(getAllCreditPacksActionSuccess(allCreditPacks))
+    yield put(getCreditPacksActionSuccess(creditPacks))
   } catch (error) {
     console.log('Error fetching all credit packs.')
   }
 }
 
-export function* getAllSubscriptionPlansActionSaga(
-  action: GetAllSubscriptionPlansAction
+export function* getSubscriptionPlansActionSaga(
+  action: GetSubscriptionPlansAction
 ) {
   try {
     const getSubscriptionsUrl = `${BILLING_API_URL}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
@@ -103,25 +103,25 @@ export function* getAllSubscriptionPlansActionSaga(
       price: sub.price,
     }))
 
-    yield put(getAllSubscriptionPlansActionSuccess(subscriptions))
+    yield put(getSubscriptionPlansActionSuccess(subscriptions))
   } catch (error) {
     console.log('Error fetching all subscription plans.')
   }
 }
 
-export function* getAllUserTransactionsActionSaga() {
+export function* getUserTransactionsActionSaga() {
   try {
-    const getAllUserTransactionsActionUrl = `${BILLING_API_URL}/purchases`
+    const getTransactionsUrl = `${BILLING_API_URL}/purchases`
 
     const response = yield call(request, {
-      url: getAllUserTransactionsActionUrl,
+      url: getTransactionsUrl,
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
 
-    const allUserTransactions = response.data.map((transaction: any) => ({
+    const transactions = response.data.map((transaction: any) => ({
       transactionAmount: {
         transactionCurrency: transaction.amount.currency,
         transactionValue: transaction.amount.value,
@@ -134,7 +134,7 @@ export function* getAllUserTransactionsActionSaga() {
       transactionType: transaction.type,
     }))
 
-    yield put(getAllUserTransactionsActionSuccess(allUserTransactions))
+    yield put(getUserTransactionsActionSuccess(transactions))
   } catch (error) {
     console.log("Error fetching all of the user's transactions.")
   }
@@ -235,15 +235,15 @@ export function* cancelSubscriptionSaga() {
 }
 
 function* billingRootSaga() {
-  yield takeLatest(GET_ALL_CREDIT_PACKS_ACTION, getAllCreditPacksActionSaga)
+  yield takeLatest(GET_CREDIT_PACKS_ACTION, getCreditPacksActionSaga)
   yield takeLatest(
-    GET_ALL_SUBSCRIPTION_PLANS_ACTION,
-    getAllSubscriptionPlansActionSaga
+    GET_SUBSCRIPTION_PLANS_ACTION,
+    getSubscriptionPlansActionSaga
   )
-  yield takeLatest(GET_ALL_USER_DETAILS_ACTION, getAllUserDetailsActionSaga)
+  yield takeLatest(GET_USER_DETAILS_ACTION, getUserDetailsActionSaga)
   yield takeLatest(
-    GET_ALL_USER_TRANSACTIONS_ACTION,
-    getAllUserTransactionsActionSaga
+    GET_USER_TRANSACTIONS_ACTION,
+    getUserTransactionsActionSaga
   )
   yield takeLatest(
     GET_TRANSACTION_DETAILS_ACTION,

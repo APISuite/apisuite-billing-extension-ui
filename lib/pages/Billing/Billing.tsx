@@ -10,7 +10,7 @@ import {
 
 import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog'
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog'
-import SubscriptionsCatalog from '../../components/SubscriptionPlansCatalog'
+import SubscriptionsCatalog from '../../components/SubscriptionsCatalog'
 import SubscriptionsTable from '../../components/SubscriptionsTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { BillingProps } from './types'
@@ -18,17 +18,17 @@ import useStyles from './styles'
 import Link from '../../components/Link'
 
 const Billing: React.FC<BillingProps> = ({
-  allCreditPacks,
+  creditPacks,
   subscriptions,
   allUserDetails,
   allUserTransactions,
   cancelSubscriptionAction,
   clearSubscriptionInfoAction,
   dialogInfo,
-  getAllCreditPacksAction,
-  getAllSubscriptionPlansAction,
-  getAllUserDetailsAction,
-  getAllUserTransactionsAction,
+  getCreditPacksAction,
+  getSubscriptionPlansAction,
+  getUserDetailsAction,
+  getUserTransactionsAction,
   hasRetrievedAllCreditPacks,
   hasRetrievedAllSubscriptions,
   purchaseCreditsAction,
@@ -48,15 +48,15 @@ const Billing: React.FC<BillingProps> = ({
   of all credit packs and subscription plans we presently offer, as well as
   all information we have on a user and his transactions. */
   useEffect(() => {
-    getAllCreditPacksAction('price', 'asc')
-    getAllSubscriptionPlansAction('price', 'asc')
-    getAllUserDetailsAction(user.id)
-    getAllUserTransactionsAction()
+    getCreditPacksAction('price', 'asc')
+    getSubscriptionPlansAction('price', 'asc')
+    getUserDetailsAction(user.id)
+    getUserTransactionsAction()
   }, [])
 
   /* Credits logic */
 
-  const showAllCreditPacks = () => {
+  const showCreditPacks = () => {
     if (!hasRetrievedAllCreditPacks) {
       return (
         <Box clone mb={3}>
@@ -65,7 +65,7 @@ const Billing: React.FC<BillingProps> = ({
       )
     }
 
-    if (allCreditPacks.length) {
+    if (creditPacks.length) {
       return (
         <>
           <Typography variant="body2" color="inherit" gutterBottom>
@@ -73,8 +73,8 @@ const Billing: React.FC<BillingProps> = ({
           </Typography>
 
           <CreditPacksCatalog
-            arrayOfCreditPacks={allCreditPacks}
-            currentlySelectedCreditPack={currentlySelectedCreditPack}
+            creditPacks={creditPacks}
+            selectedCreditPack={selectedCreditPack}
             handleCreditPackSelection={handleCreditPackSelection}
           />
         </>
@@ -100,37 +100,30 @@ const Billing: React.FC<BillingProps> = ({
   // Controls the selection of credit top-up packs
   const [hasSelectedCreditPack, setHasSelectedCreditPack] = useState(false)
 
-  const [
-    currentlySelectedCreditPack,
-    setCurrentlySelectedCreditPack,
-  ] = useState({
-    creditsInCreditPack: 0,
-    idOfCreditPack: 0,
-    nameOfCreditPack: '',
-    priceOfCreditPack: 0,
+  const [selectedCreditPack, setSelectedCreditPack] = useState({
+    credits: 0,
+    id: 0,
+    name: '',
+    price: 0,
   })
 
-  const handleCreditPackSelection = (idOfSelectedCreditPack: number) => {
-    if (
-      hasSelectedCreditPack &&
-      currentlySelectedCreditPack.idOfCreditPack === idOfSelectedCreditPack
-    ) {
+  const handleCreditPackSelection = (id: number) => {
+    if (hasSelectedCreditPack && selectedCreditPack.id === id) {
       setHasSelectedCreditPack(false)
 
-      setCurrentlySelectedCreditPack({
-        creditsInCreditPack: 0,
-        idOfCreditPack: 0,
-        nameOfCreditPack: '',
-        priceOfCreditPack: 0,
+      setSelectedCreditPack({
+        credits: 0,
+        id: 0,
+        name: '',
+        price: 0,
       })
     } else {
-      const selectedCreditPack = allCreditPacks.find((creditPack) => {
-        return creditPack.idOfCreditPack === idOfSelectedCreditPack
+      const selected = creditPacks.find((creditPack) => {
+        return creditPack.id === id
       })
 
       setHasSelectedCreditPack(true)
-
-      setCurrentlySelectedCreditPack(selectedCreditPack)
+      setSelectedCreditPack(selected)
     }
   }
 
@@ -160,7 +153,7 @@ const Billing: React.FC<BillingProps> = ({
           <SubscriptionsCatalog
             activeSubscriptionID={parseInt(allUserDetails.subscriptionID, 10)}
             subscriptions={subscriptions}
-            selectedSubscription={currentlySelectedSubscriptionPlan}
+            selectedSubscription={selectedSubscriptionPlan}
             handleSubscriptionSelection={handleSubscriptionPlanSelection}
           />
         </>
@@ -181,10 +174,7 @@ const Billing: React.FC<BillingProps> = ({
     setHasSelectedSubscriptionPlan,
   ] = useState(false)
 
-  const [
-    currentlySelectedSubscriptionPlan,
-    setCurrentlySelectedSubscriptionPlan,
-  ] = useState({
+  const [selectedSubscriptionPlan, setSelectedSubscriptionPlan] = useState({
     credits: 0,
     id: 0,
     name: '',
@@ -195,11 +185,11 @@ const Billing: React.FC<BillingProps> = ({
   const handleSubscriptionPlanSelection = (subscriptionID: number) => {
     if (
       hasSelectedSubscriptionPlan &&
-      currentlySelectedSubscriptionPlan.id === subscriptionID
+      selectedSubscriptionPlan.id === subscriptionID
     ) {
       setHasSelectedSubscriptionPlan(false)
 
-      setCurrentlySelectedSubscriptionPlan({
+      setSelectedSubscriptionPlan({
         credits: 0,
         id: 0,
         name: '',
@@ -212,7 +202,7 @@ const Billing: React.FC<BillingProps> = ({
       )
 
       setHasSelectedSubscriptionPlan(true)
-      setCurrentlySelectedSubscriptionPlan(selectedSubscription)
+      setSelectedSubscriptionPlan(selectedSubscription)
     }
   }
 
@@ -242,7 +232,7 @@ const Billing: React.FC<BillingProps> = ({
 
   useEffect(() => {
     if (successfullySubscribedToPlan) {
-      setCurrentlySelectedSubscriptionPlan({
+      setSelectedSubscriptionPlan({
         credits: 0,
         id: 0,
         name: '',
@@ -259,8 +249,8 @@ const Billing: React.FC<BillingProps> = ({
   starts or changes his subscription plan. */
   useEffect(() => {
     if (successfullySubscribedToPlan) {
-      getAllUserDetailsAction(user.id)
-      getAllUserTransactionsAction()
+      getUserDetailsAction(user.id)
+      getUserTransactionsAction()
     }
   }, [successfullySubscribedToPlan])
 
@@ -354,7 +344,7 @@ const Billing: React.FC<BillingProps> = ({
             <Box color={palette.common.white}>
               <hr className={classes.separator} />
 
-              {showAllCreditPacks()}
+              {showCreditPacks()}
 
               <div>
                 <Button
@@ -362,7 +352,7 @@ const Billing: React.FC<BillingProps> = ({
                   size="large"
                   color="primary"
                   disableElevation
-                  disabled={!currentlySelectedCreditPack.idOfCreditPack}
+                  disabled={!selectedCreditPack.id}
                   onClick={handleOpenTopUpDialog}
                 >
                   {t('purchaseCreditsButtonLabel')}
@@ -525,7 +515,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="openTopUpDialog"
             onClick={() => {
-              purchaseCreditsAction(currentlySelectedCreditPack.idOfCreditPack)
+              purchaseCreditsAction(selectedCreditPack.id)
             }}
           >
             {t('confirmCreditTopUpDialog.confirmButtonLabel')}
@@ -536,7 +526,7 @@ const Billing: React.FC<BillingProps> = ({
         open={openTopUpDialog}
         subText={t('confirmCreditTopUpDialog.subText')}
         text={t('confirmCreditTopUpDialog.text', {
-          creditAmount: currentlySelectedCreditPack.creditsInCreditPack,
+          creditAmount: selectedCreditPack.credits,
         })}
         title={t('confirmCreditTopUpDialog.title')}
       >
@@ -557,7 +547,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanStart"
             onClick={() => {
-              startSubscriptionAction(currentlySelectedSubscriptionPlan.id)
+              startSubscriptionAction(selectedSubscriptionPlan.id)
             }}
           >
             {t('startSubscriptionDialog.confirmButtonLabel')}
@@ -568,7 +558,7 @@ const Billing: React.FC<BillingProps> = ({
         open={wantsToStartSubscriptionPlan}
         subText={t('startSubscriptionDialog.subText')}
         text={t('startSubscriptionDialog.text', {
-          selectedSubscriptionPlan: currentlySelectedSubscriptionPlan.name,
+          selectedSubscriptionPlan: selectedSubscriptionPlan.name,
         })}
         title={t('startSubscriptionDialog.title')}
       >
@@ -607,7 +597,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanChange"
             onClick={() => {
-              startSubscriptionAction(currentlySelectedSubscriptionPlan.id)
+              startSubscriptionAction(selectedSubscriptionPlan.id)
             }}
           >
             {t('changeSubscriptionDialog.confirmButtonLabel')}
@@ -618,7 +608,7 @@ const Billing: React.FC<BillingProps> = ({
         open={wantsToChangeSubscriptionPlan}
         subText={t('changeSubscriptionDialog.subText')}
         text={t('changeSubscriptionDialog.text', {
-          newlySelectedSubscriptionPlan: currentlySelectedSubscriptionPlan.name,
+          newlySelectedSubscriptionPlan: selectedSubscriptionPlan.name,
         })}
         title={t('changeSubscriptionDialog.title')}
       >

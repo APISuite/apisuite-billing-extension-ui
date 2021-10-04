@@ -4,5 +4,5 @@ export type SubscriptionsCatalogProps = {
   activeSubscriptionID?: SubscriptionPlanDetails['id']
   subscriptions: SubscriptionPlanDetails[]
   selectedSubscription: SubscriptionPlanDetails
-  handleSubscriptionSelection: (idOfSelectedSubscriptionPlan: number) => void
+  handleSubscriptionSelection: (id: number) => void
 }
