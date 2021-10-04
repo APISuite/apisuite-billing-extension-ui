@@ -1,10 +1,8 @@
 import { SubscriptionPlanDetails } from '../../pages/Billing/types'
 
 export type SubscriptionPlansCatalogProps = {
-  activeSubscriptionPlanID?: SubscriptionPlanDetails['id']
-  arrayOfSubscriptionPlans: SubscriptionPlanDetails[]
-  currentlySelectedSubscriptionPlan: SubscriptionPlanDetails
-  handleSubscriptionPlanSelection: (
-    idOfSelectedSubscriptionPlan: number
-  ) => void
+  activeSubscriptionID?: SubscriptionPlanDetails['id']
+  subscriptions: SubscriptionPlanDetails[]
+  selectedSubscription: SubscriptionPlanDetails
+  handleSubscriptionSelection: (idOfSelectedSubscriptionPlan: number) => void
 }
