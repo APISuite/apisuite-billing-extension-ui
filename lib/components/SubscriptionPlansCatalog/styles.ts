@@ -1,7 +1,7 @@
 import { makeStyles } from '@apisuite/fe-base'
 
 export default makeStyles((theme) => ({
-  notSelectedSubscriptionPlanContainer: {
+  notSelectedSubscriptionContainer: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.grey[300]}`,
@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
     marginRight: 12,
   },
 
-  selectedSubscriptionPlanContainer: {
+  selectedSubscriptionContainer: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.action.focus}`,

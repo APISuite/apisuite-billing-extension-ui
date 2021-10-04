@@ -158,15 +158,13 @@ const Billing: React.FC<BillingProps> = ({
       return (
         <>
           <SubscriptionPlansCatalog
-            activeSubscriptionPlanID={parseInt(
+            activeSubscriptionID={parseInt(
               allUserDetails.subscriptionID,
               10
             )}
-            arrayOfSubscriptionPlans={allSubscriptionPlans}
-            currentlySelectedSubscriptionPlan={
-              currentlySelectedSubscriptionPlan
-            }
-            handleSubscriptionPlanSelection={handleSubscriptionPlanSelection}
+            subscriptions={allSubscriptionPlans}
+            selectedSubscription={currentlySelectedSubscriptionPlan}
+            handleSubscriptionSelection={handleSubscriptionPlanSelection}
           />
         </>
       )

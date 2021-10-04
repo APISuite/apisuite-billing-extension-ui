@@ -8,75 +8,69 @@ import useStyles from './styles'
 import { Typography } from '@material-ui/core'
 
 const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
-  activeSubscriptionPlanID,
-  arrayOfSubscriptionPlans,
-  currentlySelectedSubscriptionPlan,
-  handleSubscriptionPlanSelection,
+  activeSubscriptionID,
+  subscriptions,
+  selectedSubscription,
+  handleSubscriptionSelection,
 }) => {
   const classes = useStyles()
 
   const generateCatalogEntries = () => {
-    const arrayOfCatalogEntries = arrayOfSubscriptionPlans.map(
-      (subscriptionPlan, index) => {
-        return (
-          <div
-            className={clsx({
-              [classes.selectedSubscriptionPlanContainer]:
-                subscriptionPlan.id === currentlySelectedSubscriptionPlan.id,
-              [classes.notSelectedSubscriptionPlanContainer]:
-                subscriptionPlan.id !== currentlySelectedSubscriptionPlan.id,
-            })}
-            key={`subscriptionPlansCatalogEntry${index}`}
-            onClick={() => handleSubscriptionPlanSelection(subscriptionPlan.id)}
-          >
-            {subscriptionPlan.id === currentlySelectedSubscriptionPlan.id ||
-            subscriptionPlan.id === activeSubscriptionPlanID ? (
-              <RadioButtonCheckedRoundedIcon
-                className={clsx(classes.selectedSubscriptionPlanIcon, {
-                  [classes.disabledSubscriptionPlanIcon]:
-                    subscriptionPlan.id === activeSubscriptionPlanID,
-                })}
-              />
-            ) : (
-              <RadioButtonUncheckedRoundedIcon
-                className={classes.notSelectedSubscriptionPlanIcon}
-              />
-            )}
+    return subscriptions.map((sub, index) => {
+      return (
+        <div
+          className={clsx({
+            [classes.selectedSubscriptionContainer]:
+              sub.id === selectedSubscription.id,
+            [classes.notSelectedSubscriptionContainer]:
+              sub.id !== selectedSubscription.id,
+          })}
+          key={`subscriptionPlansCatalogEntry${index}`}
+          onClick={() => handleSubscriptionSelection(sub.id)}
+        >
+          {sub.id === selectedSubscription.id ||
+          sub.id === activeSubscriptionID ? (
+            <RadioButtonCheckedRoundedIcon
+              className={clsx(classes.selectedSubscriptionPlanIcon, {
+                [classes.disabledSubscriptionPlanIcon]:
+                  sub.id === activeSubscriptionID,
+              })}
+            />
+          ) : (
+            <RadioButtonUncheckedRoundedIcon
+              className={classes.notSelectedSubscriptionPlanIcon}
+            />
+          )}
 
-            <div className={classes.subscriptionPlanDetailsContainer}>
-              <div>
-                <Typography variant="body2">{subscriptionPlan.name}</Typography>
+          <div className={classes.subscriptionPlanDetailsContainer}>
+            <div>
+              <Typography variant="body2">{sub.name}</Typography>
 
-                <Typography variant="body1">
-                  <b>{subscriptionPlan.credits} credits</b>
-                </Typography>
-              </div>
-
-              <div>
-                <Typography variant="body1">
-                  <b>€ {subscriptionPlan.price}</b>
-                </Typography>
-
-                <Typography variant="body2">
-                  {subscriptionPlan.periodicity}
-                </Typography>
-              </div>
+              <Typography variant="body1">
+                <b>{sub.credits} credits</b>
+              </Typography>
             </div>
 
-            {subscriptionPlan.id === activeSubscriptionPlanID && (
-              <div
-                className={classes.disabledSubscriptionPlanContainer}
-                onClick={(event) => {
-                  event.stopPropagation()
-                }}
-              />
-            )}
-          </div>
-        )
-      }
-    )
+            <div>
+              <Typography variant="body1">
+                <b>€ {sub.price}</b>
+              </Typography>
 
-    return arrayOfCatalogEntries
+              <Typography variant="body2">{sub.periodicity}</Typography>
+            </div>
+          </div>
+
+          {sub.id === activeSubscriptionID && (
+            <div
+              className={classes.disabledSubscriptionPlanContainer}
+              onClick={(event) => {
+                event.stopPropagation()
+              }}
+            />
+          )}
+        </div>
+      )
+    })
   }
 
   return (
