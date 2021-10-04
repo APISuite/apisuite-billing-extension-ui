@@ -1,9 +1,0 @@
-{
-    "homepage": {
-        "extensionSection": {
-            "title": "Componente de Extensão",
-            "paragraph": "Esta secção foi injectada por uma extensão",
-            "configValue": "Valor de configuração: {{ value }}"
-        }
-    }
-}
