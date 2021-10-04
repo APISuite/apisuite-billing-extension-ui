@@ -85,25 +85,25 @@ export function* getAllSubscriptionPlansActionSaga(
   action: GetAllSubscriptionPlansAction
 ) {
   try {
-    const getAllSubscriptionPlansActionUrl = `${BILLING_API_URL}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
+    const getSubscriptionsUrl = `${BILLING_API_URL}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
-      url: getAllSubscriptionPlansActionUrl,
+      url: getSubscriptionsUrl,
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
       },
     })
 
-    const allSubscriptionPlans = response.data.map((subscriptionPlan: any) => ({
-      credits: subscriptionPlan.credits,
-      id: subscriptionPlan.id,
-      name: subscriptionPlan.name,
-      periodicity: subscriptionPlan.periodicity,
-      price: subscriptionPlan.price,
+    const subscriptions = response.data.map((sub: any) => ({
+      credits: sub.credits,
+      id: sub.id,
+      name: sub.name,
+      periodicity: sub.periodicity,
+      price: sub.price,
     }))
 
-    yield put(getAllSubscriptionPlansActionSuccess(allSubscriptionPlans))
+    yield put(getAllSubscriptionPlansActionSuccess(subscriptions))
   } catch (error) {
     console.log('Error fetching all subscription plans.')
   }

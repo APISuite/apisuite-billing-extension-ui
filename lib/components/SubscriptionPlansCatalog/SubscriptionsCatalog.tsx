@@ -2,12 +2,12 @@ import React from 'react'
 import RadioButtonCheckedRoundedIcon from '@material-ui/icons/RadioButtonCheckedRounded'
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
 
-import { SubscriptionPlansCatalogProps } from './types'
+import { SubscriptionsCatalogProps } from './types'
 import clsx from 'clsx'
 import useStyles from './styles'
 import { Typography } from '@material-ui/core'
 
-const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
+const SubscriptionsCatalog: React.FC<SubscriptionsCatalogProps> = ({
   activeSubscriptionID,
   subscriptions,
   selectedSubscription,
@@ -25,24 +25,24 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
             [classes.notSelectedSubscriptionContainer]:
               sub.id !== selectedSubscription.id,
           })}
-          key={`subscriptionPlansCatalogEntry${index}`}
+          key={`subscriptionsCatalogEntry${index}`}
           onClick={() => handleSubscriptionSelection(sub.id)}
         >
           {sub.id === selectedSubscription.id ||
           sub.id === activeSubscriptionID ? (
             <RadioButtonCheckedRoundedIcon
-              className={clsx(classes.selectedSubscriptionPlanIcon, {
-                [classes.disabledSubscriptionPlanIcon]:
+              className={clsx(classes.selectedSubscriptionIcon, {
+                [classes.disabledSubscriptionIcon]:
                   sub.id === activeSubscriptionID,
               })}
             />
           ) : (
             <RadioButtonUncheckedRoundedIcon
-              className={classes.notSelectedSubscriptionPlanIcon}
+              className={classes.notSelectedSubscriptionIcon}
             />
           )}
 
-          <div className={classes.subscriptionPlanDetailsContainer}>
+          <div className={classes.subscriptionDetailsContainer}>
             <div>
               <Typography variant="body2">{sub.name}</Typography>
 
@@ -62,7 +62,7 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
 
           {sub.id === activeSubscriptionID && (
             <div
-              className={classes.disabledSubscriptionPlanContainer}
+              className={classes.disabledSubscriptionContainer}
               onClick={(event) => {
                 event.stopPropagation()
               }}
@@ -74,10 +74,10 @@ const SubscriptionPlansCatalog: React.FC<SubscriptionPlansCatalogProps> = ({
   }
 
   return (
-    <div className={classes.subscriptionPlansCatalogEntriesContainer}>
+    <div className={classes.subscriptionCatalogEntriesContainer}>
       {generateCatalogEntries()}
     </div>
   )
 }
 
-export default SubscriptionPlansCatalog
+export default SubscriptionsCatalog

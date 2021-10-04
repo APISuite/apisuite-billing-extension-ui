@@ -5,9 +5,9 @@ import {
   BillingStore,
   CreditPackDetails,
   PackageOrderMode,
-  PackageSortMode,
+  PackageSortMode, SubscriptionPlanDetails,
   TransactionDetails,
-  UserDetails,
+  UserDetails
 } from './types'
 
 /** Initial state */
@@ -20,7 +20,7 @@ const initialState: BillingStore = {
     nextPaymentDate: '',
   },
   allCreditPacks: [],
-  allSubscriptionPlans: [],
+  subscriptions: [],
   allUserTransactions: [],
   transactionDetails: {
     transactionAmount: {
@@ -45,7 +45,7 @@ const initialState: BillingStore = {
   },
   successfullySubscribedToPlan: false,
   hasRetrievedAllCreditPacks: false,
-  hasRetrievedAllSubscriptionPlans: false,
+  hasRetrievedAllSubscriptions: false,
 }
 
 /** Action types */
@@ -113,8 +113,8 @@ export default function billingReducer(
 
     case GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS: {
       return update(state, {
-        allSubscriptionPlans: { $set: action.allSubscriptionPlans },
-        hasRetrievedAllSubscriptionPlans: { $set: true },
+        subscriptions: { $set: action.subscriptions },
+        hasRetrievedAllSubscriptions: { $set: true },
       })
     }
 
@@ -218,11 +218,11 @@ export function getAllSubscriptionPlansAction(
 }
 
 export function getAllSubscriptionPlansActionSuccess(
-  allSubscriptionPlans: CreditPackDetails[]
+  subscriptions: SubscriptionPlanDetails[]
 ) {
   return {
     type: GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
-    allSubscriptionPlans,
+    subscriptions,
   }
 }
 

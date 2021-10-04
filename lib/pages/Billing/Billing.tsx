@@ -10,7 +10,7 @@ import {
 
 import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog'
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog'
-import SubscriptionPlansCatalog from '../../components/SubscriptionPlansCatalog'
+import SubscriptionsCatalog from '../../components/SubscriptionPlansCatalog'
 import SubscriptionsTable from '../../components/SubscriptionsTable'
 import TransactionsTable from '../../components/TransactionsTable'
 import { BillingProps } from './types'
@@ -19,7 +19,7 @@ import Link from '../../components/Link'
 
 const Billing: React.FC<BillingProps> = ({
   allCreditPacks,
-  allSubscriptionPlans,
+  subscriptions,
   allUserDetails,
   allUserTransactions,
   cancelSubscriptionAction,
@@ -30,7 +30,7 @@ const Billing: React.FC<BillingProps> = ({
   getAllUserDetailsAction,
   getAllUserTransactionsAction,
   hasRetrievedAllCreditPacks,
-  hasRetrievedAllSubscriptionPlans,
+  hasRetrievedAllSubscriptions,
   purchaseCreditsAction,
   startSubscriptionAction,
   successfullySubscribedToPlan,
@@ -143,8 +143,8 @@ const Billing: React.FC<BillingProps> = ({
 
   /* Subscriptions logic */
 
-  const showAllSubscriptionPlans = () => {
-    if (!hasRetrievedAllSubscriptionPlans) {
+  const showSubscriptions = () => {
+    if (!hasRetrievedAllSubscriptions) {
       return (
         <Box clone mb={3}>
           <Typography gutterBottom variant="body2">
@@ -154,15 +154,12 @@ const Billing: React.FC<BillingProps> = ({
       )
     }
 
-    if (allSubscriptionPlans.length) {
+    if (subscriptions.length) {
       return (
         <>
-          <SubscriptionPlansCatalog
-            activeSubscriptionID={parseInt(
-              allUserDetails.subscriptionID,
-              10
-            )}
-            subscriptions={allSubscriptionPlans}
+          <SubscriptionsCatalog
+            activeSubscriptionID={parseInt(allUserDetails.subscriptionID, 10)}
+            subscriptions={subscriptions}
             selectedSubscription={currentlySelectedSubscriptionPlan}
             handleSubscriptionSelection={handleSubscriptionPlanSelection}
           />
@@ -195,12 +192,10 @@ const Billing: React.FC<BillingProps> = ({
     price: 0,
   })
 
-  const handleSubscriptionPlanSelection = (
-    idOfSelectedSubscriptionPlan: number
-  ) => {
+  const handleSubscriptionPlanSelection = (subscriptionID: number) => {
     if (
       hasSelectedSubscriptionPlan &&
-      currentlySelectedSubscriptionPlan.id === idOfSelectedSubscriptionPlan
+      currentlySelectedSubscriptionPlan.id === subscriptionID
     ) {
       setHasSelectedSubscriptionPlan(false)
 
@@ -212,14 +207,12 @@ const Billing: React.FC<BillingProps> = ({
         price: 0,
       })
     } else {
-      const selectedSubscriptionPlan = allSubscriptionPlans.find(
-        (subscriptionPlan) =>
-          subscriptionPlan.id === idOfSelectedSubscriptionPlan
+      const selectedSubscription = subscriptions.find(
+        (sub) => sub.id === subscriptionID
       )
 
       setHasSelectedSubscriptionPlan(true)
-
-      setCurrentlySelectedSubscriptionPlan(selectedSubscriptionPlan)
+      setCurrentlySelectedSubscriptionPlan(selectedSubscription)
     }
   }
 
@@ -416,7 +409,7 @@ const Billing: React.FC<BillingProps> = ({
             <SubscriptionsTable
               subscriptions={[
                 {
-                  name: allSubscriptionPlans.find((subscriptionPlan) => {
+                  name: subscriptions.find((subscriptionPlan) => {
                     return (
                       subscriptionPlan.id ===
                       parseInt(allUserDetails.subscriptionID)
@@ -446,7 +439,7 @@ const Billing: React.FC<BillingProps> = ({
                   <Typography variant="h6">{t('chooseNewSubPlan')}</Typography>
                 </Box>
 
-                {showAllSubscriptionPlans()}
+                {showSubscriptions()}
 
                 <Box mt={2}>
                   <Button
@@ -486,7 +479,7 @@ const Billing: React.FC<BillingProps> = ({
               <Typography variant="h3">{t('chooseSubscription')}</Typography>
             </Box>
 
-            {showAllSubscriptionPlans()}
+            {showSubscriptions()}
 
             {/* FIXME */}
             <Button

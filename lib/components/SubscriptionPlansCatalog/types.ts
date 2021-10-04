@@ -1,6 +1,6 @@
 import { SubscriptionPlanDetails } from '../../pages/Billing/types'
 
-export type SubscriptionPlansCatalogProps = {
+export type SubscriptionsCatalogProps = {
   activeSubscriptionID?: SubscriptionPlanDetails['id']
   subscriptions: SubscriptionPlanDetails[]
   selectedSubscription: SubscriptionPlanDetails

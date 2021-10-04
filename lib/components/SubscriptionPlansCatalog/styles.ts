@@ -16,7 +16,7 @@ export default makeStyles((theme) => ({
     width: '100%',
   },
 
-  notSelectedSubscriptionPlanIcon: {
+  notSelectedSubscriptionIcon: {
     color: theme.palette.text.secondary,
     fontSize: 24,
     marginRight: 12,
@@ -37,25 +37,25 @@ export default makeStyles((theme) => ({
     position: 'relative',
   },
 
-  selectedSubscriptionPlanIcon: {
+  selectedSubscriptionIcon: {
     color: theme.palette.action.focus,
     fontSize: 24,
     marginRight: 12,
   },
 
-  subscriptionPlanDetailsContainer: {
+  subscriptionDetailsContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     width: 220,
   },
 
-  subscriptionPlansCatalogEntriesContainer: {
+  subscriptionCatalogEntriesContainer: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
 
-  disabledSubscriptionPlanContainer: {
+  disabledSubscriptionContainer: {
     background: theme.palette.action.disabledBackground,
     opacity: theme.palette.action.disabledOpacity,
     borderRadius: 4,
@@ -67,7 +67,7 @@ export default makeStyles((theme) => ({
     top: 0,
   },
 
-  disabledSubscriptionPlanIcon: {
+  disabledSubscriptionIcon: {
     color: theme.palette.action.disabled,
     fontSize: 24,
     marginRight: 12,
