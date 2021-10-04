@@ -16,12 +16,12 @@ import { BillingStore } from './types'
 
 export const mapStateToProps = ({ auth, billing }) => ({
   allCreditPacks: billing.allCreditPacks,
-  allSubscriptionPlans: billing.allSubscriptionPlans,
+  subscriptions: billing.subscriptions,
   allUserDetails: billing.allUserDetails,
   allUserTransactions: billing.allUserTransactions as BillingStore['transactionDetails'],
   dialogInfo: billing.subscriptionsDialogInfo,
   hasRetrievedAllCreditPacks: billing.hasRetrievedAllCreditPacks,
-  hasRetrievedAllSubscriptionPlans: billing.hasRetrievedAllSubscriptionPlans,
+  hasRetrievedAllSubscriptions: billing.hasRetrievedAllSubscriptions,
   successfullySubscribedToPlan: billing.successfullySubscribedToPlan,
   user: auth.user,
 })

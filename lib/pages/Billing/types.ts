@@ -73,12 +73,12 @@ export interface TransactionDetails {
 
 export interface BillingStore {
   allCreditPacks: CreditPackDetails[]
-  allSubscriptionPlans: SubscriptionPlanDetails[]
+  subscriptions: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
   error?: string
   hasRetrievedAllCreditPacks: boolean
-  hasRetrievedAllSubscriptionPlans: boolean
+  hasRetrievedAllSubscriptions: boolean
   subscriptionsDialogInfo: {
     type: 'success' | 'warning'
     transKeys: {
@@ -93,7 +93,7 @@ export interface BillingStore {
 
 export interface BillingProps {
   allCreditPacks: CreditPackDetails[]
-  allSubscriptionPlans: SubscriptionPlanDetails[]
+  subscriptions: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   allUserTransactions: TransactionDetails[]
   dialogInfo: BillingStore['subscriptionsDialogInfo']
@@ -109,7 +109,7 @@ export interface BillingProps {
   getAllUserDetailsAction: (userID: number) => void
   getAllUserTransactionsAction: () => void
   hasRetrievedAllCreditPacks: boolean
-  hasRetrievedAllSubscriptionPlans: boolean
+  hasRetrievedAllSubscriptions: boolean
   purchaseCreditsAction: (creditPackID: number) => void
   startSubscriptionAction: (subscriptionPlanID: number) => void
   cancelSubscriptionAction: () => void
@@ -146,7 +146,7 @@ export interface GetAllSubscriptionPlansAction extends Action {
 
 export interface GetAllSubscriptionPlansActionSuccess extends Action {
   type: typeof GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS
-  allSubscriptionPlans: SubscriptionPlanDetails[]
+  subscriptions: SubscriptionPlanDetails[]
 }
 
 export interface GetAllUserTransactionsAction extends Action {
