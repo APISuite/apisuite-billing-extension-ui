@@ -5,9 +5,10 @@ import {
   BillingStore,
   CreditPackDetails,
   PackageOrderMode,
-  PackageSortMode, SubscriptionPlanDetails,
+  PackageSortMode,
+  SubscriptionPlanDetails,
   TransactionDetails,
-  UserDetails
+  UserDetails,
 } from './types'
 
 /** Initial state */
@@ -19,7 +20,7 @@ const initialState: BillingStore = {
     userID: 0,
     nextPaymentDate: '',
   },
-  allCreditPacks: [],
+  creditPacks: [],
   subscriptions: [],
   allUserTransactions: [],
   transactionDetails: {
@@ -50,23 +51,23 @@ const initialState: BillingStore = {
 
 /** Action types */
 
-export const GET_ALL_USER_DETAILS_ACTION = 'Billing/GET_ALL_USER_DETAILS_ACTION'
-export const GET_ALL_USER_DETAILS_ACTION_SUCCESS =
-  'Billing/GET_ALL_USER_DETAILS_ACTION_SUCCESS'
+export const GET_USER_DETAILS_ACTION = 'Billing/GET_USER_DETAILS_ACTION'
+export const GET_USER_DETAILS_ACTION_SUCCESS =
+  'Billing/GET_USER_DETAILS_ACTION_SUCCESS'
 
-export const GET_ALL_CREDIT_PACKS_ACTION = 'Billing/GET_ALL_CREDIT_PACKS_ACTION'
-export const GET_ALL_CREDIT_PACKS_ACTION_SUCCESS =
-  'Billing/GET_ALL_CREDIT_PACKS_ACTION_SUCCESS'
+export const GET_CREDIT_PACKS_ACTION = 'Billing/GET_CREDIT_PACKS_ACTION'
+export const GET_CREDIT_PACKS_ACTION_SUCCESS =
+  'Billing/GET_CREDIT_PACKS_ACTION_SUCCESS'
 
-export const GET_ALL_SUBSCRIPTION_PLANS_ACTION =
-  'Billing/GET_ALL_SUBSCRIPTION_PLANS_ACTION'
-export const GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS =
-  'Billing/GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS'
+export const GET_SUBSCRIPTION_PLANS_ACTION =
+  'Billing/GET_SUBSCRIPTION_PLANS_ACTION'
+export const GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS =
+  'Billing/GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS'
 
-export const GET_ALL_USER_TRANSACTIONS_ACTION =
-  'Billing/GET_ALL_USER_TRANSACTIONS_ACTION'
-export const GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS =
-  'Billing/GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS'
+export const GET_USER_TRANSACTIONS_ACTION =
+  'Billing/GET_USER_TRANSACTIONS_ACTION'
+export const GET_USER_TRANSACTIONS_ACTION_SUCCESS =
+  'Billing/GET_USER_TRANSACTIONS_ACTION_SUCCESS'
 
 export const GET_TRANSACTION_DETAILS_ACTION =
   'Billing/GET_TRANSACTION_DETAILS_ACTION'
@@ -98,27 +99,27 @@ export default function billingReducer(
   action: BillingActions
 ): BillingStore {
   switch (action.type) {
-    case GET_ALL_USER_DETAILS_ACTION_SUCCESS: {
+    case GET_USER_DETAILS_ACTION_SUCCESS: {
       return update(state, {
         allUserDetails: { $set: action.allUserDetails },
       })
     }
 
-    case GET_ALL_CREDIT_PACKS_ACTION_SUCCESS: {
+    case GET_CREDIT_PACKS_ACTION_SUCCESS: {
       return update(state, {
-        allCreditPacks: { $set: action.allCreditPacks },
+        creditPacks: { $set: action.creditPacks },
         hasRetrievedAllCreditPacks: { $set: true },
       })
     }
 
-    case GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS: {
+    case GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS: {
       return update(state, {
         subscriptions: { $set: action.subscriptions },
         hasRetrievedAllSubscriptions: { $set: true },
       })
     }
 
-    case GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS: {
+    case GET_USER_TRANSACTIONS_ACTION_SUCCESS: {
       return update(state, {
         allUserTransactions: { $set: action.allUserTransactions },
       })
@@ -189,51 +190,51 @@ export default function billingReducer(
 
 /** Action builders */
 
-export function getAllUserDetailsAction(userID: number) {
-  return { type: GET_ALL_USER_DETAILS_ACTION, userID }
+export function getUserDetailsAction(userID: number) {
+  return { type: GET_USER_DETAILS_ACTION, userID }
 }
 
-export function getAllUserDetailsActionSuccess(allUserDetails: UserDetails) {
-  return { type: GET_ALL_USER_DETAILS_ACTION_SUCCESS, allUserDetails }
+export function getUserDetailsActionSuccess(allUserDetails: UserDetails) {
+  return { type: GET_USER_DETAILS_ACTION_SUCCESS, allUserDetails }
 }
 
-export function getAllCreditPacksAction(
+export function getCreditPacksAction(
   sortBy: PackageSortMode,
   orderBy: PackageOrderMode
 ) {
-  return { type: GET_ALL_CREDIT_PACKS_ACTION, sortBy, orderBy }
+  return { type: GET_CREDIT_PACKS_ACTION, sortBy, orderBy }
 }
 
-export function getAllCreditPacksActionSuccess(
-  allCreditPacks: CreditPackDetails[]
+export function getCreditPacksActionSuccess(
+  creditPacks: CreditPackDetails[]
 ) {
-  return { type: GET_ALL_CREDIT_PACKS_ACTION_SUCCESS, allCreditPacks }
+  return { type: GET_CREDIT_PACKS_ACTION_SUCCESS, creditPacks }
 }
 
-export function getAllSubscriptionPlansAction(
+export function getSubscriptionPlansAction(
   sortBy: PackageSortMode,
   orderBy: PackageOrderMode
 ) {
-  return { type: GET_ALL_SUBSCRIPTION_PLANS_ACTION, sortBy, orderBy }
+  return { type: GET_SUBSCRIPTION_PLANS_ACTION, sortBy, orderBy }
 }
 
-export function getAllSubscriptionPlansActionSuccess(
+export function getSubscriptionPlansActionSuccess(
   subscriptions: SubscriptionPlanDetails[]
 ) {
   return {
-    type: GET_ALL_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
+    type: GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
     subscriptions,
   }
 }
 
-export function getAllUserTransactionsAction() {
-  return { type: GET_ALL_USER_TRANSACTIONS_ACTION }
+export function getUserTransactionsAction() {
+  return { type: GET_USER_TRANSACTIONS_ACTION }
 }
 
-export function getAllUserTransactionsActionSuccess(
+export function getUserTransactionsActionSuccess(
   allUserTransactions: TransactionDetails[]
 ) {
-  return { type: GET_ALL_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions }
+  return { type: GET_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions }
 }
 
 export function getTransactionDetailsAction(transactionID: string) {

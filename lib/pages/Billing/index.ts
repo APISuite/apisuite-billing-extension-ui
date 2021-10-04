@@ -2,10 +2,10 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import {
-  getAllCreditPacksAction,
-  getAllSubscriptionPlansAction,
-  getAllUserDetailsAction,
-  getAllUserTransactionsAction,
+  getCreditPacksAction,
+  getSubscriptionPlansAction,
+  getUserDetailsAction,
+  getUserTransactionsAction,
   purchaseCreditsAction,
   startSubscriptionAction,
   cancelSubscriptionAction,
@@ -15,7 +15,7 @@ import Billing from './Billing'
 import { BillingStore } from './types'
 
 export const mapStateToProps = ({ auth, billing }) => ({
-  allCreditPacks: billing.allCreditPacks,
+  creditPacks: billing.creditPacks,
   subscriptions: billing.subscriptions,
   allUserDetails: billing.allUserDetails,
   allUserTransactions: billing.allUserTransactions as BillingStore['transactionDetails'],
@@ -29,12 +29,12 @@ export const mapStateToProps = ({ auth, billing }) => ({
 export const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      getAllCreditPacksAction: getAllCreditPacksAction,
-      getAllSubscriptionPlansAction: getAllSubscriptionPlansAction,
-      getAllUserDetailsAction: getAllUserDetailsAction,
-      getAllUserTransactionsAction: getAllUserTransactionsAction,
-      purchaseCreditsAction: purchaseCreditsAction,
-      startSubscriptionAction: startSubscriptionAction,
+      getCreditPacksAction,
+      getSubscriptionPlansAction,
+      getUserDetailsAction,
+      getUserTransactionsAction,
+      purchaseCreditsAction,
+      startSubscriptionAction,
       cancelSubscriptionAction,
       clearSubscriptionInfoAction,
     },
