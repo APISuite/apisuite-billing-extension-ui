@@ -21,7 +21,7 @@ const Billing: React.FC<BillingProps> = ({
   creditPacks,
   subscriptions,
   allUserDetails,
-  allUserTransactions,
+  transactions,
   cancelSubscriptionAction,
   clearSubscriptionInfoAction,
   dialogInfo,
@@ -497,7 +497,7 @@ const Billing: React.FC<BillingProps> = ({
           </Typography>
         </Box>
 
-        <TransactionsTable transactions={allUserTransactions} />
+        <TransactionsTable transactions={transactions} />
       </main>
 
       {/* Credit top-up dialog */}

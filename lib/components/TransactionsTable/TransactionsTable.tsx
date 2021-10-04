@@ -33,25 +33,21 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
     return trans.t(`extensions.billing.${str}`)
   }
 
-  const generateTableBody = (transactionsArray: TransactionDetails[]) => {
-    const tableBodyRows = transactionsArray.length ? (
-      transactionsArray.map((transaction) => (
-        <TableRow key={transaction.transactionID}>
+  const generateTableBody = (transactions: TransactionDetails[]) => {
+    const tableBodyRows = transactions.length ? (
+      transactions.map((transaction) => (
+        <TableRow key={transaction.id}>
           <TableCell style={{ paddingLeft: spacing(5) }}>
-            <Typography variant="body2">
-              {transaction.transactionDescription}
-            </Typography>
+            <Typography variant="body2">{transaction.description}</Typography>
           </TableCell>
 
           <TableCell>
             <Box display="flex">
               <Box mr={1.5}>
-                <Typography variant="body2">
-                  {transaction.transactionID}
-                </Typography>
+                <Typography variant="body2">{transaction.id}</Typography>
               </Box>
 
-              <CopyToClipboard text={transaction.transactionID}>
+              <CopyToClipboard text={transaction.id}>
                 <FileCopyRoundedIcon className={classes.transactionIDIcon} />
               </CopyToClipboard>
             </Box>
@@ -59,10 +55,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
           <TableCell>
             <Typography variant="body2">
-              {convertDateAndTime(
-                trans.i18n.language,
-                transaction.transactionDate
-              )}
+              {convertDateAndTime(trans.i18n.language, transaction.date)}
             </Typography>
           </TableCell>
 
@@ -71,20 +64,19 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
               variant="body2"
               className={clsx({
                 [classes.completeTransactionStatus]:
-                  transaction.transactionStatus === 'authorized' ||
-                  transaction.transactionStatus === 'paid',
+                  transaction.status === 'authorized' ||
+                  transaction.status === 'paid',
                 [classes.failedTransactionStatus]:
-                  transaction.transactionStatus === 'failed',
+                  transaction.status === 'failed',
                 [classes.incompleteTransactionStatus]:
-                  transaction.transactionStatus === 'canceled' ||
-                  transaction.transactionStatus === 'expired',
-                [classes.openTransactionStatus]:
-                  transaction.transactionStatus === 'open',
+                  transaction.status === 'canceled' ||
+                  transaction.status === 'expired',
+                [classes.openTransactionStatus]: transaction.status === 'open',
                 [classes.pendingTransactionStatus]:
-                  transaction.transactionStatus === 'pending',
+                  transaction.status === 'pending',
               })}
             >
-              {transaction.transactionStatus}
+              {transaction.status}
             </Typography>
           </TableCell>
 
@@ -92,8 +84,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
             <Typography variant="body2">
               {currencyConverter(
                 trans.i18n.language,
-                transaction.transactionAmount.transactionValue,
-                transaction.transactionAmount.transactionCurrency
+                transaction.amount.value,
+                transaction.amount.currency
               )}
             </Typography>
           </TableCell>
