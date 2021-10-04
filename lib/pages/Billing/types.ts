@@ -59,23 +59,23 @@ export interface SubscriptionPlanDetails {
 }
 
 export interface TransactionDetails {
-  transactionAmount: {
-    transactionCurrency: string
-    transactionValue: string
+  amount: {
+    currency: string
+    value: string
   }
-  transactionCredits: number
-  transactionDate: string
-  transactionDescription: string
-  transactionID: string
-  transactionStatus: string
-  transactionType: string
+  credits: number
+  date: string
+  description: string
+  id: string
+  status: string
+  type: string
 }
 
 export interface BillingStore {
   creditPacks: CreditPackDetails[]
   subscriptions: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
-  allUserTransactions: TransactionDetails[]
+  transactions: TransactionDetails[]
   error?: string
   hasRetrievedAllCreditPacks: boolean
   hasRetrievedAllSubscriptions: boolean
@@ -95,7 +95,7 @@ export interface BillingProps {
   creditPacks: CreditPackDetails[]
   subscriptions: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
-  allUserTransactions: TransactionDetails[]
+  transactions: TransactionDetails[]
   dialogInfo: BillingStore['subscriptionsDialogInfo']
   clearSubscriptionInfoAction: () => void
   getCreditPacksAction: (
@@ -155,7 +155,7 @@ export interface GetUserTransactionsAction extends Action {
 
 export interface GetUserTransactionsActionSuccess extends Action {
   type: typeof GET_USER_TRANSACTIONS_ACTION_SUCCESS
-  allUserTransactions: TransactionDetails[]
+  transactions: TransactionDetails[]
 }
 
 export interface GetTransactionDetailsAction extends Action {

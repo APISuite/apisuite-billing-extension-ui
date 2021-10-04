@@ -22,18 +22,18 @@ const initialState: BillingStore = {
   },
   creditPacks: [],
   subscriptions: [],
-  allUserTransactions: [],
+  transactions: [],
   transactionDetails: {
-    transactionAmount: {
-      transactionCurrency: '',
-      transactionValue: '',
+    amount: {
+      currency: '',
+      value: '',
     },
-    transactionCredits: 0,
-    transactionDate: '',
-    transactionDescription: '',
-    transactionID: '',
-    transactionStatus: '',
-    transactionType: '',
+    credits: 0,
+    date: '',
+    description: '',
+    id: '',
+    status: '',
+    type: '',
   },
   error: undefined,
   subscriptionsDialogInfo: {
@@ -121,7 +121,7 @@ export default function billingReducer(
 
     case GET_USER_TRANSACTIONS_ACTION_SUCCESS: {
       return update(state, {
-        allUserTransactions: { $set: action.allUserTransactions },
+        transactions: { $set: action.transactions },
       })
     }
 
@@ -205,9 +205,7 @@ export function getCreditPacksAction(
   return { type: GET_CREDIT_PACKS_ACTION, sortBy, orderBy }
 }
 
-export function getCreditPacksActionSuccess(
-  creditPacks: CreditPackDetails[]
-) {
+export function getCreditPacksActionSuccess(creditPacks: CreditPackDetails[]) {
   return { type: GET_CREDIT_PACKS_ACTION_SUCCESS, creditPacks }
 }
 
@@ -232,9 +230,9 @@ export function getUserTransactionsAction() {
 }
 
 export function getUserTransactionsActionSuccess(
-  allUserTransactions: TransactionDetails[]
+  transactions: TransactionDetails[]
 ) {
-  return { type: GET_USER_TRANSACTIONS_ACTION_SUCCESS, allUserTransactions }
+  return { type: GET_USER_TRANSACTIONS_ACTION_SUCCESS, transactions }
 }
 
 export function getTransactionDetailsAction(transactionID: string) {

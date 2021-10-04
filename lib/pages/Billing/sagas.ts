@@ -122,16 +122,16 @@ export function* getUserTransactionsActionSaga() {
     })
 
     const transactions = response.data.map((transaction: any) => ({
-      transactionAmount: {
-        transactionCurrency: transaction.amount.currency,
-        transactionValue: transaction.amount.value,
+      amount: {
+        currency: transaction.amount.currency,
+        value: transaction.amount.value,
       },
-      transactionCredits: transaction.credits,
-      transactionDate: transaction.createdAt,
-      transactionDescription: transaction.description,
-      transactionID: transaction.id,
-      transactionStatus: transaction.status,
-      transactionType: transaction.type,
+      credits: transaction.credits,
+      date: transaction.createdAt,
+      description: transaction.description,
+      id: transaction.id,
+      status: transaction.status,
+      type: transaction.type,
     }))
 
     yield put(getUserTransactionsActionSuccess(transactions))
@@ -155,16 +155,16 @@ export function* getTransactionDetailsActionSaga(
     })
 
     const transactionDetails = {
-      transactionAmount: {
-        transactionCurrency: response.data.amount.currency,
-        transactionValue: response.data.amount.value,
+      amount: {
+        currency: response.data.amount.currency,
+        value: response.data.amount.value,
       },
-      transactionCredits: response.data.credits,
-      transactionDate: response.data.createdAt,
-      transactionDescription: response.data.description,
-      transactionID: response.data.id,
-      transactionStatus: response.data.status,
-      transactionType: response.data.type,
+      credits: response.data.credits,
+      date: response.data.createdAt,
+      description: response.data.description,
+      id: response.data.id,
+      status: response.data.status,
+      type: response.data.type,
     }
 
     yield put(getTransactionDetailsActionSuccess(transactionDetails))
@@ -241,10 +241,7 @@ function* billingRootSaga() {
     getSubscriptionPlansActionSaga
   )
   yield takeLatest(GET_USER_DETAILS_ACTION, getUserDetailsActionSaga)
-  yield takeLatest(
-    GET_USER_TRANSACTIONS_ACTION,
-    getUserTransactionsActionSaga
-  )
+  yield takeLatest(GET_USER_TRANSACTIONS_ACTION, getUserTransactionsActionSaga)
   yield takeLatest(
     GET_TRANSACTION_DETAILS_ACTION,
     getTransactionDetailsActionSaga

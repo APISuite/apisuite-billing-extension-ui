@@ -12,7 +12,6 @@ import { BASE_URI } from '../../helpers/constants'
 import { convertDate } from '../../util/convertDate'
 import { currencyConverter } from '../../util/currencyConverter'
 import { TransactionCompleteProps } from './types'
-import Link from '../../components/Link'
 import useStyles from './styles'
 
 const TransactionComplete: React.FC<TransactionCompleteProps> = ({
@@ -78,7 +77,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
 
       <div className={classes.allTransactionDetailsContainer}>
         <p className={classes.transactionTitle}>
-          {transactionDetails.transactionType === 'topup'
+          {transactionDetails.type === 'topup'
             ? t(
                 'transactionComplete.transactionDetails.creditTopUpTransactionType'
               )
@@ -86,25 +85,25 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
                 'transactionComplete.transactionDetails.subscriptionTransactionType'
               )}
 
-          <span>({transactionDetails.transactionDescription})</span>
+          <span>({transactionDetails.description})</span>
         </p>
 
         <div className={classes.transactionDetailContainer}>
           <p>{t('transactionComplete.transactionDetails.reference')}</p>
 
-          <p>{transactionDetails.transactionID}</p>
+          <p>{transactionDetails.id}</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
           <p>{t('transactionComplete.transactionDetails.price')}</p>
 
           <p>
-            {transactionDetails.transactionAmount.transactionValue &&
-              transactionDetails.transactionAmount.transactionCurrency &&
+            {transactionDetails.amount.value &&
+              transactionDetails.amount.currency &&
               currencyConverter(
                 trans.i18n.language,
-                transactionDetails.transactionAmount.transactionValue,
-                transactionDetails.transactionAmount.transactionCurrency
+                transactionDetails.amount.value,
+                transactionDetails.amount.currency
               )}
           </p>
         </div>
@@ -112,18 +111,15 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
         <div className={classes.transactionDetailContainer}>
           <p>{t('transactionComplete.transactionDetails.creditAmount')}</p>
 
-          <p>{transactionDetails.transactionCredits} Cr</p>
+          <p>{transactionDetails.credits} Cr</p>
         </div>
 
         <div className={classes.transactionDetailContainer}>
           <p>{t('transactionComplete.transactionDetails.transactionDate')}</p>
 
           <p>
-            {transactionDetails.transactionDate &&
-              convertDate(
-                trans.i18n.language,
-                transactionDetails.transactionDate
-              )}
+            {transactionDetails.date &&
+              convertDate(trans.i18n.language, transactionDetails.date)}
           </p>
         </div>
       </div>

@@ -18,7 +18,7 @@ export const mapStateToProps = ({ auth, billing }) => ({
   creditPacks: billing.creditPacks,
   subscriptions: billing.subscriptions,
   allUserDetails: billing.allUserDetails,
-  allUserTransactions: billing.allUserTransactions as BillingStore['transactionDetails'],
+  transactions: billing.transactions as BillingStore['transactionDetails'],
   dialogInfo: billing.subscriptionsDialogInfo,
   hasRetrievedAllCreditPacks: billing.hasRetrievedAllCreditPacks,
   hasRetrievedAllSubscriptions: billing.hasRetrievedAllSubscriptions,
