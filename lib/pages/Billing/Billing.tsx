@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
+  TextField,
   Trans,
   Typography,
   useTheme,
@@ -254,6 +255,14 @@ const Billing: React.FC<BillingProps> = ({
     }
   }, [successfullySubscribedToPlan])
 
+  /* Invoice-related logic */
+
+  const [invoiceNotes, setInvoiceNotes] = useState('')
+
+  const handleInvoiceNotes = (invoiceNotesText) => {
+    setInvoiceNotes(invoiceNotesText)
+  }
+
   /* Dialog-related logic */
 
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -277,7 +286,7 @@ const Billing: React.FC<BillingProps> = ({
     const replacementTagsArray = []
 
     /* The 'dialogToSWarning.text' translation includes a replacement tag (<0></0>).
-    If a 'dialogToSWarning.url' translation exists and is not empty, thisg will be
+    If a 'dialogToSWarning.url' translation exists and is not empty, this will be
     replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally. */
     if (t('dialogToSWarning.url')) {
       replacementTagsArray.push(
@@ -484,6 +493,57 @@ const Billing: React.FC<BillingProps> = ({
             </Button>
           </>
         )}
+
+        {/* 'Invoice notes' section */}
+
+        <Box clone mb={1.5} mt={5}>
+          <Typography variant="h3">Additional invoice note</Typography>
+        </Box>
+
+        <Box clone mb={3}>
+          <Typography variant="body1" color="textSecondary">
+            Add a note to be added in your invoices.
+          </Typography>
+        </Box>
+
+        <Box
+          clone
+          style={{
+            display: 'block',
+            maxWidth: 450,
+            width: '100%',
+          }}
+        >
+          <TextField
+            className={classes.invoiceNotesTextField}
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            label="Additional Note"
+            margin="dense"
+            multiline
+            name="appMetaKey"
+            onChange={(changeEvent) =>
+              handleInvoiceNotes(changeEvent.target.value)
+            }
+            rows={4}
+            type="text"
+            value={invoiceNotes}
+            variant="outlined"
+          />
+        </Box>
+
+        <Box clone mt={3}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            disableElevation
+          >
+            Save note
+          </Button>
+        </Box>
 
         {/* 'Transaction history' section */}
 

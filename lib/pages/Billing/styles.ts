@@ -80,6 +80,18 @@ export default makeStyles((theme) => ({
     },
   },
 
+  invoiceNotesTextField: {
+    '& .MuiOutlinedInput-root': {
+      '&:hover fieldset': {
+        borderColor: `${theme.palette.grey[300]} !important`,
+      },
+
+      '&.Mui-focused fieldset': {
+        borderColor: `${theme.palette.action.focus} !important`,
+      },
+    },
+  },
+
   retrievingAllAvailableCreditPacks: {
     color: theme.palette.primary.contrastText,
     fontSize: 16,
