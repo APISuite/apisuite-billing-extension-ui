@@ -22,6 +22,7 @@ const initialState: BillingStore = {
   },
   creditPacks: [],
   subscriptions: [],
+  invoiceNotes: '',
   transactions: [],
   transactionDetails: {
     amount: {
@@ -63,6 +64,16 @@ export const GET_SUBSCRIPTION_PLANS_ACTION =
   'Billing/GET_SUBSCRIPTION_PLANS_ACTION'
 export const GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS =
   'Billing/GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS'
+
+export const GET_USER_INVOICE_NOTES_ACTION =
+  'Billing/GET_USER_INVOICE_NOTES_ACTION'
+export const GET_USER_INVOICE_NOTES_ACTION_SUCCESS =
+  'Billing/GET_USER_INVOICE_NOTES_ACTION_SUCCESS'
+
+export const SET_USER_INVOICE_NOTES_ACTION =
+  'Billing/SET_USER_INVOICE_NOTES_ACTION'
+export const SET_USER_INVOICE_NOTES_ACTION_SUCCESS =
+  'Billing/SET_USER_INVOICE_NOTES_ACTION_SUCCESS'
 
 export const GET_USER_TRANSACTIONS_ACTION =
   'Billing/GET_USER_TRANSACTIONS_ACTION'
@@ -116,6 +127,13 @@ export default function billingReducer(
       return update(state, {
         subscriptions: { $set: action.subscriptions },
         hasRetrievedAllSubscriptions: { $set: true },
+      })
+    }
+
+    case GET_USER_INVOICE_NOTES_ACTION_SUCCESS:
+    case SET_USER_INVOICE_NOTES_ACTION_SUCCESS: {
+      return update(state, {
+        invoiceNotes: { $set: action.invoiceNotes },
       })
     }
 
@@ -222,6 +240,31 @@ export function getSubscriptionPlansActionSuccess(
   return {
     type: GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
     subscriptions,
+  }
+}
+
+export function getUserInvoiceNotesAction(userID: number) {
+  return { type: GET_USER_INVOICE_NOTES_ACTION, userID }
+}
+
+export function getUserInvoiceNotesActionSuccess(invoiceNotes: string) {
+  return {
+    type: GET_USER_INVOICE_NOTES_ACTION_SUCCESS,
+    invoiceNotes,
+  }
+}
+
+export function setUserInvoiceNotesAction(
+  userID: number,
+  invoiceNotes: string
+) {
+  return { type: SET_USER_INVOICE_NOTES_ACTION, userID, invoiceNotes }
+}
+
+export function setUserInvoiceNotesActionSuccess(invoiceNotes: string) {
+  return {
+    type: SET_USER_INVOICE_NOTES_ACTION_SUCCESS,
+    invoiceNotes,
   }
 }
 

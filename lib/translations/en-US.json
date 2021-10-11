@@ -64,6 +64,12 @@
         },
         "awaitingConfirmation": "Awaiting payment confirmation"
       },
+      "invoiceNotes": {
+        "invoiceNotesTitle": "Additional invoice notes",
+        "invoiceNotesSubtitle": "Add a note to be added in your invoices.",
+        "invoiceNotesTextFieldLabel": "Additional note",
+        "saveInvoiceNoteButtonLabel": "Save note"
+      },
       "transactionsTable": {
         "description": "Description",
         "reference": "Reference",

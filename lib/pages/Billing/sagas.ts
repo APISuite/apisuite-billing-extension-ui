@@ -9,6 +9,10 @@ import {
   GET_CREDIT_PACKS_ACTION,
   GET_SUBSCRIPTION_PLANS_ACTION,
   GET_USER_DETAILS_ACTION,
+  GET_USER_INVOICE_NOTES_ACTION,
+  getUserInvoiceNotesActionSuccess,
+  SET_USER_INVOICE_NOTES_ACTION,
+  setUserInvoiceNotesActionSuccess,
   GET_USER_TRANSACTIONS_ACTION,
   GET_TRANSACTION_DETAILS_ACTION,
   getCreditPacksActionSuccess,
@@ -26,6 +30,8 @@ import {
   GetCreditPacksAction,
   GetSubscriptionPlansAction,
   GetUserDetailsAction,
+  GetUserInvoiceNotesAction,
+  SetUserInvoiceNotesAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
   StartSubscriptionAction,
@@ -106,6 +112,48 @@ export function* getSubscriptionPlansActionSaga(
     yield put(getSubscriptionPlansActionSuccess(subscriptions))
   } catch (error) {
     console.log('Error fetching all subscription plans.')
+  }
+}
+
+export function* getUserInvoiceNotesActionSaga(
+  action: GetUserInvoiceNotesAction
+) {
+  try {
+    const getUserInvoiceNotesActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
+
+    const response = yield call(request, {
+      url: getUserInvoiceNotesActionUrl,
+      method: 'GET',
+    })
+
+    const invoiceNotes = response.data.invoiceNotes
+
+    yield put(getUserInvoiceNotesActionSuccess(invoiceNotes))
+  } catch (error) {
+    console.log("Error fetching the user's invoice notes.")
+  }
+}
+
+export function* setUserInvoiceNotesActionSaga(
+  action: SetUserInvoiceNotesAction
+) {
+  try {
+    const setUserInvoiceNotesActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
+
+    const response = yield call(request, {
+      url: setUserInvoiceNotesActionUrl,
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        invoiceNotes: action.invoiceNotes,
+      },
+    })
+
+    yield put(setUserInvoiceNotesActionSuccess(response.data.invoiceNotes))
+  } catch (error) {
+    console.log("Error setting the user's invoice notes.")
   }
 }
 
@@ -240,6 +288,8 @@ function* billingRootSaga() {
     GET_SUBSCRIPTION_PLANS_ACTION,
     getSubscriptionPlansActionSaga
   )
+  yield takeLatest(GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNotesActionSaga)
+  yield takeLatest(SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNotesActionSaga)
   yield takeLatest(GET_USER_DETAILS_ACTION, getUserDetailsActionSaga)
   yield takeLatest(GET_USER_TRANSACTIONS_ACTION, getUserTransactionsActionSaga)
   yield takeLatest(
