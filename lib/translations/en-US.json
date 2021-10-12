@@ -64,10 +64,10 @@
         },
         "awaitingConfirmation": "Awaiting payment confirmation"
       },
-      "invoiceNotes": {
-        "invoiceNotesTitle": "Additional invoice notes",
-        "invoiceNotesSubtitle": "Add a note to be added in your invoices.",
-        "invoiceNotesTextFieldLabel": "Additional note",
+      "invoiceNote": {
+        "title": "Additional invoice notes",
+        "subtitle": "Add a note to be added in your invoices.",
+        "textFieldLabel": "Additional note",
         "saveInvoiceNoteButtonLabel": "Save note"
       },
       "transactionsTable": {
@@ -100,7 +100,12 @@
           "subText": "You can still use all the credits in your account and subscribe to a new subscription plan anytime you want."
         }
       },
-      "closeCTA": "Close"
+      "closeCTA": "Close",
+      "feedback": {
+        "invoiceRetrievalError": "An error retrieving your invoice note occurred.",
+        "invoiceSavingSuccessful": "Your invoice note was saved successfully!",
+        "invoiceSavingError": "An error saving your invoice note occurred."
+      }
     }
   }
 }

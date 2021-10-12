@@ -27,13 +27,13 @@ const Billing: React.FC<BillingProps> = ({
   getCreditPacksAction,
   getSubscriptionPlansAction,
   getUserDetailsAction,
-  getUserInvoiceNotesAction,
+  getUserInvoiceNoteAction,
   getUserTransactionsAction,
   hasRetrievedAllCreditPacks,
   hasRetrievedAllSubscriptions,
-  invoiceNotes,
+  invoiceNote,
   purchaseCreditsAction,
-  setUserInvoiceNotesAction,
+  setUserInvoiceNoteAction,
   startSubscriptionAction,
   subscriptions,
   successfullySubscribedToPlan,
@@ -54,7 +54,7 @@ const Billing: React.FC<BillingProps> = ({
   useEffect(() => {
     getCreditPacksAction('price', 'asc')
     getSubscriptionPlansAction('price', 'asc')
-    getUserInvoiceNotesAction(user.id)
+    getUserInvoiceNoteAction(user.id)
     getUserDetailsAction(user.id)
     getUserTransactionsAction()
   }, [])
@@ -261,15 +261,15 @@ const Billing: React.FC<BillingProps> = ({
 
   /* Invoice-related logic */
 
-  const [userInvoiceNotes, setUserInvoiceNotes] = useState('')
+  const [userInvoiceNote, setUserInvoiceNote] = useState('')
 
-  const handleUserInvoiceNotes = (invoiceNotesText) => {
-    setUserInvoiceNotes(invoiceNotesText)
+  const handleUserInvoiceNote = (invoiceNoteText) => {
+    setUserInvoiceNote(invoiceNoteText)
   }
 
   useEffect(() => {
-    setUserInvoiceNotes(invoiceNotes)
-  }, [invoiceNotes, setUserInvoiceNotesAction])
+    setUserInvoiceNote(invoiceNote)
+  }, [invoiceNote, setUserInvoiceNoteAction])
 
   /* Dialog-related logic */
 
@@ -505,14 +505,12 @@ const Billing: React.FC<BillingProps> = ({
         {/* 'Invoice notes' section */}
 
         <Box clone mb={1.5} mt={5}>
-          <Typography variant="h3">
-            {t('invoiceNotes.invoiceNotesTitle')}
-          </Typography>
+          <Typography variant="h3">{t('invoiceNote.title')}</Typography>
         </Box>
 
         <Box clone mb={3}>
           <Typography variant="body1" color="textSecondary">
-            {t('invoiceNotes.invoiceNotesSubtitle')}
+            {t('invoiceNote.subtitle')}
           </Typography>
         </Box>
 
@@ -525,18 +523,18 @@ const Billing: React.FC<BillingProps> = ({
           }}
         >
           <TextField
-            className={classes.invoiceNotesTextField}
+            className={classes.invoiceNoteTextField}
             fullWidth
             InputLabelProps={{
               shrink: true,
             }}
-            label={t('invoiceNotes.invoiceNotesTextFieldLabel')}
+            label={t('invoiceNote.textFieldLabel')}
             margin="dense"
             multiline
-            onChange={(event) => handleUserInvoiceNotes(event.target.value)}
+            onChange={(event) => handleUserInvoiceNote(event.target.value)}
             rows={4}
             type="text"
-            value={userInvoiceNotes}
+            value={userInvoiceNote}
             variant="outlined"
           />
         </Box>
@@ -544,16 +542,13 @@ const Billing: React.FC<BillingProps> = ({
         <Box clone mt={3}>
           <Button
             color="primary"
-            disabled={
-              (userInvoiceNotes && userInvoiceNotes === invoiceNotes) ||
-              (!userInvoiceNotes && userInvoiceNotes === invoiceNotes)
-            }
+            disabled={userInvoiceNote === invoiceNote}
             disableElevation
-            onClick={() => setUserInvoiceNotesAction(user.id, userInvoiceNotes)}
+            onClick={() => setUserInvoiceNoteAction(user.id, userInvoiceNote)}
             size="large"
             variant="contained"
           >
-            {t('invoiceNotes.saveInvoiceNoteButtonLabel')}
+            {t('invoiceNote.saveInvoiceNoteButtonLabel')}
           </Button>
         </Box>
 

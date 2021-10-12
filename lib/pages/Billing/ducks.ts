@@ -22,7 +22,7 @@ const initialState: BillingStore = {
   },
   creditPacks: [],
   subscriptions: [],
-  invoiceNotes: '',
+  invoiceNote: '',
   transactions: [],
   transactionDetails: {
     amount: {
@@ -133,7 +133,7 @@ export default function billingReducer(
     case GET_USER_INVOICE_NOTES_ACTION_SUCCESS:
     case SET_USER_INVOICE_NOTES_ACTION_SUCCESS: {
       return update(state, {
-        invoiceNotes: { $set: action.invoiceNotes },
+        invoiceNote: { $set: action.invoiceNote },
       })
     }
 
@@ -243,28 +243,25 @@ export function getSubscriptionPlansActionSuccess(
   }
 }
 
-export function getUserInvoiceNotesAction(userID: number) {
+export function getUserInvoiceNoteAction(userID: number) {
   return { type: GET_USER_INVOICE_NOTES_ACTION, userID }
 }
 
-export function getUserInvoiceNotesActionSuccess(invoiceNotes: string) {
+export function getUserInvoiceNoteActionSuccess(invoiceNote: string) {
   return {
     type: GET_USER_INVOICE_NOTES_ACTION_SUCCESS,
-    invoiceNotes,
+    invoiceNote,
   }
 }
 
-export function setUserInvoiceNotesAction(
-  userID: number,
-  invoiceNotes: string
-) {
-  return { type: SET_USER_INVOICE_NOTES_ACTION, userID, invoiceNotes }
+export function setUserInvoiceNoteAction(userID: number, invoiceNote: string) {
+  return { type: SET_USER_INVOICE_NOTES_ACTION, userID, invoiceNote }
 }
 
-export function setUserInvoiceNotesActionSuccess(invoiceNotes: string) {
+export function setUserInvoiceNoteActionSuccess(invoiceNote: string) {
   return {
     type: SET_USER_INVOICE_NOTES_ACTION_SUCCESS,
-    invoiceNotes,
+    invoiceNote,
   }
 }
 

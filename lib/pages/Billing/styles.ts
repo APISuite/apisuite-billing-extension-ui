@@ -80,7 +80,7 @@ export default makeStyles((theme) => ({
     },
   },
 
-  invoiceNotesTextField: {
+  invoiceNoteTextField: {
     '& .MuiOutlinedInput-root': {
       '&:hover fieldset': {
         borderColor: `${theme.palette.grey[300]} !important`,

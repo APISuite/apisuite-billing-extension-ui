@@ -78,7 +78,7 @@ export interface TransactionDetails {
 export interface BillingStore {
   creditPacks: CreditPackDetails[]
   subscriptions: SubscriptionPlanDetails[]
-  invoiceNotes: string
+  invoiceNote: string
   allUserDetails: UserDetails
   transactions: TransactionDetails[]
   error?: string
@@ -98,7 +98,7 @@ export interface BillingStore {
 
 export interface BillingProps {
   creditPacks: CreditPackDetails[]
-  invoiceNotes: string
+  invoiceNote: string
   subscriptions: SubscriptionPlanDetails[]
   allUserDetails: UserDetails
   transactions: TransactionDetails[]
@@ -112,8 +112,8 @@ export interface BillingProps {
     sortBy: PackageSortMode,
     orderBy: PackageOrderMode
   ) => void
-  getUserInvoiceNotesAction: (userID: number) => void
-  setUserInvoiceNotesAction: (userID: number, invoiceNotes: string) => void
+  getUserInvoiceNoteAction: (userID: number) => void
+  setUserInvoiceNoteAction: (userID: number, invoiceNote: string) => void
   getUserDetailsAction: (userID: number) => void
   getUserTransactionsAction: () => void
   hasRetrievedAllCreditPacks: boolean
@@ -123,6 +123,10 @@ export interface BillingProps {
   cancelSubscriptionAction: () => void
   successfullySubscribedToPlan: boolean
   user: User
+}
+
+export interface GetAndSetUserInvoiceNoteResponse {
+  data: { invoiceNotes: string }
 }
 
 export interface GetUserDetailsAction extends Action {
@@ -157,25 +161,25 @@ export interface GetSubscriptionPlansActionSuccess extends Action {
   subscriptions: SubscriptionPlanDetails[]
 }
 
-export interface GetUserInvoiceNotesAction extends Action {
+export interface GetUserInvoiceNoteAction extends Action {
   type: typeof GET_USER_INVOICE_NOTES_ACTION
   userID: number
 }
 
-export interface GetUserInvoiceNotesActionSuccess extends Action {
+export interface GetUserInvoiceNoteActionSuccess extends Action {
   type: typeof GET_USER_INVOICE_NOTES_ACTION_SUCCESS
-  invoiceNotes: string
+  invoiceNote: string
 }
 
-export interface SetUserInvoiceNotesAction extends Action {
+export interface SetUserInvoiceNoteAction extends Action {
   type: typeof SET_USER_INVOICE_NOTES_ACTION
   userID: number
-  invoiceNotes: string
+  invoiceNote: string
 }
 
-export interface SetUserInvoiceNotesActionSuccess extends Action {
+export interface SetUserInvoiceNoteActionSuccess extends Action {
   type: typeof SET_USER_INVOICE_NOTES_ACTION_SUCCESS
-  invoiceNotes: string
+  invoiceNote: string
 }
 
 export interface GetUserTransactionsAction extends Action {
@@ -247,10 +251,10 @@ export type BillingActions =
   | GetCreditPacksActionSuccess
   | GetSubscriptionPlansAction
   | GetSubscriptionPlansActionSuccess
-  | GetUserInvoiceNotesAction
-  | GetUserInvoiceNotesActionSuccess
-  | SetUserInvoiceNotesAction
-  | SetUserInvoiceNotesActionSuccess
+  | GetUserInvoiceNoteAction
+  | GetUserInvoiceNoteActionSuccess
+  | SetUserInvoiceNoteAction
+  | SetUserInvoiceNoteActionSuccess
   | GetUserDetailsAction
   | GetUserDetailsActionSuccess
   | GetUserTransactionsAction

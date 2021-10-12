@@ -1,5 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
+import { i18n } from '@apisuite/fe-base'
 
+import { openNotification } from '../../components/NotificationStack/ducks'
 import { BILLING_API_URL } from '../../constants/endpoints'
 import request from '../../util/request'
 import {
@@ -10,9 +12,9 @@ import {
   GET_SUBSCRIPTION_PLANS_ACTION,
   GET_USER_DETAILS_ACTION,
   GET_USER_INVOICE_NOTES_ACTION,
-  getUserInvoiceNotesActionSuccess,
+  getUserInvoiceNoteActionSuccess,
   SET_USER_INVOICE_NOTES_ACTION,
-  setUserInvoiceNotesActionSuccess,
+  setUserInvoiceNoteActionSuccess,
   GET_USER_TRANSACTIONS_ACTION,
   GET_TRANSACTION_DETAILS_ACTION,
   getCreditPacksActionSuccess,
@@ -30,11 +32,12 @@ import {
   GetCreditPacksAction,
   GetSubscriptionPlansAction,
   GetUserDetailsAction,
-  GetUserInvoiceNotesAction,
-  SetUserInvoiceNotesAction,
+  GetUserInvoiceNoteAction,
+  SetUserInvoiceNoteAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
   StartSubscriptionAction,
+  GetAndSetUserInvoiceNoteResponse,
 } from './types'
 
 export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
@@ -115,45 +118,62 @@ export function* getSubscriptionPlansActionSaga(
   }
 }
 
-export function* getUserInvoiceNotesActionSaga(
-  action: GetUserInvoiceNotesAction
+export function* getUserInvoiceNoteActionSaga(
+  action: GetUserInvoiceNoteAction
 ) {
   try {
-    const getUserInvoiceNotesActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
+    const getUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
 
-    const response = yield call(request, {
-      url: getUserInvoiceNotesActionUrl,
+    const response: GetAndSetUserInvoiceNoteResponse = yield call(request, {
+      url: getUserInvoiceNoteActionUrl,
       method: 'GET',
     })
 
-    const invoiceNotes = response.data.invoiceNotes
-
-    yield put(getUserInvoiceNotesActionSuccess(invoiceNotes))
+    yield put(getUserInvoiceNoteActionSuccess(response.data.invoiceNotes))
   } catch (error) {
-    console.log("Error fetching the user's invoice notes.")
+    yield put(
+      openNotification(
+        'error',
+        i18n.t('extensions.billing.feedback.invoiceRetrievalError'),
+        3000
+      )
+    )
   }
 }
 
-export function* setUserInvoiceNotesActionSaga(
-  action: SetUserInvoiceNotesAction
+export function* setUserInvoiceNoteActionSaga(
+  action: SetUserInvoiceNoteAction
 ) {
   try {
-    const setUserInvoiceNotesActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
+    const setUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
 
-    const response = yield call(request, {
-      url: setUserInvoiceNotesActionUrl,
+    const response: GetAndSetUserInvoiceNoteResponse = yield call(request, {
+      url: setUserInvoiceNoteActionUrl,
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',
       },
       data: {
-        invoiceNotes: action.invoiceNotes,
+        invoiceNotes: action.invoiceNote,
       },
     })
 
-    yield put(setUserInvoiceNotesActionSuccess(response.data.invoiceNotes))
+    yield put(setUserInvoiceNoteActionSuccess(response.data.invoiceNotes))
+    yield put(
+      openNotification(
+        'success',
+        i18n.t('extensions.billing.feedback.invoiceSavingSuccessful'),
+        3000
+      )
+    )
   } catch (error) {
-    console.log("Error setting the user's invoice notes.")
+    yield put(
+      openNotification(
+        'error',
+        i18n.t('extensions.billing.feedback.invoiceSavingError'),
+        3000
+      )
+    )
   }
 }
 
@@ -288,8 +308,8 @@ function* billingRootSaga() {
     GET_SUBSCRIPTION_PLANS_ACTION,
     getSubscriptionPlansActionSaga
   )
-  yield takeLatest(GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNotesActionSaga)
-  yield takeLatest(SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNotesActionSaga)
+  yield takeLatest(GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNoteActionSaga)
+  yield takeLatest(SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSaga)
   yield takeLatest(GET_USER_DETAILS_ACTION, getUserDetailsActionSaga)
   yield takeLatest(GET_USER_TRANSACTIONS_ACTION, getUserTransactionsActionSaga)
   yield takeLatest(
