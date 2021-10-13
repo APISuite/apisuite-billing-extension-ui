@@ -37,7 +37,7 @@ import {
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
   StartSubscriptionAction,
-  GetAndSetUserInvoiceNoteResponse,
+  InvoiceNoteResponse,
 } from './types'
 
 export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
@@ -124,7 +124,7 @@ export function* getUserInvoiceNoteActionSaga(
   try {
     const getUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
 
-    const response: GetAndSetUserInvoiceNoteResponse = yield call(request, {
+    const response: InvoiceNoteResponse = yield call(request, {
       url: getUserInvoiceNoteActionUrl,
       method: 'GET',
     })
@@ -147,7 +147,7 @@ export function* setUserInvoiceNoteActionSaga(
   try {
     const setUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
 
-    const response: GetAndSetUserInvoiceNoteResponse = yield call(request, {
+    const response: InvoiceNoteResponse = yield call(request, {
       url: setUserInvoiceNoteActionUrl,
       method: 'PATCH',
       headers: {

@@ -125,7 +125,7 @@ export interface BillingProps {
   user: User
 }
 
-export interface GetAndSetUserInvoiceNoteResponse {
+export interface InvoiceNoteResponse {
   data: { invoiceNotes: string }
 }
 
