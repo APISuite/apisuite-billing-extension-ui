@@ -1,0 +1,111 @@
+{
+    "extensions": {
+        "billing": {
+            "title": "Billing",
+            "subtitle": "Manage your subcription, top-up your credit balance, and edit your payment information.",
+            "yourBalance": "Your balance",
+            "availableCredits": "Available credits",
+            "creditPacksTitle": "Select a credit pack",
+            "retrievingCreditPacks": "Retrieving all available credit packs...",
+            "noCreditPacksAvailable": "No credit packs available.",
+            "purchaseCreditsButtonLabel": "Purchase credits",
+            "cancelCreditsPurchaseButtonLabel": "Cancel",
+            "addCreditsButtonLabel": "Add credits",
+            "yourSubscriptionsTitle": "Your subscription",
+            "editPaymentInfoButtonLabel": "Edit payment information",
+            "noActiveSubscriptions": "You don't have any active subscriptions.",
+            "chooseSubscription": "Choose subscription",
+            "checkSubPlansButtonLabel": "Change subscription",
+            "chooseNewSubPlan": "Choose new subscription",
+            "startNewSubPlanButtonLabel": "Start new subscription",
+            "cancelSubPlansCheckingButtonLabel": "Cancel",
+            "retrievingSubscriptionPlans": "Retrieving all available subscription plans...",
+            "noSubscriptionPlansAvailable": "No subscription plans available.",
+            "startSubscriptionButtonLabel": "Start subscription",
+            "transactionHistoryTitle": "Transaction history",
+            "transactionHistorySubtitle": "See your last transaction movements in your account.",
+            "generalWording": {
+                "credits": "credits"
+            },
+            "confirmCreditTopUpDialog": {
+                "title": "Confirm credit top-up",
+                "text": "Are you sure you want to top-up your account with {{creditAmount}} credits?",
+                "subText": "This pack's cost will be charged using your selected payment method (if any was previously set up or used), otherwise you will be directed to a new payment page.",
+                "cancelButtonLabel": "Cancel",
+                "confirmButtonLabel": "Confirm credit top-up"
+            },
+            "startSubscriptionDialog": {
+                "title": "Start subscription plan",
+                "text": "Are you sure you want to start the {{selectedSubscriptionPlan}} subscription plan?",
+                "subText": "This plan's cost will be charged using your selected payment method (if any was previously set up or used), otherwise you will be directed to a new payment page.",
+                "cancelButtonLabel": "Cancel",
+                "confirmButtonLabel": "Start subscription"
+            },
+            "changeSubscriptionDialog": {
+                "title": "Change subscription plan",
+                "text": "Are you sure you want to change your subscription to {{newlySelectedSubscriptionPlan}}?",
+                "subText": "By starting a new subscription, your current plan will be automatically canceled. The new plan's cost will be charged using your selected payment method and, if no longer valid, you will be directed to a new payment page.",
+                "cancelButtonLabel": "Cancel",
+                "confirmButtonLabel": "Start new subscription"
+            },
+            "dialogToSWarning": {
+                "url": "",
+                "text": ""
+            },
+            "subscriptionsTable": {
+                "title": "Subscription",
+                "subtitle": "Next billing date",
+                "cancel": {
+                    "title": "Cancel subscription",
+                    "text": "Are you sure you want to cancel your current subscription plan?",
+                    "subText": "You can still use all of your current credits after you cancel your subscription plan.",
+                    "cta": "Cancel",
+                    "confirmCTA": "Cancel subscription plan"
+                },
+                "awaitingConfirmation": "Awaiting payment confirmation"
+            },
+            "invoiceNote": {
+                "title": "Additional invoice notes",
+                "subtitle": "Add a note to be added in your invoices.",
+                "textFieldLabel": "Additional note",
+                "saveInvoiceNoteButtonLabel": "Save note"
+            },
+            "transactionsTable": {
+                "description": "Description",
+                "reference": "Reference",
+                "dateOfPurchase": "Date of purchase",
+                "status": "Payment status",
+                "price": "Price",
+                "noEntriesAvailable": "No entries available"
+            },
+            "transactionComplete": {
+                "title": "Thank you for your payment!",
+                "subtitle": "Your payment is currently being processed.\nOnce it is approved, your credit balance will be updated.",
+                "goToMarketplaceButtonLabel": "Go to the Marketplace",
+                "goToBillingButtonLabel": "Go back to Billing",
+                "transactionDetails": {
+                    "title": "Transaction details",
+                    "creditTopUpTransactionType": "Credit top-up",
+                    "subscriptionTransactionType": "Subscription",
+                    "reference": "Reference:",
+                    "price": "Price:",
+                    "creditAmount": "Credit amount:",
+                    "transactionDate": "Transaction date:"
+                }
+            },
+            "subscriptions": {
+                "success": {
+                    "title": "Subscription plan cancelled",
+                    "text": "Your subscription plan has been canceled.",
+                    "subText": "You can still use all the credits in your account and subscribe to a new subscription plan anytime you want."
+                }
+            },
+            "closeCTA": "Close",
+            "feedback": {
+                "invoiceRetrievalError": "An error retrieving your invoice note occurred.",
+                "invoiceSavingSuccessful": "Your invoice note was saved successfully!",
+                "invoiceSavingError": "An error saving your invoice note occurred."
+            }
+        }
+    }
+}
