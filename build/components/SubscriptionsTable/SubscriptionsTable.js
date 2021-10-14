@@ -45,11 +45,11 @@ const SubscriptionsTable = ({ subscriptions, onCancelSubscription, }) => {
                         React.createElement("td", null,
                             React.createElement(IconButton, { onClick: handleMenuClick },
                                 React.createElement(MoreVertIcon, null)),
-                            React.createElement(Menu, { anchorEl: anchorElement, keepMounted: true, open: open, onClose: handleMenuClose(-1) }, menuOptions.map((menuOption, index) => (React.createElement(MenuItem
+                            React.createElement(Menu, { anchorEl: anchorElement, keepMounted: true, open: open, onClose: handleMenuClose(-1) }, menuOptions.map((menuOption, ix) => (React.createElement(MenuItem
                             // We want to disable the first option as well (because we have yet to implement it).
                             , { 
                                 // We want to disable the first option as well (because we have yet to implement it).
-                                disabled: !index, key: menuOption, onClick: handleMenuClose(index) }, menuOption)))))));
+                                disabled: !ix, key: menuOption, onClick: handleMenuClose(ix) }, menuOption)))))));
                 }))),
         React.createElement(CustomizableDialog, { icon: "warning", open: cancelSubDialogOpen, onClose: () => setCancelSubDialogOpen(false), title: t('subscriptionsTable.cancel.title'), text: t('subscriptionsTable.cancel.text'), subText: t('subscriptionsTable.cancel.subText'), actions: [
                 React.createElement(Button, { variant: "outlined", key: "cancel-sub-cancel", onClick: () => setCancelSubDialogOpen(false) }, t('subscriptionsTable.cancel.cta')),
