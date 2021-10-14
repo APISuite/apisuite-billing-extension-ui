@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
+  TextField,
   Trans,
   Typography,
   useTheme,
@@ -18,22 +19,25 @@ import useStyles from './styles'
 import Link from '../../components/Link'
 
 const Billing: React.FC<BillingProps> = ({
-  creditPacks,
-  subscriptions,
   allUserDetails,
-  transactions,
   cancelSubscriptionAction,
   clearSubscriptionInfoAction,
+  creditPacks,
   dialogInfo,
   getCreditPacksAction,
   getSubscriptionPlansAction,
   getUserDetailsAction,
+  getUserInvoiceNoteAction,
   getUserTransactionsAction,
   hasRetrievedAllCreditPacks,
   hasRetrievedAllSubscriptions,
+  invoiceNote,
   purchaseCreditsAction,
+  setUserInvoiceNoteAction,
   startSubscriptionAction,
+  subscriptions,
   successfullySubscribedToPlan,
+  transactions,
   user,
 }) => {
   const classes = useStyles()
@@ -50,6 +54,7 @@ const Billing: React.FC<BillingProps> = ({
   useEffect(() => {
     getCreditPacksAction('price', 'asc')
     getSubscriptionPlansAction('price', 'asc')
+    getUserInvoiceNoteAction(user.id)
     getUserDetailsAction(user.id)
     getUserTransactionsAction()
   }, [])
@@ -254,6 +259,18 @@ const Billing: React.FC<BillingProps> = ({
     }
   }, [successfullySubscribedToPlan])
 
+  /* Invoice-related logic */
+
+  const [userInvoiceNote, setUserInvoiceNote] = useState('')
+
+  const handleUserInvoiceNote = (invoiceNoteText) => {
+    setUserInvoiceNote(invoiceNoteText)
+  }
+
+  useEffect(() => {
+    setUserInvoiceNote(invoiceNote)
+  }, [invoiceNote, setUserInvoiceNoteAction])
+
   /* Dialog-related logic */
 
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -277,7 +294,7 @@ const Billing: React.FC<BillingProps> = ({
     const replacementTagsArray = []
 
     /* The 'dialogToSWarning.text' translation includes a replacement tag (<0></0>).
-    If a 'dialogToSWarning.url' translation exists and is not empty, thisg will be
+    If a 'dialogToSWarning.url' translation exists and is not empty, this will be
     replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally. */
     if (t('dialogToSWarning.url')) {
       replacementTagsArray.push(
@@ -484,6 +501,56 @@ const Billing: React.FC<BillingProps> = ({
             </Button>
           </>
         )}
+
+        {/* 'Invoice notes' section */}
+
+        <Box clone mb={1.5} mt={5}>
+          <Typography variant="h3">{t('invoiceNote.title')}</Typography>
+        </Box>
+
+        <Box clone mb={3}>
+          <Typography variant="body1" color="textSecondary">
+            {t('invoiceNote.subtitle')}
+          </Typography>
+        </Box>
+
+        <Box
+          clone
+          style={{
+            display: 'block',
+            maxWidth: 450,
+            width: '100%',
+          }}
+        >
+          <TextField
+            className={classes.invoiceNoteTextField}
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            label={t('invoiceNote.textFieldLabel')}
+            margin="dense"
+            multiline
+            onChange={(event) => handleUserInvoiceNote(event.target.value)}
+            rows={4}
+            type="text"
+            value={userInvoiceNote}
+            variant="outlined"
+          />
+        </Box>
+
+        <Box clone mt={3}>
+          <Button
+            color="primary"
+            disabled={userInvoiceNote === invoiceNote}
+            disableElevation
+            onClick={() => setUserInvoiceNoteAction(user.id, userInvoiceNote)}
+            size="large"
+            variant="contained"
+          >
+            {t('invoiceNote.saveInvoiceNoteButtonLabel')}
+          </Button>
+        </Box>
 
         {/* 'Transaction history' section */}
 

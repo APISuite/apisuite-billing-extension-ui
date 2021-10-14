@@ -1,5 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
+import { i18n } from '@apisuite/fe-base'
 
+import { openNotification } from '../../components/NotificationStack/ducks'
 import { BILLING_API_URL } from '../../constants/endpoints'
 import request from '../../util/request'
 import {
@@ -9,6 +11,10 @@ import {
   GET_CREDIT_PACKS_ACTION,
   GET_SUBSCRIPTION_PLANS_ACTION,
   GET_USER_DETAILS_ACTION,
+  GET_USER_INVOICE_NOTES_ACTION,
+  getUserInvoiceNoteActionSuccess,
+  SET_USER_INVOICE_NOTES_ACTION,
+  setUserInvoiceNoteActionSuccess,
   GET_USER_TRANSACTIONS_ACTION,
   GET_TRANSACTION_DETAILS_ACTION,
   getCreditPacksActionSuccess,
@@ -26,9 +32,12 @@ import {
   GetCreditPacksAction,
   GetSubscriptionPlansAction,
   GetUserDetailsAction,
+  GetUserInvoiceNoteAction,
+  SetUserInvoiceNoteAction,
   GetTransactionDetailsAction,
   PurchaseCreditsAction,
   StartSubscriptionAction,
+  InvoiceNoteResponse,
 } from './types'
 
 export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
@@ -106,6 +115,65 @@ export function* getSubscriptionPlansActionSaga(
     yield put(getSubscriptionPlansActionSuccess(subscriptions))
   } catch (error) {
     console.log('Error fetching all subscription plans.')
+  }
+}
+
+export function* getUserInvoiceNoteActionSaga(
+  action: GetUserInvoiceNoteAction
+) {
+  try {
+    const getUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
+
+    const response: InvoiceNoteResponse = yield call(request, {
+      url: getUserInvoiceNoteActionUrl,
+      method: 'GET',
+    })
+
+    yield put(getUserInvoiceNoteActionSuccess(response.data.invoiceNotes))
+  } catch (error) {
+    yield put(
+      openNotification(
+        'error',
+        i18n.t('extensions.billing.feedback.invoiceRetrievalError'),
+        3000
+      )
+    )
+  }
+}
+
+export function* setUserInvoiceNoteActionSaga(
+  action: SetUserInvoiceNoteAction
+) {
+  try {
+    const setUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`
+
+    const response: InvoiceNoteResponse = yield call(request, {
+      url: setUserInvoiceNoteActionUrl,
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        invoiceNotes: action.invoiceNote,
+      },
+    })
+
+    yield put(setUserInvoiceNoteActionSuccess(response.data.invoiceNotes))
+    yield put(
+      openNotification(
+        'success',
+        i18n.t('extensions.billing.feedback.invoiceSavingSuccessful'),
+        3000
+      )
+    )
+  } catch (error) {
+    yield put(
+      openNotification(
+        'error',
+        i18n.t('extensions.billing.feedback.invoiceSavingError'),
+        3000
+      )
+    )
   }
 }
 
@@ -240,6 +308,8 @@ function* billingRootSaga() {
     GET_SUBSCRIPTION_PLANS_ACTION,
     getSubscriptionPlansActionSaga
   )
+  yield takeLatest(GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNoteActionSaga)
+  yield takeLatest(SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSaga)
   yield takeLatest(GET_USER_DETAILS_ACTION, getUserDetailsActionSaga)
   yield takeLatest(GET_USER_TRANSACTIONS_ACTION, getUserTransactionsActionSaga)
   yield takeLatest(

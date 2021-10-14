@@ -22,6 +22,7 @@ const initialState: BillingStore = {
   },
   creditPacks: [],
   subscriptions: [],
+  invoiceNote: '',
   transactions: [],
   transactionDetails: {
     amount: {
@@ -63,6 +64,16 @@ export const GET_SUBSCRIPTION_PLANS_ACTION =
   'Billing/GET_SUBSCRIPTION_PLANS_ACTION'
 export const GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS =
   'Billing/GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS'
+
+export const GET_USER_INVOICE_NOTES_ACTION =
+  'Billing/GET_USER_INVOICE_NOTES_ACTION'
+export const GET_USER_INVOICE_NOTES_ACTION_SUCCESS =
+  'Billing/GET_USER_INVOICE_NOTES_ACTION_SUCCESS'
+
+export const SET_USER_INVOICE_NOTES_ACTION =
+  'Billing/SET_USER_INVOICE_NOTES_ACTION'
+export const SET_USER_INVOICE_NOTES_ACTION_SUCCESS =
+  'Billing/SET_USER_INVOICE_NOTES_ACTION_SUCCESS'
 
 export const GET_USER_TRANSACTIONS_ACTION =
   'Billing/GET_USER_TRANSACTIONS_ACTION'
@@ -116,6 +127,13 @@ export default function billingReducer(
       return update(state, {
         subscriptions: { $set: action.subscriptions },
         hasRetrievedAllSubscriptions: { $set: true },
+      })
+    }
+
+    case GET_USER_INVOICE_NOTES_ACTION_SUCCESS:
+    case SET_USER_INVOICE_NOTES_ACTION_SUCCESS: {
+      return update(state, {
+        invoiceNote: { $set: action.invoiceNote },
       })
     }
 
@@ -222,6 +240,28 @@ export function getSubscriptionPlansActionSuccess(
   return {
     type: GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS,
     subscriptions,
+  }
+}
+
+export function getUserInvoiceNoteAction(userID: number) {
+  return { type: GET_USER_INVOICE_NOTES_ACTION, userID }
+}
+
+export function getUserInvoiceNoteActionSuccess(invoiceNote: string) {
+  return {
+    type: GET_USER_INVOICE_NOTES_ACTION_SUCCESS,
+    invoiceNote,
+  }
+}
+
+export function setUserInvoiceNoteAction(userID: number, invoiceNote: string) {
+  return { type: SET_USER_INVOICE_NOTES_ACTION, userID, invoiceNote }
+}
+
+export function setUserInvoiceNoteActionSuccess(invoiceNote: string) {
+  return {
+    type: SET_USER_INVOICE_NOTES_ACTION_SUCCESS,
+    invoiceNote,
   }
 }
 
