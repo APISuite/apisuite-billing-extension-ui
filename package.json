@@ -25,7 +25,6 @@
     "version": "npm run build && git add -A build lib/constants/info.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepublishOnly": "npm run build",
     "precommit": "lint-staged"
   },
   "lint-staged": {
