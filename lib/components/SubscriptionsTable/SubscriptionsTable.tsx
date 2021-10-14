@@ -92,12 +92,12 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                     open={open}
                     onClose={handleMenuClose(-1)}
                   >
-                    {menuOptions.map((menuOption, index) => (
+                    {menuOptions.map((menuOption, ix) => (
                       <MenuItem
                         // We want to disable the first option as well (because we have yet to implement it).
-                        disabled={!index}
+                        disabled={!ix}
                         key={menuOption}
-                        onClick={handleMenuClose(index)}
+                        onClick={handleMenuClose(ix)}
                       >
                         {menuOption}
                       </MenuItem>
