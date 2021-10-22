@@ -262,14 +262,11 @@ export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
 
 export function* editPaymentInformationSaga() {
   try {
-    const purchaseCreditsActionUrl = `${BILLING_API_URL}/purchases/subscriptions/`
+    const editPaymentInfoUrl = `${BILLING_API_URL}/purchases/subscriptions/`
 
     const response = yield call(request, {
-      url: purchaseCreditsActionUrl,
+      url: editPaymentInfoUrl,
       method: 'PATCH',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
     })
 
     window.location.href = response.data
