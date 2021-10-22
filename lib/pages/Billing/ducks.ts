@@ -103,6 +103,8 @@ export const CANCEL_SUBSCRIPTION_ERROR = 'Billing/CANCEL_SUBSCRIPTION_ERROR'
 
 export const CLEAR_SUBSCRIPTION_INFO = 'Billing/CLEAR_SUBSCRIPTION_INFO'
 
+export const EDIT_PAYMENT_INFORMATION = 'Billing/EDIT_PAYMENT_INFORMATION'
+
 /** Reducer */
 
 export default function billingReducer(
@@ -323,4 +325,8 @@ export function cancelSubscriptionActionSuccess() {
 
 export function clearSubscriptionInfoAction() {
   return { type: CLEAR_SUBSCRIPTION_INFO }
+}
+
+export function editPaymentInfoAction() {
+  return { type: EDIT_PAYMENT_INFORMATION }
 }

@@ -104,6 +104,7 @@ export interface BillingProps {
   transactions: TransactionDetails[]
   dialogInfo: BillingStore['subscriptionsDialogInfo']
   clearSubscriptionInfoAction: () => void
+  editPaymentInfoAction: () => void
   getCreditPacksAction: (
     sortBy: PackageSortMode,
     orderBy: PackageOrderMode

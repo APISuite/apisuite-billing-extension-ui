@@ -24,6 +24,7 @@ const Billing: React.FC<BillingProps> = ({
   clearSubscriptionInfoAction,
   creditPacks,
   dialogInfo,
+  editPaymentInfoAction,
   getCreditPacksAction,
   getSubscriptionPlansAction,
   getUserDetailsAction,
@@ -426,6 +427,7 @@ const Billing: React.FC<BillingProps> = ({
                 },
               ]}
               onCancelSubscription={cancelSubscriptionAction}
+              onEditPaymentClick={editPaymentInfoAction}
             />
 
             {!wantsToCheckAllSubPlans && (

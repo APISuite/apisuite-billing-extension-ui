@@ -17,6 +17,7 @@ import useStyles from './styles'
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
   subscriptions,
   onCancelSubscription,
+  onEditPaymentClick,
 }) => {
   const classes = useStyles()
 
@@ -37,6 +38,10 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
 
   const handleMenuClose = (idx: number) => () => {
     setAnchorElement(null)
+
+    if (idx === 0) {
+      onEditPaymentClick()
+    }
 
     if (idx === 1) {
       setCancelSubDialogOpen(true)
@@ -93,12 +98,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({
                     onClose={handleMenuClose(-1)}
                   >
                     {menuOptions.map((menuOption, ix) => (
-                      <MenuItem
-                        // We want to disable the first option as well (because we have yet to implement it).
-                        disabled={!ix}
-                        key={menuOption}
-                        onClick={handleMenuClose(ix)}
-                      >
+                      <MenuItem key={menuOption} onClick={handleMenuClose(ix)}>
                         {menuOption}
                       </MenuItem>
                     ))}
