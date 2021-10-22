@@ -3,8 +3,12 @@ export const currencyConverter = (
   valueString: string,
   currencyString: string
 ) => {
-  return parseInt(valueString).toLocaleString(languageString, {
-    style: 'currency',
-    currency: currencyString,
-  })
+  try {
+    return parseInt(valueString).toLocaleString(languageString, {
+      style: 'currency',
+      currency: currencyString,
+    })
+  } catch (error) {
+    return null
+  }
 }
