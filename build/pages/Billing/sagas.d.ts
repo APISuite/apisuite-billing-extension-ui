@@ -25,6 +25,7 @@ export declare function purchaseCreditsActionSaga(action: PurchaseCreditsAction)
     type: string;
     error: string;
 }>, void, unknown>;
+export declare function editPaymentInformationSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, unknown>;
 export declare function startSubscriptionActionSaga(action: StartSubscriptionAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
 }>, any, unknown>;

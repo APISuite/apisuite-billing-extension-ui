@@ -61,6 +61,7 @@ export const CANCEL_SUBSCRIPTION = 'Billing/CANCEL_SUBSCRIPTION';
 export const CANCEL_SUBSCRIPTION_SUCCESS = 'Billing/CANCEL_SUBSCRIPTION_SUCCESS';
 export const CANCEL_SUBSCRIPTION_ERROR = 'Billing/CANCEL_SUBSCRIPTION_ERROR';
 export const CLEAR_SUBSCRIPTION_INFO = 'Billing/CLEAR_SUBSCRIPTION_INFO';
+export const EDIT_PAYMENT_INFORMATION = 'Billing/EDIT_PAYMENT_INFORMATION';
 /** Reducer */
 export default function billingReducer(state = initialState, action) {
     switch (action.type) {
@@ -229,4 +230,7 @@ export function cancelSubscriptionActionSuccess() {
 }
 export function clearSubscriptionInfoAction() {
     return { type: CLEAR_SUBSCRIPTION_INFO };
+}
+export function editPaymentInfoAction() {
+    return { type: EDIT_PAYMENT_INFORMATION };
 }

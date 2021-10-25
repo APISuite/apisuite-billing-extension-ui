@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, cancelSubscriptionAction, clearSubscriptionInfoAction, } from './ducks';
+import { getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, cancelSubscriptionAction, clearSubscriptionInfoAction, editPaymentInfoAction, } from './ducks';
 import Billing from './Billing';
 export const mapStateToProps = ({ auth, billing }) => ({
     creditPacks: billing.creditPacks,
@@ -25,5 +25,6 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
     startSubscriptionAction,
     cancelSubscriptionAction,
     clearSubscriptionInfoAction,
+    editPaymentInfoAction,
 }, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Billing);

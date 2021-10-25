@@ -24,6 +24,7 @@ export declare const CANCEL_SUBSCRIPTION = "Billing/CANCEL_SUBSCRIPTION";
 export declare const CANCEL_SUBSCRIPTION_SUCCESS = "Billing/CANCEL_SUBSCRIPTION_SUCCESS";
 export declare const CANCEL_SUBSCRIPTION_ERROR = "Billing/CANCEL_SUBSCRIPTION_ERROR";
 export declare const CLEAR_SUBSCRIPTION_INFO = "Billing/CLEAR_SUBSCRIPTION_INFO";
+export declare const EDIT_PAYMENT_INFORMATION = "Billing/EDIT_PAYMENT_INFORMATION";
 /** Reducer */
 export default function billingReducer(state: BillingStore, action: BillingActions): BillingStore;
 /** Action builders */
@@ -118,5 +119,8 @@ export declare function cancelSubscriptionActionSuccess(): {
     type: string;
 };
 export declare function clearSubscriptionInfoAction(): {
+    type: string;
+};
+export declare function editPaymentInfoAction(): {
     type: string;
 };

@@ -70,6 +70,7 @@ export interface BillingProps {
     transactions: TransactionDetails[];
     dialogInfo: BillingStore['subscriptionsDialogInfo'];
     clearSubscriptionInfoAction: () => void;
+    editPaymentInfoAction: () => void;
     getCreditPacksAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
     getSubscriptionPlansAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
     getUserInvoiceNoteAction: (userID: number) => void;

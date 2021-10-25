@@ -4,7 +4,7 @@ import { Button, IconButton, Menu, MenuItem, Typography, useTranslation, } from 
 import { convertDate } from '../../util/convertDate';
 import { CustomizableDialog } from '../CustomizableDialog/CustomizableDialog';
 import useStyles from './styles';
-const SubscriptionsTable = ({ subscriptions, onCancelSubscription, }) => {
+const SubscriptionsTable = ({ subscriptions, onCancelSubscription, onEditPaymentClick, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const [cancelSubDialogOpen, setCancelSubDialogOpen] = useState(false);
@@ -18,6 +18,9 @@ const SubscriptionsTable = ({ subscriptions, onCancelSubscription, }) => {
     };
     const handleMenuClose = (idx) => () => {
         setAnchorElement(null);
+        if (idx === 0) {
+            onEditPaymentClick();
+        }
         if (idx === 1) {
             setCancelSubDialogOpen(true);
         }
@@ -45,11 +48,7 @@ const SubscriptionsTable = ({ subscriptions, onCancelSubscription, }) => {
                         React.createElement("td", null,
                             React.createElement(IconButton, { onClick: handleMenuClick },
                                 React.createElement(MoreVertIcon, null)),
-                            React.createElement(Menu, { anchorEl: anchorElement, keepMounted: true, open: open, onClose: handleMenuClose(-1) }, menuOptions.map((menuOption, ix) => (React.createElement(MenuItem
-                            // We want to disable the first option as well (because we have yet to implement it).
-                            , { 
-                                // We want to disable the first option as well (because we have yet to implement it).
-                                disabled: !ix, key: menuOption, onClick: handleMenuClose(ix) }, menuOption)))))));
+                            React.createElement(Menu, { anchorEl: anchorElement, keepMounted: true, open: open, onClose: handleMenuClose(-1) }, menuOptions.map((menuOption, ix) => (React.createElement(MenuItem, { key: menuOption, onClick: handleMenuClose(ix) }, menuOption)))))));
                 }))),
         React.createElement(CustomizableDialog, { icon: "warning", open: cancelSubDialogOpen, onClose: () => setCancelSubDialogOpen(false), title: t('subscriptionsTable.cancel.title'), text: t('subscriptionsTable.cancel.text'), subText: t('subscriptionsTable.cancel.subText'), actions: [
                 React.createElement(Button, { variant: "outlined", key: "cancel-sub-cancel", onClick: () => setCancelSubDialogOpen(false) }, t('subscriptionsTable.cancel.cta')),

@@ -3,7 +3,7 @@ import { i18n } from '@apisuite/fe-base';
 import { openNotification } from '../../components/NotificationStack/ducks';
 import { BILLING_API_URL } from '../../constants/endpoints';
 import request from '../../util/request';
-import { CANCEL_SUBSCRIPTION, cancelSubscriptionActionError, cancelSubscriptionActionSuccess, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION, GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNoteActionSuccess, SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSuccess, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getCreditPacksActionSuccess, getSubscriptionPlansActionSuccess, getUserDetailsActionSuccess, getUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, START_SUBSCRIPTION_ACTION, startSubscriptionActionError, startSubscriptionActionSuccess, } from './ducks';
+import { CANCEL_SUBSCRIPTION, cancelSubscriptionActionError, cancelSubscriptionActionSuccess, EDIT_PAYMENT_INFORMATION, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION, GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNoteActionSuccess, SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSuccess, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getCreditPacksActionSuccess, getSubscriptionPlansActionSuccess, getUserDetailsActionSuccess, getUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, START_SUBSCRIPTION_ACTION, startSubscriptionActionError, startSubscriptionActionSuccess, } from './ducks';
 export function* getUserDetailsActionSaga(action) {
     try {
         const getUserDetailsUrl = `${BILLING_API_URL}/users/${action.userID}`;
@@ -176,6 +176,19 @@ export function* purchaseCreditsActionSaga(action) {
         yield put(purchaseCreditsActionError(error.message));
     }
 }
+export function* editPaymentInformationSaga() {
+    try {
+        const editPaymentInfoUrl = `${BILLING_API_URL}/purchases/subscriptions/`;
+        const response = yield call(request, {
+            url: editPaymentInfoUrl,
+            method: 'PATCH',
+        });
+        window.location.href = response.data;
+    }
+    catch (error) {
+        yield put(openNotification('error', i18n.t('extensions.billing.feedback.editPaymentInfoError'), 3000));
+    }
+}
 export function* startSubscriptionActionSaga(action) {
     try {
         const startSubscriptionActionUrl = `${BILLING_API_URL}/purchases/subscriptions/${action.subscriptionPlanID}`;
@@ -223,5 +236,6 @@ function* billingRootSaga() {
     yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga);
     yield takeLatest(START_SUBSCRIPTION_ACTION, startSubscriptionActionSaga);
     yield takeLatest(CANCEL_SUBSCRIPTION, cancelSubscriptionSaga);
+    yield takeLatest(EDIT_PAYMENT_INFORMATION, editPaymentInformationSaga);
 }
 export default billingRootSaga;

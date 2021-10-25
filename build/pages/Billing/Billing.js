@@ -7,7 +7,7 @@ import SubscriptionsTable from '../../components/SubscriptionsTable';
 import TransactionsTable from '../../components/TransactionsTable';
 import useStyles from './styles';
 import Link from '../../components/Link';
-const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionInfoAction, creditPacks, dialogInfo, getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptions, invoiceNote, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, subscriptions, successfullySubscribedToPlan, transactions, user, }) => {
+const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionInfoAction, creditPacks, dialogInfo, editPaymentInfoAction, getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptions, invoiceNote, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, subscriptions, successfullySubscribedToPlan, transactions, user, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const { palette, spacing } = useTheme();
@@ -218,7 +218,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
                             })?.name,
                             nextBillingDate: allUserDetails.nextPaymentDate,
                         },
-                    ], onCancelSubscription: cancelSubscriptionAction }),
+                    ], onCancelSubscription: cancelSubscriptionAction, onEditPaymentClick: editPaymentInfoAction }),
                 !wantsToCheckAllSubPlans && (React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('checkSubPlansButtonLabel'))),
                 wantsToCheckAllSubPlans && (React.createElement(React.Fragment, null,
                     React.createElement(Box, { clone: true, mb: 3 },
