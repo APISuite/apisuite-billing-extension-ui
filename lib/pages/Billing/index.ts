@@ -12,6 +12,7 @@ import {
   startSubscriptionAction,
   cancelSubscriptionAction,
   clearSubscriptionInfoAction,
+  editPaymentInfoAction,
 } from './ducks'
 import Billing from './Billing'
 import { BillingStore } from './types'
@@ -42,6 +43,7 @@ export const mapDispatchToProps = (dispatch: Dispatch) =>
       startSubscriptionAction,
       cancelSubscriptionAction,
       clearSubscriptionInfoAction,
+      editPaymentInfoAction,
     },
     dispatch
   )

@@ -8,6 +8,7 @@ import {
   CANCEL_SUBSCRIPTION,
   cancelSubscriptionActionError,
   cancelSubscriptionActionSuccess,
+  EDIT_PAYMENT_INFORMATION,
   GET_CREDIT_PACKS_ACTION,
   GET_SUBSCRIPTION_PLANS_ACTION,
   GET_USER_DETAILS_ACTION,
@@ -259,6 +260,27 @@ export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
   }
 }
 
+export function* editPaymentInformationSaga() {
+  try {
+    const editPaymentInfoUrl = `${BILLING_API_URL}/purchases/subscriptions/`
+
+    const response = yield call(request, {
+      url: editPaymentInfoUrl,
+      method: 'PATCH',
+    })
+
+    window.location.href = response.data
+  } catch (error) {
+    yield put(
+      openNotification(
+        'error',
+        i18n.t('extensions.billing.feedback.editPaymentInfoError'),
+        3000
+      )
+    )
+  }
+}
+
 export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
   try {
     const startSubscriptionActionUrl = `${BILLING_API_URL}/purchases/subscriptions/${action.subscriptionPlanID}`
@@ -319,6 +341,7 @@ function* billingRootSaga() {
   yield takeLatest(PURCHASE_CREDITS_ACTION, purchaseCreditsActionSaga)
   yield takeLatest(START_SUBSCRIPTION_ACTION, startSubscriptionActionSaga)
   yield takeLatest(CANCEL_SUBSCRIPTION, cancelSubscriptionSaga)
+  yield takeLatest(EDIT_PAYMENT_INFORMATION, editPaymentInformationSaga)
 }
 
 export default billingRootSaga
