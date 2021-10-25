@@ -34,76 +34,80 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   }
 
   const generateTableBody = (transactions: TransactionDetails[]) => {
-    const tableBodyRows = transactions.length ? (
-      transactions.map((transaction) => (
-        <TableRow key={transaction.id}>
-          <TableCell style={{ paddingLeft: spacing(5) }}>
-            <Typography variant="body2">{transaction.description}</Typography>
-          </TableCell>
-
-          <TableCell>
-            <Box display="flex">
-              <Box mr={1.5}>
-                <Typography variant="body2">{transaction.id}</Typography>
-              </Box>
-
-              <CopyToClipboard text={transaction.id}>
-                <FileCopyRoundedIcon className={classes.transactionIDIcon} />
-              </CopyToClipboard>
-            </Box>
-          </TableCell>
-
-          <TableCell>
-            <Typography variant="body2">
-              {convertDateAndTime(trans.i18n.language, transaction.date)}
-            </Typography>
-          </TableCell>
-
-          <TableCell>
-            <Typography
-              variant="body2"
-              className={clsx({
-                [classes.completeTransactionStatus]:
-                  transaction.status === 'authorized' ||
-                  transaction.status === 'paid',
-                [classes.failedTransactionStatus]:
-                  transaction.status === 'failed',
-                [classes.incompleteTransactionStatus]:
-                  transaction.status === 'canceled' ||
-                  transaction.status === 'expired',
-                [classes.openTransactionStatus]: transaction.status === 'open',
-                [classes.pendingTransactionStatus]:
-                  transaction.status === 'pending',
-              })}
+    if (!transactions.length) {
+      return (
+        <TableBody>
+          <TableRow>
+            <TableCell
+              align="center"
+              colSpan={5}
+              style={{ backgroundColor: palette.background.default }}
             >
-              {transaction.status}
-            </Typography>
-          </TableCell>
+              <Typography variant="subtitle2">
+                <i>{t('transactionsTable.noEntriesAvailable')}</i>
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      )
+    }
 
-          <TableCell>
-            <Typography variant="body2">
-              {currencyConverter(
-                trans.i18n.language,
-                transaction.amount.value,
-                transaction.amount.currency
-              )}
-            </Typography>
-          </TableCell>
-        </TableRow>
-      ))
-    ) : (
-      <TableRow>
-        <TableCell
-          align="center"
-          colSpan={5}
-          style={{ backgroundColor: palette.background.default }}
-        >
-          <Typography variant="subtitle2">
-            <i>{t('transactionsTable.noEntriesAvailable')}</i>
+    const tableBodyRows = transactions.map((txn) => (
+      <TableRow key={txn.id}>
+        <TableCell style={{ paddingLeft: spacing(5) }}>
+          <Typography variant="body2">{txn.description}</Typography>
+        </TableCell>
+
+        <TableCell>
+          <Box display="flex">
+            <Box mr={1.5}>
+              <Typography variant="body2">{txn.id}</Typography>
+            </Box>
+
+            <CopyToClipboard text={txn.id}>
+              <FileCopyRoundedIcon className={classes.transactionIDIcon} />
+            </CopyToClipboard>
+          </Box>
+        </TableCell>
+
+        <TableCell>
+          <Typography variant="body2">
+            {convertDateAndTime(trans.i18n.language, txn.date)}
+          </Typography>
+        </TableCell>
+
+        <TableCell>
+          <Typography
+            variant="body2"
+            className={clsx({
+              [classes.completeTransactionStatus]:
+                txn.status === 'authorized' ||
+                txn.status === 'paid',
+              [classes.failedTransactionStatus]:
+                txn.status === 'failed',
+              [classes.incompleteTransactionStatus]:
+                txn.status === 'canceled' ||
+                txn.status === 'expired',
+              [classes.openTransactionStatus]: txn.status === 'open',
+              [classes.pendingTransactionStatus]:
+                txn.status === 'pending',
+            })}
+          >
+            {txn.status}
+          </Typography>
+        </TableCell>
+
+        <TableCell>
+          <Typography variant="body2">
+            {currencyConverter(
+              trans.i18n.language,
+              txn.amount.value,
+              txn.amount.currency
+            )}
           </Typography>
         </TableCell>
       </TableRow>
-    )
+    ))
 
     return <TableBody>{tableBodyRows}</TableBody>
   }
