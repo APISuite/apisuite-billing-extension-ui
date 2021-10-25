@@ -5,4 +5,4 @@
 /////////////////////////////////////////////////////////////////////////////////
 
 export const name = '@apisuite/apisuite-billing-extension-ui'
-export const version = '1.6.0'
+export const version = '1.6.1'

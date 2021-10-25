@@ -1,10 +1,16 @@
-export const convertDateAndTime = (languageString, dateAndTimeString) => {
+export const convertDateAndTime = (languageString, dateAndTimeString, pm = true) => {
     const dateAndTimeFormat = new Intl.DateTimeFormat(languageString, {
         year: 'numeric',
         month: 'long',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
+        hour12: pm,
     });
-    return dateAndTimeFormat.format(new Date(dateAndTimeString));
+    try {
+        return dateAndTimeFormat.format(new Date(dateAndTimeString));
+    }
+    catch (error) {
+        return null;
+    }
 };
