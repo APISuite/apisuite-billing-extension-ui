@@ -106,6 +106,21 @@
         "invoiceRetrievalError": "An error retrieving your invoice note occurred.",
         "invoiceSavingSuccessful": "Your invoice note was saved successfully!",
         "invoiceSavingError": "An error saving your invoice note occurred."
+      },
+      "transactioncard": {
+        "reference" : "Reference",
+        "price" : "Price",
+        "creditAmount" : "Credit amount",
+        "purchaseDate" : "Date of purchase"
+      },
+      "editPaymentConfirm": {
+        "title": "You have edited your payment method!",
+        "message": "The change to your new payment method is currently being processed. \nYour payment method will be updated once the transaction is confirmed.",
+        "subtitle": "Transaction details",
+        "buttons": {
+          "printLabel": "Print details",
+          "billingLabel": "Go back to Billing"
+        }
       }
     }
   }
