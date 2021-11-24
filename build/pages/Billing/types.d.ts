@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { GET_CREDIT_PACKS_ACTION_SUCCESS, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION_SUCCESS, GET_USER_DETAILS_ACTION, GET_USER_TRANSACTIONS_ACTION_SUCCESS, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION_SUCCESS, GET_TRANSACTION_DETAILS_ACTION, PURCHASE_CREDITS_ACTION_ERROR, PURCHASE_CREDITS_ACTION_SUCCESS, PURCHASE_CREDITS_ACTION, START_SUBSCRIPTION_ACTION_ERROR, START_SUBSCRIPTION_ACTION_SUCCESS, START_SUBSCRIPTION_ACTION, CANCEL_SUBSCRIPTION, CANCEL_SUBSCRIPTION_SUCCESS, CANCEL_SUBSCRIPTION_ERROR, CLEAR_SUBSCRIPTION_INFO, GET_USER_INVOICE_NOTES_ACTION, GET_USER_INVOICE_NOTES_ACTION_SUCCESS, SET_USER_INVOICE_NOTES_ACTION, SET_USER_INVOICE_NOTES_ACTION_SUCCESS } from './ducks';
+import { GET_CREDIT_PACKS_ACTION_SUCCESS, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION_SUCCESS, GET_USER_DETAILS_ACTION, GET_USER_TRANSACTIONS_ACTION_SUCCESS, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION_SUCCESS, GET_TRANSACTION_DETAILS_ACTION, PURCHASE_CREDITS_ACTION_ERROR, PURCHASE_CREDITS_ACTION_SUCCESS, PURCHASE_CREDITS_ACTION, START_SUBSCRIPTION_ACTION_ERROR, START_SUBSCRIPTION_ACTION_SUCCESS, START_SUBSCRIPTION_ACTION, CANCEL_SUBSCRIPTION, CANCEL_SUBSCRIPTION_SUCCESS, CANCEL_SUBSCRIPTION_ERROR, CLEAR_SUBSCRIPTION_INFO, GET_USER_INVOICE_NOTES_ACTION, GET_USER_INVOICE_NOTES_ACTION_SUCCESS, SET_USER_INVOICE_NOTES_ACTION, SET_USER_INVOICE_NOTES_ACTION_SUCCESS, GET_BILLING_SETTINGS, GET_BILLING_SETTINGS_SUCCESS, GET_BILLING_SETTINGS_ERROR } from './ducks';
 export declare type PackageSortMode = 'name' | 'price' | 'credits';
 export declare type PackageOrderMode = 'asc' | 'desc';
 export interface User {
@@ -61,6 +61,7 @@ export interface BillingStore {
     };
     successfullySubscribedToPlan: boolean;
     transactionDetails: TransactionDetails;
+    settings: BillingSettings;
 }
 export interface BillingProps {
     creditPacks: CreditPackDetails[];
@@ -71,6 +72,7 @@ export interface BillingProps {
     dialogInfo: BillingStore['subscriptionsDialogInfo'];
     clearSubscriptionInfoAction: () => void;
     editPaymentInfoAction: () => void;
+    getBillingSettingsAction: () => void;
     getCreditPacksAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
     getSubscriptionPlansAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
     getUserInvoiceNoteAction: (userID: number) => void;
@@ -82,12 +84,18 @@ export interface BillingProps {
     purchaseCreditsAction: (creditPackID: number) => void;
     startSubscriptionAction: (subscriptionPlanID: number) => void;
     cancelSubscriptionAction: () => void;
+    settings: BillingSettings;
     successfullySubscribedToPlan: boolean;
     user: User;
 }
 export interface InvoiceNoteResponse {
     data: {
         invoiceNotes: string;
+    };
+}
+export interface BillingSettings {
+    data: {
+        vatRate: number | null;
     };
 }
 export interface GetUserDetailsAction extends Action {
@@ -183,4 +191,15 @@ export interface CancelSubscriptionActionError {
 export interface ClearSubscriptionInfoAction {
     type: typeof CLEAR_SUBSCRIPTION_INFO;
 }
-export declare type BillingActions = GetCreditPacksAction | GetCreditPacksActionSuccess | GetSubscriptionPlansAction | GetSubscriptionPlansActionSuccess | GetUserInvoiceNoteAction | GetUserInvoiceNoteActionSuccess | SetUserInvoiceNoteAction | SetUserInvoiceNoteActionSuccess | GetUserDetailsAction | GetUserDetailsActionSuccess | GetUserTransactionsAction | GetUserTransactionsActionSuccess | GetTransactionDetailsAction | GetTransactionDetailsActionSuccess | PurchaseCreditsAction | PurchaseCreditsActionError | PurchaseCreditsActionSuccess | StartSubscriptionAction | StartSubscriptionActionError | StartSubscriptionActionSuccess | CancelSubscriptionAction | CancelSubscriptionActionError | CancelSubscriptionActionSuccess | ClearSubscriptionInfoAction;
+export interface GetBillingSettingsAction {
+    type: typeof GET_BILLING_SETTINGS;
+}
+export interface GetBillingSettingsActionSuccess {
+    type: typeof GET_BILLING_SETTINGS_SUCCESS;
+    payload: BillingSettings;
+}
+export interface GetBillingSettingsActionError {
+    type: typeof GET_BILLING_SETTINGS_ERROR;
+    error: string;
+}
+export declare type BillingActions = GetCreditPacksAction | GetCreditPacksActionSuccess | GetSubscriptionPlansAction | GetSubscriptionPlansActionSuccess | GetUserInvoiceNoteAction | GetUserInvoiceNoteActionSuccess | SetUserInvoiceNoteAction | SetUserInvoiceNoteActionSuccess | GetUserDetailsAction | GetUserDetailsActionSuccess | GetUserTransactionsAction | GetUserTransactionsActionSuccess | GetTransactionDetailsAction | GetTransactionDetailsActionSuccess | PurchaseCreditsAction | PurchaseCreditsActionError | PurchaseCreditsActionSuccess | StartSubscriptionAction | StartSubscriptionActionError | StartSubscriptionActionSuccess | CancelSubscriptionAction | CancelSubscriptionActionError | CancelSubscriptionActionSuccess | ClearSubscriptionInfoAction | GetBillingSettingsAction | GetBillingSettingsActionError | GetBillingSettingsActionSuccess;

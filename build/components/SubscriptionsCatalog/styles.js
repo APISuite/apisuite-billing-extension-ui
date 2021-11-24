@@ -47,6 +47,7 @@ export default makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
+        justifyContent: 'space-between',
     },
     disabledSubscriptionContainer: {
         background: theme.palette.action.disabledBackground,

@@ -1,4 +1,4 @@
-import { GetCreditPacksAction, GetSubscriptionPlansAction, GetUserDetailsAction, GetUserInvoiceNoteAction, SetUserInvoiceNoteAction, GetTransactionDetailsAction, PurchaseCreditsAction, StartSubscriptionAction, InvoiceNoteResponse } from './types';
+import { GetCreditPacksAction, GetSubscriptionPlansAction, GetUserDetailsAction, GetUserInvoiceNoteAction, SetUserInvoiceNoteAction, GetTransactionDetailsAction, PurchaseCreditsAction, StartSubscriptionAction, InvoiceNoteResponse, BillingSettings } from './types';
 export declare function getUserDetailsActionSaga(action: GetUserDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allUserDetails: import("./types").UserDetails;
@@ -32,5 +32,12 @@ export declare function startSubscriptionActionSaga(action: StartSubscriptionAct
 export declare function cancelSubscriptionSaga(): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
 }>, void, number>;
+export declare function getBillingSettingsActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+    type: string;
+    payload: BillingSettings;
+}> | import("redux-saga/effects").PutEffect<{
+    type: string;
+    error: string;
+}>, void, BillingSettings>;
 declare function billingRootSaga(): Generator<import("redux-saga/effects").ForkEffect<never>, void, unknown>;
 export default billingRootSaga;

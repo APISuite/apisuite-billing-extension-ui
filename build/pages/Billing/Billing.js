@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Trans, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
+import { Box, Button, Icon, TextField, Trans, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
 import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog';
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog';
 import SubscriptionsCatalog from '../../components/SubscriptionsCatalog';
@@ -7,7 +7,8 @@ import SubscriptionsTable from '../../components/SubscriptionsTable';
 import TransactionsTable from '../../components/TransactionsTable';
 import useStyles from './styles';
 import Link from '../../components/Link';
-const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionInfoAction, creditPacks, dialogInfo, editPaymentInfoAction, getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptions, invoiceNote, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, subscriptions, successfullySubscribedToPlan, transactions, user, }) => {
+import { Notice } from '../../components/Notice';
+const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionInfoAction, creditPacks, dialogInfo, editPaymentInfoAction, getBillingSettingsAction, getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptions, invoiceNote, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, settings, subscriptions, successfullySubscribedToPlan, transactions, user, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const { palette, spacing } = useTheme();
@@ -23,6 +24,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
         getUserInvoiceNoteAction(user.id);
         getUserDetailsAction(user.id);
         getUserTransactionsAction();
+        getBillingSettingsAction();
     }, []);
     /* Credits logic */
     const showCreditPacks = () => {
@@ -206,7 +208,11 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
                     React.createElement("div", null,
                         React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, disabled: !selectedCreditPack.id, onClick: handleOpenTopUpDialog }, t('purchaseCreditsButtonLabel')),
                         React.createElement(Box, { clone: true, ml: 1, style: { backgroundColor: palette.common.white } },
-                            React.createElement(Button, { variant: "outlined", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('cancelCreditsPurchaseButtonLabel')))))) : (React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
+                            React.createElement(Button, { variant: "outlined", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('cancelCreditsPurchaseButtonLabel')))),
+                    settings.data.vatRate !== null && (React.createElement(Box, { mr: 3, mt: 3 },
+                        React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
+                                vatRate: settings.data.vatRate,
+                            })), type: "info" }))))) : (React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
             React.createElement(Box, { clone: true, mb: 3 },
                 React.createElement(Typography, { variant: "h3" }, t('yourSubscriptionsTitle'))),
             allUserDetails.subscriptionID ? (React.createElement(React.Fragment, null,
@@ -224,15 +230,24 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
                     React.createElement(Box, { clone: true, mb: 3 },
                         React.createElement(Typography, { variant: "h6" }, t('chooseNewSubPlan'))),
                     showSubscriptions(),
-                    React.createElement(Box, { mt: 2 },
-                        React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan, style: { marginRight: spacing(1.5) } }, t('startNewSubPlanButtonLabel')),
-                        React.createElement(Button, { variant: "outlined", color: "secondary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('cancelSubPlansCheckingButtonLabel'))))))) : (React.createElement(React.Fragment, null,
+                    React.createElement(Box, { display: "flex", flexDirection: "row", justifyContent: "space-between", mt: 2 },
+                        React.createElement(Box, null,
+                            React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan, style: { marginRight: spacing(1.5) } }, t('startNewSubPlanButtonLabel')),
+                            React.createElement(Button, { variant: "outlined", color: "secondary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('cancelSubPlansCheckingButtonLabel'))),
+                        React.createElement(Box, { mr: 2 }, settings.data.vatRate !== null && (React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
+                                vatRate: settings.data.vatRate,
+                            })), type: "info" })))))))) : (React.createElement(React.Fragment, null,
                 React.createElement(Box, { clone: true, mb: 3 },
                     React.createElement(Typography, { variant: "body1" }, t('noActiveSubscriptions'))),
                 React.createElement(Box, { clone: true, mb: 3 },
                     React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
                 showSubscriptions(),
-                React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToStartSubscriptionPlan }, t('startSubscriptionButtonLabel')))),
+                React.createElement(Box, { display: "flex", flexDirection: "row", justifyContent: "space-between", mt: 2 },
+                    React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToStartSubscriptionPlan }, t('startSubscriptionButtonLabel')),
+                    settings.data.vatRate !== null && (React.createElement(Box, { mr: 2 },
+                        React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
+                                vatRate: settings.data.vatRate,
+                            })), type: "info" })))))),
             React.createElement(Box, { clone: true, mb: 1.5, mt: 5 },
                 React.createElement(Typography, { variant: "h3" }, t('invoiceNote.title'))),
             React.createElement(Box, { clone: true, mb: 3 },

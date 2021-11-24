@@ -1,4 +1,4 @@
-import { BillingActions, BillingStore, CreditPackDetails, PackageOrderMode, PackageSortMode, SubscriptionPlanDetails, TransactionDetails, UserDetails } from './types';
+import { BillingActions, BillingSettings, BillingStore, CreditPackDetails, PackageOrderMode, PackageSortMode, SubscriptionPlanDetails, TransactionDetails, UserDetails } from './types';
 /** Action types */
 export declare const GET_USER_DETAILS_ACTION = "Billing/GET_USER_DETAILS_ACTION";
 export declare const GET_USER_DETAILS_ACTION_SUCCESS = "Billing/GET_USER_DETAILS_ACTION_SUCCESS";
@@ -25,6 +25,9 @@ export declare const CANCEL_SUBSCRIPTION_SUCCESS = "Billing/CANCEL_SUBSCRIPTION_
 export declare const CANCEL_SUBSCRIPTION_ERROR = "Billing/CANCEL_SUBSCRIPTION_ERROR";
 export declare const CLEAR_SUBSCRIPTION_INFO = "Billing/CLEAR_SUBSCRIPTION_INFO";
 export declare const EDIT_PAYMENT_INFORMATION = "Billing/EDIT_PAYMENT_INFORMATION";
+export declare const GET_BILLING_SETTINGS = "Billing/GET_BILLING_SETTINGS";
+export declare const GET_BILLING_SETTINGS_SUCCESS = "Billing/GET_BILLING_SETTINGS_SUCCESS";
+export declare const GET_BILLING_SETTINGS_ERROR = "Billing/GET_BILLING_SETTINGS_ERROR";
 /** Reducer */
 export default function billingReducer(state: BillingStore, action: BillingActions): BillingStore;
 /** Action builders */
@@ -123,4 +126,15 @@ export declare function clearSubscriptionInfoAction(): {
 };
 export declare function editPaymentInfoAction(): {
     type: string;
+};
+export declare function getBillingSettingsAction(): {
+    type: string;
+};
+export declare function getBillingSettingsActionError(error: string): {
+    type: string;
+    error: string;
+};
+export declare function getBillingSettingsActionSuccess(payload: BillingSettings): {
+    type: string;
+    payload: BillingSettings;
 };
