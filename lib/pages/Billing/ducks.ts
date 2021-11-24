@@ -2,6 +2,7 @@ import update from 'immutability-helper'
 
 import {
   BillingActions,
+  BillingSettings,
   BillingStore,
   CreditPackDetails,
   PackageOrderMode,
@@ -48,6 +49,11 @@ const initialState: BillingStore = {
   successfullySubscribedToPlan: false,
   hasRetrievedAllCreditPacks: false,
   hasRetrievedAllSubscriptions: false,
+  settings: {
+    data: {
+      vatRate: null,
+    },
+  },
 }
 
 /** Action types */
@@ -104,6 +110,11 @@ export const CANCEL_SUBSCRIPTION_ERROR = 'Billing/CANCEL_SUBSCRIPTION_ERROR'
 export const CLEAR_SUBSCRIPTION_INFO = 'Billing/CLEAR_SUBSCRIPTION_INFO'
 
 export const EDIT_PAYMENT_INFORMATION = 'Billing/EDIT_PAYMENT_INFORMATION'
+
+export const GET_BILLING_SETTINGS = 'Billing/GET_BILLING_SETTINGS'
+export const GET_BILLING_SETTINGS_SUCCESS =
+  'Billing/GET_BILLING_SETTINGS_SUCCESS'
+export const GET_BILLING_SETTINGS_ERROR = 'Billing/GET_BILLING_SETTINGS_ERROR'
 
 /** Reducer */
 
@@ -199,6 +210,22 @@ export default function billingReducer(
               subText: '',
             },
           },
+        },
+      })
+    }
+
+    case GET_BILLING_SETTINGS_SUCCESS: {
+      return update(state, {
+        settings: {
+          data: { $set: { ...action.payload.data } },
+        },
+      })
+    }
+
+    case GET_BILLING_SETTINGS_ERROR: {
+      return update(state, {
+        settings: {
+          data: { $set: { vatRate: null } },
         },
       })
     }
@@ -329,4 +356,16 @@ export function clearSubscriptionInfoAction() {
 
 export function editPaymentInfoAction() {
   return { type: EDIT_PAYMENT_INFORMATION }
+}
+
+export function getBillingSettingsAction() {
+  return { type: GET_BILLING_SETTINGS }
+}
+
+export function getBillingSettingsActionError(error: string) {
+  return { type: GET_BILLING_SETTINGS_ERROR, error }
+}
+
+export function getBillingSettingsActionSuccess(payload: BillingSettings) {
+  return { type: GET_BILLING_SETTINGS_SUCCESS, payload }
 }

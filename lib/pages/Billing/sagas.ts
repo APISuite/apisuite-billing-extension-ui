@@ -28,6 +28,9 @@ import {
   START_SUBSCRIPTION_ACTION,
   startSubscriptionActionError,
   startSubscriptionActionSuccess,
+  GET_BILLING_SETTINGS,
+  getBillingSettingsActionSuccess,
+  getBillingSettingsActionError,
 } from './ducks'
 import {
   GetCreditPacksAction,
@@ -39,6 +42,7 @@ import {
   PurchaseCreditsAction,
   StartSubscriptionAction,
   InvoiceNoteResponse,
+  BillingSettings,
 } from './types'
 
 export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
@@ -324,6 +328,24 @@ export function* cancelSubscriptionSaga() {
   }
 }
 
+export function* getBillingSettingsActionSaga() {
+  try {
+    const getBillingSettingUrl = `${BILLING_API_URL}/settings`
+
+    const response: BillingSettings = yield call(request, {
+      url: getBillingSettingUrl,
+      method: 'GET',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    yield put(getBillingSettingsActionSuccess(response))
+  } catch (error) {
+    yield put(getBillingSettingsActionError(error))
+  }
+}
+
 function* billingRootSaga() {
   yield takeLatest(GET_CREDIT_PACKS_ACTION, getCreditPacksActionSaga)
   yield takeLatest(
@@ -342,6 +364,7 @@ function* billingRootSaga() {
   yield takeLatest(START_SUBSCRIPTION_ACTION, startSubscriptionActionSaga)
   yield takeLatest(CANCEL_SUBSCRIPTION, cancelSubscriptionSaga)
   yield takeLatest(EDIT_PAYMENT_INFORMATION, editPaymentInformationSaga)
+  yield takeLatest(GET_BILLING_SETTINGS, getBillingSettingsActionSaga)
 }
 
 export default billingRootSaga
