@@ -2,6 +2,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import {
+  getBillingSettingsAction,
   getCreditPacksAction,
   getSubscriptionPlansAction,
   getUserDetailsAction,
@@ -26,6 +27,7 @@ export const mapStateToProps = ({ auth, billing }) => ({
   dialogInfo: billing.subscriptionsDialogInfo,
   hasRetrievedAllCreditPacks: billing.hasRetrievedAllCreditPacks,
   hasRetrievedAllSubscriptions: billing.hasRetrievedAllSubscriptions,
+  settings: billing.settings,
   successfullySubscribedToPlan: billing.successfullySubscribedToPlan,
   user: auth.user,
 })
@@ -33,6 +35,7 @@ export const mapStateToProps = ({ auth, billing }) => ({
 export const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
+      getBillingSettingsAction,
       getCreditPacksAction,
       getSubscriptionPlansAction,
       getUserDetailsAction,

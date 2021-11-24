@@ -25,6 +25,9 @@ import {
   GET_USER_INVOICE_NOTES_ACTION_SUCCESS,
   SET_USER_INVOICE_NOTES_ACTION,
   SET_USER_INVOICE_NOTES_ACTION_SUCCESS,
+  GET_BILLING_SETTINGS,
+  GET_BILLING_SETTINGS_SUCCESS,
+  GET_BILLING_SETTINGS_ERROR,
 } from './ducks'
 
 export type PackageSortMode = 'name' | 'price' | 'credits'
@@ -94,6 +97,7 @@ export interface BillingStore {
   }
   successfullySubscribedToPlan: boolean
   transactionDetails: TransactionDetails
+  settings: BillingSettings
 }
 
 export interface BillingProps {
@@ -105,6 +109,7 @@ export interface BillingProps {
   dialogInfo: BillingStore['subscriptionsDialogInfo']
   clearSubscriptionInfoAction: () => void
   editPaymentInfoAction: () => void
+  getBillingSettingsAction: () => void
   getCreditPacksAction: (
     sortBy: PackageSortMode,
     orderBy: PackageOrderMode
@@ -122,12 +127,17 @@ export interface BillingProps {
   purchaseCreditsAction: (creditPackID: number) => void
   startSubscriptionAction: (subscriptionPlanID: number) => void
   cancelSubscriptionAction: () => void
+  settings: BillingSettings
   successfullySubscribedToPlan: boolean
   user: User
 }
 
 export interface InvoiceNoteResponse {
   data: { invoiceNotes: string }
+}
+
+export interface BillingSettings {
+  data: { vatRate: number | null }
 }
 
 export interface GetUserDetailsAction extends Action {
@@ -247,6 +257,20 @@ export interface ClearSubscriptionInfoAction {
   type: typeof CLEAR_SUBSCRIPTION_INFO
 }
 
+export interface GetBillingSettingsAction {
+  type: typeof GET_BILLING_SETTINGS
+}
+
+export interface GetBillingSettingsActionSuccess {
+  type: typeof GET_BILLING_SETTINGS_SUCCESS
+  payload: BillingSettings
+}
+
+export interface GetBillingSettingsActionError {
+  type: typeof GET_BILLING_SETTINGS_ERROR
+  error: string
+}
+
 export type BillingActions =
   | GetCreditPacksAction
   | GetCreditPacksActionSuccess
@@ -272,3 +296,6 @@ export type BillingActions =
   | CancelSubscriptionActionError
   | CancelSubscriptionActionSuccess
   | ClearSubscriptionInfoAction
+  | GetBillingSettingsAction
+  | GetBillingSettingsActionError
+  | GetBillingSettingsActionSuccess

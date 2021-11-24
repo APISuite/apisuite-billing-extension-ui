@@ -121,7 +121,8 @@
           "printLabel": "Print details",
           "billingLabel": "Go back to Billing"
         }
-      }
+      },
+      "vatNotice": "All prices include a VAT rate of {{vatRate}}%."
     }
   }
 }

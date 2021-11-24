@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
+  Icon,
   TextField,
   Trans,
   Typography,
@@ -17,6 +18,7 @@ import TransactionsTable from '../../components/TransactionsTable'
 import { BillingProps } from './types'
 import useStyles from './styles'
 import Link from '../../components/Link'
+import { Notice } from '../../components/Notice'
 
 const Billing: React.FC<BillingProps> = ({
   allUserDetails,
@@ -25,6 +27,7 @@ const Billing: React.FC<BillingProps> = ({
   creditPacks,
   dialogInfo,
   editPaymentInfoAction,
+  getBillingSettingsAction,
   getCreditPacksAction,
   getSubscriptionPlansAction,
   getUserDetailsAction,
@@ -36,6 +39,7 @@ const Billing: React.FC<BillingProps> = ({
   purchaseCreditsAction,
   setUserInvoiceNoteAction,
   startSubscriptionAction,
+  settings,
   subscriptions,
   successfullySubscribedToPlan,
   transactions,
@@ -58,6 +62,7 @@ const Billing: React.FC<BillingProps> = ({
     getUserInvoiceNoteAction(user.id)
     getUserDetailsAction(user.id)
     getUserTransactionsAction()
+    getBillingSettingsAction()
   }, [])
 
   /* Credits logic */
@@ -392,6 +397,25 @@ const Billing: React.FC<BillingProps> = ({
                   </Button>
                 </Box>
               </div>
+              {settings.data.vatRate !== null && (
+                <Box mr={3} mt={3}>
+                  <Notice
+                    noticeIcon={<Icon>announcement</Icon>}
+                    noticeText={
+                      <Typography
+                        variant="body2"
+                        display="block"
+                        style={{ color: palette.info.dark }}
+                      >
+                        {t('vatNotice', {
+                          vatRate: settings.data.vatRate,
+                        })}
+                      </Typography>
+                    }
+                    type="info"
+                  />
+                </Box>
+              )}
             </Box>
           ) : (
             <Button
@@ -449,29 +473,54 @@ const Billing: React.FC<BillingProps> = ({
                 </Box>
 
                 {showSubscriptions()}
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  mt={2}
+                >
+                  <Box>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      disableElevation
+                      disabled={!hasSelectedSubscriptionPlan}
+                      onClick={handleWantsToChangeSubscriptionPlan}
+                      style={{ marginRight: spacing(1.5) }}
+                    >
+                      {t('startNewSubPlanButtonLabel')}
+                    </Button>
 
-                <Box mt={2}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    disableElevation
-                    disabled={!hasSelectedSubscriptionPlan}
-                    onClick={handleWantsToChangeSubscriptionPlan}
-                    style={{ marginRight: spacing(1.5) }}
-                  >
-                    {t('startNewSubPlanButtonLabel')}
-                  </Button>
-
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    size="large"
-                    disableElevation
-                    onClick={handleWantsToCheckAllSubPlans}
-                  >
-                    {t('cancelSubPlansCheckingButtonLabel')}
-                  </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="large"
+                      disableElevation
+                      onClick={handleWantsToCheckAllSubPlans}
+                    >
+                      {t('cancelSubPlansCheckingButtonLabel')}
+                    </Button>
+                  </Box>
+                  <Box mr={2}>
+                    {settings.data.vatRate !== null && (
+                      <Notice
+                        noticeIcon={<Icon>announcement</Icon>}
+                        noticeText={
+                          <Typography
+                            variant="body2"
+                            display="block"
+                            style={{ color: palette.info.dark }}
+                          >
+                            {t('vatNotice', {
+                              vatRate: settings.data.vatRate,
+                            })}
+                          </Typography>
+                        }
+                        type="info"
+                      />
+                    )}
+                  </Box>
                 </Box>
               </>
             )}
@@ -490,17 +539,43 @@ const Billing: React.FC<BillingProps> = ({
 
             {showSubscriptions()}
 
-            {/* FIXME */}
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              disableElevation
-              disabled={!hasSelectedSubscriptionPlan}
-              onClick={handleWantsToStartSubscriptionPlan}
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              mt={2}
             >
-              {t('startSubscriptionButtonLabel')}
-            </Button>
+              {/* FIXME */}
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                disableElevation
+                disabled={!hasSelectedSubscriptionPlan}
+                onClick={handleWantsToStartSubscriptionPlan}
+              >
+                {t('startSubscriptionButtonLabel')}
+              </Button>
+              {settings.data.vatRate !== null && (
+                <Box mr={2}>
+                  <Notice
+                    noticeIcon={<Icon>announcement</Icon>}
+                    noticeText={
+                      <Typography
+                        variant="body2"
+                        display="block"
+                        style={{ color: palette.info.dark }}
+                      >
+                        {t('vatNotice', {
+                          vatRate: settings.data.vatRate,
+                        })}
+                      </Typography>
+                    }
+                    type="info"
+                  />
+                </Box>
+              )}
+            </Box>
           </>
         )}
 
