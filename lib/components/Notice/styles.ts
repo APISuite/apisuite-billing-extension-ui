@@ -16,7 +16,7 @@ export default makeStyles((theme) => ({
   noticeContentsContainer: {
     borderRadius: theme.shape.borderRadius,
     display: 'flex',
-    padding: 8,
+    padding: theme.spacing(1),
     width: '100%',
     alignItems: 'center',
     '& p': {
@@ -26,7 +26,7 @@ export default makeStyles((theme) => ({
 
   noticeIcon: {
     display: 'flex',
-    marginRight: 8,
+    marginRight: theme.spacing(1),
     alignSelf: 'flex-start',
   },
 
