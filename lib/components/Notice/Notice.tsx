@@ -31,7 +31,7 @@ export const Notice: React.FC<NoticeProps> = ({
           type === 'info' && classes.noticeIconInfo,
           type === 'error' && classes.noticeIconError,
           type === 'warning' && classes.noticeIconWarning,
-          noticeIconStyle && noticeIconStyle
+          noticeIconStyle
         )}
       >
         {noticeIcon || <Icon>info</Icon>}
