@@ -381,7 +381,7 @@ export function* setUserBillingOrgActionSaga(action: SetUserBillingOrgAction) {
     yield put(
       openNotification(
         'success',
-        i18n.t('extensions.billing.billingOrg.savedSuccessful'),
+        i18n.t('extensions.billing.billingOrg.setSuccessful'),
         3000
       )
     )
@@ -389,7 +389,7 @@ export function* setUserBillingOrgActionSaga(action: SetUserBillingOrgAction) {
     yield put(
       openNotification(
         'error',
-        i18n.t('extensions.billing.billingOrg.saveFailed'),
+        i18n.t('extensions.billing.billingOrg.setFailed'),
         3000
       )
     )
