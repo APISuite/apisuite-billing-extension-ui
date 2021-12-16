@@ -164,6 +164,7 @@ export default function billingReducer(
           userCredits: { $set: action.orgData.credits },
         },
         invoiceNote: { $set: action.orgData.invoiceNotes },
+        organizationDetails: { $set: action.orgData },
       })
     }
     case SET_USER_INVOICE_NOTES_ACTION_SUCCESS: {
