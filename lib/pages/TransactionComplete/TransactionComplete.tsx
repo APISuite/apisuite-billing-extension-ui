@@ -16,6 +16,7 @@ import useStyles from './styles'
 
 const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   getTransactionDetailsAction,
+  orgId,
   transactionDetails,
 }) => {
   const classes = useStyles()
@@ -30,7 +31,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
     const urlParameters = new URLSearchParams(window.location.search)
     const idOfTransaction = urlParameters.get('id')
 
-    getTransactionDetailsAction(idOfTransaction)
+    getTransactionDetailsAction(orgId, idOfTransaction)
   }, [])
 
   return (
