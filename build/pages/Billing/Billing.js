@@ -8,7 +8,7 @@ import TransactionsTable from '../../components/TransactionsTable';
 import useStyles from './styles';
 import Link from '../../components/Link';
 import { Notice } from '../../components/Notice';
-const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionInfoAction, creditPacks, dialogInfo, editPaymentInfoAction, getBillingSettingsAction, getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptions, invoiceNote, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, settings, subscriptions, successfullySubscribedToPlan, transactions, user, }) => {
+const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, creditPacks, dialogInfo, editPaymentInfoAction, getBillingSettingsAction, getCreditPacksAction, getSubscriptionPlansAction, getOrganizationAction, getUserTransactionsAction, hasRetrievedAllCreditPacks, hasRetrievedAllSubscriptions, invoiceNote, orgId, orgDetails, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, settings, subscriptions, successfullySubscribedToPlan, transactions, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const { palette, spacing } = useTheme();
@@ -21,9 +21,8 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
     useEffect(() => {
         getCreditPacksAction('price', 'asc');
         getSubscriptionPlansAction('price', 'asc');
-        getUserInvoiceNoteAction(user.id);
-        getUserDetailsAction(user.id);
-        getUserTransactionsAction();
+        getOrganizationAction(orgId);
+        getUserTransactionsAction(orgId);
         getBillingSettingsAction();
     }, []);
     /* Credits logic */
@@ -86,7 +85,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
         }
         if (subscriptions.length) {
             return (React.createElement(React.Fragment, null,
-                React.createElement(SubscriptionsCatalog, { activeSubscriptionID: parseInt(allUserDetails.subscriptionID, 10), subscriptions: subscriptions, selectedSubscription: selectedSubscriptionPlan, handleSubscriptionSelection: handleSubscriptionPlanSelection })));
+                React.createElement(SubscriptionsCatalog, { activeSubscriptionID: parseInt(orgDetails.subscriptionId, 10), subscriptions: subscriptions, selectedSubscription: selectedSubscriptionPlan, handleSubscriptionSelection: handleSubscriptionPlanSelection })));
         }
         else {
             return (React.createElement(Box, { clone: true, mb: 3 },
@@ -149,8 +148,8 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
     starts or changes his subscription plan. */
     useEffect(() => {
         if (successfullySubscribedToPlan) {
-            getUserDetailsAction(user.id);
-            getUserTransactionsAction();
+            getOrganizationAction(orgId);
+            getUserTransactionsAction(orgId);
         }
     }, [successfullySubscribedToPlan]);
     /* Invoice-related logic */
@@ -201,7 +200,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
                     : classes.yourCreditBalanceContainerWithoutCreditPacks },
                 React.createElement(Box, { color: palette.common.white },
                     React.createElement(Typography, { variant: "body1", color: "inherit" }, t('availableCredits')),
-                    React.createElement(Typography, { variant: "h1", color: "inherit" }, allUserDetails.userCredits)),
+                    React.createElement(Typography, { variant: "h1", color: "inherit" }, orgDetails.credits)),
                 wantsToTopUpCredits ? (React.createElement(Box, { color: palette.common.white },
                     React.createElement("hr", { className: classes.separator }),
                     showCreditPacks(),
@@ -215,16 +214,16 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
                             })), type: "info" }))))) : (React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
             React.createElement(Box, { clone: true, mb: 3 },
                 React.createElement(Typography, { variant: "h3" }, t('yourSubscriptionsTitle'))),
-            allUserDetails.subscriptionID ? (React.createElement(React.Fragment, null,
+            orgDetails.subscriptionId ? (React.createElement(React.Fragment, null,
                 React.createElement(SubscriptionsTable, { subscriptions: [
                         {
                             name: subscriptions.find((subscriptionPlan) => {
                                 return (subscriptionPlan.id ===
-                                    parseInt(allUserDetails.subscriptionID));
+                                    parseInt(orgDetails.subscriptionId));
                             })?.name,
-                            nextBillingDate: allUserDetails.nextPaymentDate,
+                            nextBillingDate: orgDetails.nextPaymentDate,
                         },
-                    ], onCancelSubscription: cancelSubscriptionAction, onEditPaymentClick: editPaymentInfoAction }),
+                    ], onCancelSubscription: cancelSubscriptionAction, onEditPaymentClick: () => editPaymentInfoAction(orgId) }),
                 !wantsToCheckAllSubPlans && (React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('checkSubPlansButtonLabel'))),
                 wantsToCheckAllSubPlans && (React.createElement(React.Fragment, null,
                     React.createElement(Box, { clone: true, mb: 3 },
@@ -261,7 +260,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
                         shrink: true,
                     }, label: t('invoiceNote.textFieldLabel'), margin: "dense", multiline: true, onChange: (event) => handleUserInvoiceNote(event.target.value), rows: 4, type: "text", value: userInvoiceNote, variant: "outlined" })),
             React.createElement(Box, { clone: true, mt: 3 },
-                React.createElement(Button, { color: "primary", disabled: userInvoiceNote === invoiceNote, disableElevation: true, onClick: () => setUserInvoiceNoteAction(user.id, userInvoiceNote), size: "large", variant: "contained" }, t('invoiceNote.saveInvoiceNoteButtonLabel'))),
+                React.createElement(Button, { color: "primary", disabled: userInvoiceNote === invoiceNote, disableElevation: true, onClick: () => setUserInvoiceNoteAction(orgId, userInvoiceNote), size: "large", variant: "contained" }, t('invoiceNote.saveInvoiceNoteButtonLabel'))),
             React.createElement(Box, { clone: true, mt: 5, mb: 1.5 },
                 React.createElement(Typography, { variant: "h3" }, t('transactionHistoryTitle'))),
             React.createElement(Box, { clone: true, mb: 3 },
@@ -270,7 +269,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
         React.createElement(CustomizableDialog, { actions: [
                 React.createElement(Button, { className: classes.dialogCancelButton, key: "cancelCreditTopUp", onClick: handleOpenTopUpDialog, variant: "outlined" }, t('confirmCreditTopUpDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "openTopUpDialog", onClick: () => {
-                        purchaseCreditsAction(selectedCreditPack.id);
+                        purchaseCreditsAction(orgId, selectedCreditPack.id);
                     } }, t('confirmCreditTopUpDialog.confirmButtonLabel')),
             ], icon: "warning", onClose: handleOpenTopUpDialog, open: openTopUpDialog, subText: t('confirmCreditTopUpDialog.subText'), text: t('confirmCreditTopUpDialog.text', {
                 creditAmount: selectedCreditPack.credits,
@@ -278,7 +277,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
         React.createElement(CustomizableDialog, { actions: [
                 React.createElement(Button, { key: "cancelSubscriptionPlanStart", onClick: handleWantsToStartSubscriptionPlan, variant: "outlined" }, t('startSubscriptionDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "confirmSubscriptionPlanStart", onClick: () => {
-                        startSubscriptionAction(selectedSubscriptionPlan.id);
+                        startSubscriptionAction(orgId, selectedSubscriptionPlan.id);
                     } }, t('startSubscriptionDialog.confirmButtonLabel')),
             ], icon: "warning", onClose: handleWantsToStartSubscriptionPlan, open: wantsToStartSubscriptionPlan, subText: t('startSubscriptionDialog.subText'), text: t('startSubscriptionDialog.text', {
                 selectedSubscriptionPlan: selectedSubscriptionPlan.name,
@@ -289,7 +288,7 @@ const Billing = ({ allUserDetails, cancelSubscriptionAction, clearSubscriptionIn
         React.createElement(CustomizableDialog, { actions: [
                 React.createElement(Button, { className: classes.dialogCancelButton, key: "cancelSubscriptionPlanChange", onClick: handleWantsToChangeSubscriptionPlan, variant: "outlined" }, t('changeSubscriptionDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "confirmSubscriptionPlanChange", onClick: () => {
-                        startSubscriptionAction(selectedSubscriptionPlan.id);
+                        startSubscriptionAction(orgId, selectedSubscriptionPlan.id);
                     } }, t('changeSubscriptionDialog.confirmButtonLabel')),
             ], icon: "warning", onClose: handleWantsToChangeSubscriptionPlan, open: wantsToChangeSubscriptionPlan, subText: t('changeSubscriptionDialog.subText'), text: t('changeSubscriptionDialog.text', {
                 newlySelectedSubscriptionPlan: selectedSubscriptionPlan.name,

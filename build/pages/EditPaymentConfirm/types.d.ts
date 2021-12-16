@@ -1,5 +1,6 @@
 import { TransactionDetails } from '../Billing/types';
 export interface EditPaymentConfirmProps {
-    getTransactionDetailsAction: (transactionID: string) => void;
+    getTransactionDetailsAction: (orgId: string, transactionID: string) => void;
+    orgId: string;
     transactionDetails: TransactionDetails;
 }

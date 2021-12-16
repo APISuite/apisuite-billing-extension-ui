@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { GET_CREDIT_PACKS_ACTION_SUCCESS, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION_SUCCESS, GET_USER_DETAILS_ACTION, GET_USER_TRANSACTIONS_ACTION_SUCCESS, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION_SUCCESS, GET_TRANSACTION_DETAILS_ACTION, PURCHASE_CREDITS_ACTION_ERROR, PURCHASE_CREDITS_ACTION_SUCCESS, PURCHASE_CREDITS_ACTION, START_SUBSCRIPTION_ACTION_ERROR, START_SUBSCRIPTION_ACTION_SUCCESS, START_SUBSCRIPTION_ACTION, CANCEL_SUBSCRIPTION, CANCEL_SUBSCRIPTION_SUCCESS, CANCEL_SUBSCRIPTION_ERROR, CLEAR_SUBSCRIPTION_INFO, GET_USER_INVOICE_NOTES_ACTION, GET_USER_INVOICE_NOTES_ACTION_SUCCESS, SET_USER_INVOICE_NOTES_ACTION, SET_USER_INVOICE_NOTES_ACTION_SUCCESS, GET_BILLING_SETTINGS, GET_BILLING_SETTINGS_SUCCESS, GET_BILLING_SETTINGS_ERROR } from './ducks';
+import { GET_CREDIT_PACKS_ACTION_SUCCESS, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION_SUCCESS, GET_USER_DETAILS_ACTION, GET_USER_TRANSACTIONS_ACTION_SUCCESS, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION_SUCCESS, GET_TRANSACTION_DETAILS_ACTION, PURCHASE_CREDITS_ACTION_ERROR, PURCHASE_CREDITS_ACTION_SUCCESS, PURCHASE_CREDITS_ACTION, START_SUBSCRIPTION_ACTION_ERROR, START_SUBSCRIPTION_ACTION_SUCCESS, START_SUBSCRIPTION_ACTION, CANCEL_SUBSCRIPTION, CANCEL_SUBSCRIPTION_SUCCESS, CANCEL_SUBSCRIPTION_ERROR, CLEAR_SUBSCRIPTION_INFO, GET_USER_ORGANIZATION_ACTION, GET_USER_ORGANIZATION_ACTION_SUCCESS, SET_USER_INVOICE_NOTES_ACTION, SET_USER_INVOICE_NOTES_ACTION_SUCCESS, GET_BILLING_SETTINGS, GET_BILLING_SETTINGS_SUCCESS, GET_BILLING_SETTINGS_ERROR, SET_BILLING_ORGANIZATION, SET_BILLING_ORGANIZATION_SUCCESS, EDIT_PAYMENT_INFORMATION } from './ducks';
 export declare type PackageSortMode = 'name' | 'price' | 'credits';
 export declare type PackageOrderMode = 'asc' | 'desc';
 export interface User {
@@ -12,10 +12,18 @@ export interface User {
     };
 }
 export interface UserDetails {
+    billingOrganizationId: string | null;
     subscriptionID: string | null;
     userCredits: number;
     userID: number;
     nextPaymentDate: string;
+}
+export interface OrgDetails {
+    id: number;
+    credits: number;
+    subscriptionId: string | null;
+    nextPaymentDate: string;
+    invoiceNotes: string;
 }
 export interface CreditPackDetails {
     credits: number;
@@ -62,36 +70,34 @@ export interface BillingStore {
     successfullySubscribedToPlan: boolean;
     transactionDetails: TransactionDetails;
     settings: BillingSettings;
+    organizationDetails: OrgDetails;
 }
 export interface BillingProps {
     creditPacks: CreditPackDetails[];
     invoiceNote: string;
     subscriptions: SubscriptionPlanDetails[];
-    allUserDetails: UserDetails;
     transactions: TransactionDetails[];
     dialogInfo: BillingStore['subscriptionsDialogInfo'];
     clearSubscriptionInfoAction: () => void;
-    editPaymentInfoAction: () => void;
+    editPaymentInfoAction: (orgId: string) => void;
     getBillingSettingsAction: () => void;
     getCreditPacksAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
     getSubscriptionPlansAction: (sortBy: PackageSortMode, orderBy: PackageOrderMode) => void;
-    getUserInvoiceNoteAction: (userID: number) => void;
-    setUserInvoiceNoteAction: (userID: number, invoiceNote: string) => void;
-    getUserDetailsAction: (userID: number) => void;
-    getUserTransactionsAction: () => void;
+    getOrganizationAction: (orgId: string) => void;
+    setUserInvoiceNoteAction: (orgId: string, invoiceNote: string) => void;
+    getUserTransactionsAction: (orgId: any) => void;
     hasRetrievedAllCreditPacks: boolean;
     hasRetrievedAllSubscriptions: boolean;
-    purchaseCreditsAction: (creditPackID: number) => void;
-    startSubscriptionAction: (subscriptionPlanID: number) => void;
+    purchaseCreditsAction: (orgId: string, creditPackID: number) => void;
+    startSubscriptionAction: (orgId: string, subscriptionPlanID: number) => void;
     cancelSubscriptionAction: () => void;
     settings: BillingSettings;
     successfullySubscribedToPlan: boolean;
-    user: User;
+    orgId: string;
+    orgDetails: OrgDetails;
 }
-export interface InvoiceNoteResponse {
-    data: {
-        invoiceNotes: string;
-    };
+export interface OrgDetailsResponse {
+    data: OrgDetails;
 }
 export interface BillingSettings {
     data: {
@@ -124,17 +130,17 @@ export interface GetSubscriptionPlansActionSuccess extends Action {
     type: typeof GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS;
     subscriptions: SubscriptionPlanDetails[];
 }
-export interface GetUserInvoiceNoteAction extends Action {
-    type: typeof GET_USER_INVOICE_NOTES_ACTION;
-    userID: number;
+export interface GetOrganizationAction extends Action {
+    type: typeof GET_USER_ORGANIZATION_ACTION;
+    orgId: string;
 }
-export interface GetUserInvoiceNoteActionSuccess extends Action {
-    type: typeof GET_USER_INVOICE_NOTES_ACTION_SUCCESS;
-    invoiceNote: string;
+export interface GetOrganizationActionSuccess extends Action {
+    type: typeof GET_USER_ORGANIZATION_ACTION_SUCCESS;
+    orgData: OrgDetails;
 }
 export interface SetUserInvoiceNoteAction extends Action {
     type: typeof SET_USER_INVOICE_NOTES_ACTION;
-    userID: number;
+    orgId: string;
     invoiceNote: string;
 }
 export interface SetUserInvoiceNoteActionSuccess extends Action {
@@ -143,6 +149,7 @@ export interface SetUserInvoiceNoteActionSuccess extends Action {
 }
 export interface GetUserTransactionsAction extends Action {
     type: typeof GET_USER_TRANSACTIONS_ACTION;
+    orgId: string;
 }
 export interface GetUserTransactionsActionSuccess extends Action {
     type: typeof GET_USER_TRANSACTIONS_ACTION_SUCCESS;
@@ -150,6 +157,7 @@ export interface GetUserTransactionsActionSuccess extends Action {
 }
 export interface GetTransactionDetailsAction extends Action {
     type: typeof GET_TRANSACTION_DETAILS_ACTION;
+    orgId: string;
     transactionID: string;
 }
 export interface GetTransactionDetailsActionSuccess extends Action {
@@ -158,6 +166,7 @@ export interface GetTransactionDetailsActionSuccess extends Action {
 }
 export interface PurchaseCreditsAction extends Action {
     type: typeof PURCHASE_CREDITS_ACTION;
+    orgId: string;
     creditPackID: number;
 }
 export interface PurchaseCreditsActionSuccess extends Action {
@@ -169,6 +178,7 @@ export interface PurchaseCreditsActionError extends Action {
 }
 export interface StartSubscriptionAction extends Action {
     type: typeof START_SUBSCRIPTION_ACTION;
+    orgId: string;
     subscriptionPlanID: number;
 }
 export interface StartSubscriptionActionSuccess extends Action {
@@ -202,4 +212,17 @@ export interface GetBillingSettingsActionError {
     type: typeof GET_BILLING_SETTINGS_ERROR;
     error: string;
 }
-export declare type BillingActions = GetCreditPacksAction | GetCreditPacksActionSuccess | GetSubscriptionPlansAction | GetSubscriptionPlansActionSuccess | GetUserInvoiceNoteAction | GetUserInvoiceNoteActionSuccess | SetUserInvoiceNoteAction | SetUserInvoiceNoteActionSuccess | GetUserDetailsAction | GetUserDetailsActionSuccess | GetUserTransactionsAction | GetUserTransactionsActionSuccess | GetTransactionDetailsAction | GetTransactionDetailsActionSuccess | PurchaseCreditsAction | PurchaseCreditsActionError | PurchaseCreditsActionSuccess | StartSubscriptionAction | StartSubscriptionActionError | StartSubscriptionActionSuccess | CancelSubscriptionAction | CancelSubscriptionActionError | CancelSubscriptionActionSuccess | ClearSubscriptionInfoAction | GetBillingSettingsAction | GetBillingSettingsActionError | GetBillingSettingsActionSuccess;
+export interface SetUserBillingOrgAction extends Action {
+    type: typeof SET_BILLING_ORGANIZATION;
+    userID: number;
+    orgID: number;
+}
+export interface SetUserBillingOrgActionSuccess extends Action {
+    type: typeof SET_BILLING_ORGANIZATION_SUCCESS;
+    allUserDetails: UserDetails;
+}
+export interface EditPaymentInfoAction extends Action {
+    type: typeof EDIT_PAYMENT_INFORMATION;
+    orgId: string;
+}
+export declare type BillingActions = GetCreditPacksAction | GetCreditPacksActionSuccess | GetSubscriptionPlansAction | GetSubscriptionPlansActionSuccess | GetOrganizationAction | GetOrganizationActionSuccess | SetUserInvoiceNoteAction | SetUserInvoiceNoteActionSuccess | GetUserDetailsAction | GetUserDetailsActionSuccess | GetUserTransactionsAction | GetUserTransactionsActionSuccess | GetTransactionDetailsAction | GetTransactionDetailsActionSuccess | PurchaseCreditsAction | PurchaseCreditsActionError | PurchaseCreditsActionSuccess | StartSubscriptionAction | StartSubscriptionActionError | StartSubscriptionActionSuccess | CancelSubscriptionAction | CancelSubscriptionActionError | CancelSubscriptionActionSuccess | ClearSubscriptionInfoAction | GetBillingSettingsAction | GetBillingSettingsActionError | GetBillingSettingsActionSuccess | SetUserBillingOrgAction | SetUserBillingOrgActionSuccess | EditPaymentInfoAction;

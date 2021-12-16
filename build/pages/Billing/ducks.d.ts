@@ -1,4 +1,4 @@
-import { BillingActions, BillingSettings, BillingStore, CreditPackDetails, PackageOrderMode, PackageSortMode, SubscriptionPlanDetails, TransactionDetails, UserDetails } from './types';
+import { BillingActions, BillingSettings, BillingStore, CreditPackDetails, OrgDetails, PackageOrderMode, PackageSortMode, SubscriptionPlanDetails, TransactionDetails, UserDetails } from './types';
 /** Action types */
 export declare const GET_USER_DETAILS_ACTION = "Billing/GET_USER_DETAILS_ACTION";
 export declare const GET_USER_DETAILS_ACTION_SUCCESS = "Billing/GET_USER_DETAILS_ACTION_SUCCESS";
@@ -6,8 +6,8 @@ export declare const GET_CREDIT_PACKS_ACTION = "Billing/GET_CREDIT_PACKS_ACTION"
 export declare const GET_CREDIT_PACKS_ACTION_SUCCESS = "Billing/GET_CREDIT_PACKS_ACTION_SUCCESS";
 export declare const GET_SUBSCRIPTION_PLANS_ACTION = "Billing/GET_SUBSCRIPTION_PLANS_ACTION";
 export declare const GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS = "Billing/GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS";
-export declare const GET_USER_INVOICE_NOTES_ACTION = "Billing/GET_USER_INVOICE_NOTES_ACTION";
-export declare const GET_USER_INVOICE_NOTES_ACTION_SUCCESS = "Billing/GET_USER_INVOICE_NOTES_ACTION_SUCCESS";
+export declare const GET_USER_ORGANIZATION_ACTION = "Billing/GET_USER_ORGANIZATION_ACTION";
+export declare const GET_USER_ORGANIZATION_ACTION_SUCCESS = "Billing/GET_USER_ORGANIZATION_ACTION_SUCCESS";
 export declare const SET_USER_INVOICE_NOTES_ACTION = "Billing/SET_USER_INVOICE_NOTES_ACTION";
 export declare const SET_USER_INVOICE_NOTES_ACTION_SUCCESS = "Billing/SET_USER_INVOICE_NOTES_ACTION_SUCCESS";
 export declare const GET_USER_TRANSACTIONS_ACTION = "Billing/GET_USER_TRANSACTIONS_ACTION";
@@ -28,6 +28,8 @@ export declare const EDIT_PAYMENT_INFORMATION = "Billing/EDIT_PAYMENT_INFORMATIO
 export declare const GET_BILLING_SETTINGS = "Billing/GET_BILLING_SETTINGS";
 export declare const GET_BILLING_SETTINGS_SUCCESS = "Billing/GET_BILLING_SETTINGS_SUCCESS";
 export declare const GET_BILLING_SETTINGS_ERROR = "Billing/GET_BILLING_SETTINGS_ERROR";
+export declare const SET_BILLING_ORGANIZATION = "Billing/SET_BILLING_ORGANIZATION";
+export declare const SET_BILLING_ORGANIZATION_SUCCESS = "Billing/SET_BILLING_ORGANIZATIONS_SUCCESS";
 /** Reducer */
 export default function billingReducer(state: BillingStore, action: BillingActions): BillingStore;
 /** Action builders */
@@ -57,13 +59,13 @@ export declare function getSubscriptionPlansActionSuccess(subscriptions: Subscri
     type: string;
     subscriptions: SubscriptionPlanDetails[];
 };
-export declare function getUserInvoiceNoteAction(userID: number): {
+export declare function getOrganizationAction(orgId: string): {
     type: string;
-    userID: number;
+    orgId: string;
 };
-export declare function getUserInvoiceNoteActionSuccess(invoiceNote: string): {
+export declare function getOrganizationActionSuccess(orgData: OrgDetails): {
     type: string;
-    invoiceNote: string;
+    orgData: OrgDetails;
 };
 export declare function setUserInvoiceNoteAction(userID: number, invoiceNote: string): {
     type: string;
@@ -74,24 +76,27 @@ export declare function setUserInvoiceNoteActionSuccess(invoiceNote: string): {
     type: string;
     invoiceNote: string;
 };
-export declare function getUserTransactionsAction(): {
+export declare function getUserTransactionsAction(orgId: string): {
     type: string;
+    orgId: string;
 };
 export declare function getUserTransactionsActionSuccess(transactions: TransactionDetails[]): {
     type: string;
     transactions: TransactionDetails[];
 };
-export declare function getTransactionDetailsAction(transactionID: string): {
+export declare function getTransactionDetailsAction(orgId: string, transactionID: string): {
     type: string;
+    orgId: string;
     transactionID: string;
 };
 export declare function getTransactionDetailsActionSuccess(transactionDetails: TransactionDetails): {
     type: string;
     transactionDetails: TransactionDetails;
 };
-export declare function purchaseCreditsAction(creditPackID: number): {
+export declare function purchaseCreditsAction(orgId: string, creditPackID: number): {
     type: string;
     creditPackID: number;
+    orgId: string;
 };
 export declare function purchaseCreditsActionSuccess(): {
     type: string;
@@ -100,8 +105,9 @@ export declare function purchaseCreditsActionError(error: string): {
     type: string;
     error: string;
 };
-export declare function startSubscriptionAction(subscriptionPlanID: number): {
+export declare function startSubscriptionAction(orgId: string, subscriptionPlanID: number): {
     type: string;
+    orgId: string;
     subscriptionPlanID: number;
 };
 export declare function startSubscriptionActionError(error: string): {
@@ -124,8 +130,9 @@ export declare function cancelSubscriptionActionSuccess(): {
 export declare function clearSubscriptionInfoAction(): {
     type: string;
 };
-export declare function editPaymentInfoAction(): {
+export declare function editPaymentInfoAction(orgId: string): {
     type: string;
+    orgId: string;
 };
 export declare function getBillingSettingsAction(): {
     type: string;
@@ -137,4 +144,13 @@ export declare function getBillingSettingsActionError(error: string): {
 export declare function getBillingSettingsActionSuccess(payload: BillingSettings): {
     type: string;
     payload: BillingSettings;
+};
+export declare function setUserBillingOrgAction(userID: number, orgID: number): {
+    type: string;
+    userID: number;
+    orgID: number;
+};
+export declare function setUserBillingOrgActionSuccess(allUserDetails: UserDetails): {
+    type: string;
+    allUserDetails: UserDetails;
 };

@@ -3,7 +3,7 @@ import { Box, Button, Typography, useTranslation } from '@apisuite/fe-base';
 import { BASE_URI } from '../../helpers/constants';
 import useStyles from './styles';
 import { TransactionCard } from '../../components/TransactionCard';
-const EditPaymentConfirm = ({ getTransactionDetailsAction, transactionDetails, }) => {
+const EditPaymentConfirm = ({ getTransactionDetailsAction, orgId, transactionDetails, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const t = (str) => {
@@ -12,7 +12,7 @@ const EditPaymentConfirm = ({ getTransactionDetailsAction, transactionDetails, }
     useEffect(() => {
         const urlParameters = new URLSearchParams(window.location.search);
         const transactionID = urlParameters.get('id');
-        getTransactionDetailsAction(transactionID);
+        getTransactionDetailsAction(orgId, transactionID);
     }, []);
     // const handlePrint = () => {
     //   window.print()

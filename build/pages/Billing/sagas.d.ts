@@ -1,4 +1,4 @@
-import { GetCreditPacksAction, GetSubscriptionPlansAction, GetUserDetailsAction, GetUserInvoiceNoteAction, SetUserInvoiceNoteAction, GetTransactionDetailsAction, PurchaseCreditsAction, StartSubscriptionAction, InvoiceNoteResponse, BillingSettings } from './types';
+import { GetCreditPacksAction, GetSubscriptionPlansAction, GetUserDetailsAction, GetOrganizationAction, SetUserInvoiceNoteAction, GetTransactionDetailsAction, PurchaseCreditsAction, StartSubscriptionAction, BillingSettings, SetUserBillingOrgAction, OrgDetailsResponse, GetUserTransactionsAction, EditPaymentInfoAction } from './types';
 export declare function getUserDetailsActionSaga(action: GetUserDetailsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     allUserDetails: import("./types").UserDetails;
@@ -11,9 +11,9 @@ export declare function getSubscriptionPlansActionSaga(action: GetSubscriptionPl
     type: string;
     subscriptions: import("./types").SubscriptionPlanDetails[];
 }>, void, unknown>;
-export declare function getUserInvoiceNoteActionSaga(action: GetUserInvoiceNoteAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, InvoiceNoteResponse>;
-export declare function setUserInvoiceNoteActionSaga(action: SetUserInvoiceNoteAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, InvoiceNoteResponse>;
-export declare function getUserTransactionsActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
+export declare function getOrganizationSaga(action: GetOrganizationAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, OrgDetailsResponse>;
+export declare function setUserInvoiceNoteActionSaga(action: SetUserInvoiceNoteAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, OrgDetailsResponse>;
+export declare function getUserTransactionsActionSaga(action: GetUserTransactionsAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     transactions: import("./types").TransactionDetails[];
 }>, void, unknown>;
@@ -25,13 +25,13 @@ export declare function purchaseCreditsActionSaga(action: PurchaseCreditsAction)
     type: string;
     error: string;
 }>, void, unknown>;
-export declare function editPaymentInformationSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, unknown>;
+export declare function editPaymentInformationSaga(action: EditPaymentInfoAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, unknown>;
 export declare function startSubscriptionActionSaga(action: StartSubscriptionAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
 }>, any, unknown>;
 export declare function cancelSubscriptionSaga(): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
-}>, void, number>;
+}>, void, string>;
 export declare function getBillingSettingsActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     payload: BillingSettings;
@@ -39,5 +39,6 @@ export declare function getBillingSettingsActionSaga(): Generator<import("redux-
     type: string;
     error: string;
 }>, void, BillingSettings>;
+export declare function setUserBillingOrgActionSaga(action: SetUserBillingOrgAction): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<any>, void, unknown>;
 declare function billingRootSaga(): Generator<import("redux-saga/effects").ForkEffect<never>, void, unknown>;
 export default billingRootSaga;

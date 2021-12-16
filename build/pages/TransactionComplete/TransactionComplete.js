@@ -4,7 +4,7 @@ import { BASE_URI } from '../../helpers/constants';
 import { convertDate } from '../../util/convertDate';
 import { currencyConverter } from '../../util/currencyConverter';
 import useStyles from './styles';
-const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, }) => {
+const TransactionComplete = ({ getTransactionDetailsAction, orgId, transactionDetails, }) => {
     const classes = useStyles();
     const trans = useTranslation();
     const { palette } = useTheme();
@@ -14,7 +14,7 @@ const TransactionComplete = ({ getTransactionDetailsAction, transactionDetails, 
     useEffect(() => {
         const urlParameters = new URLSearchParams(window.location.search);
         const idOfTransaction = urlParameters.get('id');
-        getTransactionDetailsAction(idOfTransaction);
+        getTransactionDetailsAction(orgId, idOfTransaction);
     }, []);
     return (React.createElement("main", { className: `page-container ${classes.pageContentContainer}` },
         React.createElement(Typography, { variant: "h1" }, t('transactionComplete.title')),

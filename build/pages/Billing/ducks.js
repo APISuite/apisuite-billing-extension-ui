@@ -2,6 +2,7 @@ import update from 'immutability-helper';
 /** Initial state */
 const initialState = {
     allUserDetails: {
+        billingOrganizationId: null,
         subscriptionID: '',
         userCredits: 0,
         userID: 0,
@@ -40,6 +41,13 @@ const initialState = {
             vatRate: null,
         },
     },
+    organizationDetails: {
+        id: 0,
+        subscriptionId: '',
+        credits: 0,
+        invoiceNotes: '',
+        nextPaymentDate: '',
+    },
 };
 /** Action types */
 export const GET_USER_DETAILS_ACTION = 'Billing/GET_USER_DETAILS_ACTION';
@@ -48,8 +56,8 @@ export const GET_CREDIT_PACKS_ACTION = 'Billing/GET_CREDIT_PACKS_ACTION';
 export const GET_CREDIT_PACKS_ACTION_SUCCESS = 'Billing/GET_CREDIT_PACKS_ACTION_SUCCESS';
 export const GET_SUBSCRIPTION_PLANS_ACTION = 'Billing/GET_SUBSCRIPTION_PLANS_ACTION';
 export const GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS = 'Billing/GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS';
-export const GET_USER_INVOICE_NOTES_ACTION = 'Billing/GET_USER_INVOICE_NOTES_ACTION';
-export const GET_USER_INVOICE_NOTES_ACTION_SUCCESS = 'Billing/GET_USER_INVOICE_NOTES_ACTION_SUCCESS';
+export const GET_USER_ORGANIZATION_ACTION = 'Billing/GET_USER_ORGANIZATION_ACTION';
+export const GET_USER_ORGANIZATION_ACTION_SUCCESS = 'Billing/GET_USER_ORGANIZATION_ACTION_SUCCESS';
 export const SET_USER_INVOICE_NOTES_ACTION = 'Billing/SET_USER_INVOICE_NOTES_ACTION';
 export const SET_USER_INVOICE_NOTES_ACTION_SUCCESS = 'Billing/SET_USER_INVOICE_NOTES_ACTION_SUCCESS';
 export const GET_USER_TRANSACTIONS_ACTION = 'Billing/GET_USER_TRANSACTIONS_ACTION';
@@ -70,10 +78,13 @@ export const EDIT_PAYMENT_INFORMATION = 'Billing/EDIT_PAYMENT_INFORMATION';
 export const GET_BILLING_SETTINGS = 'Billing/GET_BILLING_SETTINGS';
 export const GET_BILLING_SETTINGS_SUCCESS = 'Billing/GET_BILLING_SETTINGS_SUCCESS';
 export const GET_BILLING_SETTINGS_ERROR = 'Billing/GET_BILLING_SETTINGS_ERROR';
+export const SET_BILLING_ORGANIZATION = 'Billing/SET_BILLING_ORGANIZATION';
+export const SET_BILLING_ORGANIZATION_SUCCESS = 'Billing/SET_BILLING_ORGANIZATIONS_SUCCESS';
 /** Reducer */
 export default function billingReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_USER_DETAILS_ACTION_SUCCESS: {
+        case GET_USER_DETAILS_ACTION_SUCCESS:
+        case SET_BILLING_ORGANIZATION_SUCCESS: {
             return update(state, {
                 allUserDetails: { $set: action.allUserDetails },
             });
@@ -90,7 +101,16 @@ export default function billingReducer(state = initialState, action) {
                 hasRetrievedAllSubscriptions: { $set: true },
             });
         }
-        case GET_USER_INVOICE_NOTES_ACTION_SUCCESS:
+        case GET_USER_ORGANIZATION_ACTION_SUCCESS: {
+            return update(state, {
+                allUserDetails: {
+                    nextPaymentDate: { $set: action.orgData.nextPaymentDate },
+                    userCredits: { $set: action.orgData.credits },
+                },
+                invoiceNote: { $set: action.orgData.invoiceNotes },
+                organizationDetails: { $set: action.orgData },
+            });
+        }
         case SET_USER_INVOICE_NOTES_ACTION_SUCCESS: {
             return update(state, {
                 invoiceNote: { $set: action.invoiceNote },
@@ -193,13 +213,13 @@ export function getSubscriptionPlansActionSuccess(subscriptions) {
         subscriptions,
     };
 }
-export function getUserInvoiceNoteAction(userID) {
-    return { type: GET_USER_INVOICE_NOTES_ACTION, userID };
+export function getOrganizationAction(orgId) {
+    return { type: GET_USER_ORGANIZATION_ACTION, orgId };
 }
-export function getUserInvoiceNoteActionSuccess(invoiceNote) {
+export function getOrganizationActionSuccess(orgData) {
     return {
-        type: GET_USER_INVOICE_NOTES_ACTION_SUCCESS,
-        invoiceNote,
+        type: GET_USER_ORGANIZATION_ACTION_SUCCESS,
+        orgData,
     };
 }
 export function setUserInvoiceNoteAction(userID, invoiceNote) {
@@ -211,20 +231,20 @@ export function setUserInvoiceNoteActionSuccess(invoiceNote) {
         invoiceNote,
     };
 }
-export function getUserTransactionsAction() {
-    return { type: GET_USER_TRANSACTIONS_ACTION };
+export function getUserTransactionsAction(orgId) {
+    return { type: GET_USER_TRANSACTIONS_ACTION, orgId };
 }
 export function getUserTransactionsActionSuccess(transactions) {
     return { type: GET_USER_TRANSACTIONS_ACTION_SUCCESS, transactions };
 }
-export function getTransactionDetailsAction(transactionID) {
-    return { type: GET_TRANSACTION_DETAILS_ACTION, transactionID };
+export function getTransactionDetailsAction(orgId, transactionID) {
+    return { type: GET_TRANSACTION_DETAILS_ACTION, orgId, transactionID };
 }
 export function getTransactionDetailsActionSuccess(transactionDetails) {
     return { type: GET_TRANSACTION_DETAILS_ACTION_SUCCESS, transactionDetails };
 }
-export function purchaseCreditsAction(creditPackID) {
-    return { type: PURCHASE_CREDITS_ACTION, creditPackID };
+export function purchaseCreditsAction(orgId, creditPackID) {
+    return { type: PURCHASE_CREDITS_ACTION, creditPackID, orgId };
 }
 export function purchaseCreditsActionSuccess() {
     return { type: PURCHASE_CREDITS_ACTION_SUCCESS };
@@ -232,8 +252,8 @@ export function purchaseCreditsActionSuccess() {
 export function purchaseCreditsActionError(error) {
     return { type: PURCHASE_CREDITS_ACTION_ERROR, error };
 }
-export function startSubscriptionAction(subscriptionPlanID) {
-    return { type: START_SUBSCRIPTION_ACTION, subscriptionPlanID };
+export function startSubscriptionAction(orgId, subscriptionPlanID) {
+    return { type: START_SUBSCRIPTION_ACTION, orgId, subscriptionPlanID };
 }
 export function startSubscriptionActionError(error) {
     return { type: START_SUBSCRIPTION_ACTION_ERROR, error };
@@ -253,8 +273,8 @@ export function cancelSubscriptionActionSuccess() {
 export function clearSubscriptionInfoAction() {
     return { type: CLEAR_SUBSCRIPTION_INFO };
 }
-export function editPaymentInfoAction() {
-    return { type: EDIT_PAYMENT_INFORMATION };
+export function editPaymentInfoAction(orgId) {
+    return { type: EDIT_PAYMENT_INFORMATION, orgId };
 }
 export function getBillingSettingsAction() {
     return { type: GET_BILLING_SETTINGS };
@@ -264,4 +284,10 @@ export function getBillingSettingsActionError(error) {
 }
 export function getBillingSettingsActionSuccess(payload) {
     return { type: GET_BILLING_SETTINGS_SUCCESS, payload };
+}
+export function setUserBillingOrgAction(userID, orgID) {
+    return { type: SET_BILLING_ORGANIZATION, userID, orgID };
+}
+export function setUserBillingOrgActionSuccess(allUserDetails) {
+    return { type: SET_BILLING_ORGANIZATION_SUCCESS, allUserDetails };
 }

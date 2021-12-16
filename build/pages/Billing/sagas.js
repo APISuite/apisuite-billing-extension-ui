@@ -3,7 +3,7 @@ import { i18n } from '@apisuite/fe-base';
 import { openNotification } from '../../components/NotificationStack/ducks';
 import { BILLING_API_URL } from '../../constants/endpoints';
 import request from '../../util/request';
-import { CANCEL_SUBSCRIPTION, cancelSubscriptionActionError, cancelSubscriptionActionSuccess, EDIT_PAYMENT_INFORMATION, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION, GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNoteActionSuccess, SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSuccess, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getCreditPacksActionSuccess, getSubscriptionPlansActionSuccess, getUserDetailsActionSuccess, getUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, START_SUBSCRIPTION_ACTION, startSubscriptionActionError, startSubscriptionActionSuccess, GET_BILLING_SETTINGS, getBillingSettingsActionSuccess, getBillingSettingsActionError, } from './ducks';
+import { CANCEL_SUBSCRIPTION, cancelSubscriptionActionError, cancelSubscriptionActionSuccess, EDIT_PAYMENT_INFORMATION, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION, GET_USER_ORGANIZATION_ACTION, getOrganizationActionSuccess, SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSuccess, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getCreditPacksActionSuccess, getSubscriptionPlansActionSuccess, getUserDetailsActionSuccess, getUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, START_SUBSCRIPTION_ACTION, startSubscriptionActionError, startSubscriptionActionSuccess, GET_BILLING_SETTINGS, getBillingSettingsActionSuccess, getBillingSettingsActionError, setUserBillingOrgActionSuccess, SET_BILLING_ORGANIZATION, } from './ducks';
 export function* getUserDetailsActionSaga(action) {
     try {
         const getUserDetailsUrl = `${BILLING_API_URL}/users/${action.userID}`;
@@ -15,6 +15,7 @@ export function* getUserDetailsActionSaga(action) {
             },
         });
         const userDetails = {
+            billingOrganizationId: response.data.billingOrganizationId,
             subscriptionID: response.data.subscriptionId,
             userCredits: response.data.credits,
             userID: response.data.id,
@@ -71,14 +72,14 @@ export function* getSubscriptionPlansActionSaga(action) {
         console.log('Error fetching all subscription plans.');
     }
 }
-export function* getUserInvoiceNoteActionSaga(action) {
+export function* getOrganizationSaga(action) {
     try {
-        const getUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`;
+        const getOrganizationActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}`;
         const response = yield call(request, {
-            url: getUserInvoiceNoteActionUrl,
+            url: getOrganizationActionUrl,
             method: 'GET',
         });
-        yield put(getUserInvoiceNoteActionSuccess(response.data.invoiceNotes));
+        yield put(getOrganizationActionSuccess(response.data));
     }
     catch (error) {
         yield put(openNotification('error', i18n.t('extensions.billing.feedback.invoiceRetrievalError'), 3000));
@@ -86,7 +87,7 @@ export function* getUserInvoiceNoteActionSaga(action) {
 }
 export function* setUserInvoiceNoteActionSaga(action) {
     try {
-        const setUserInvoiceNoteActionUrl = `${BILLING_API_URL}/users/${action.userID}/invoice-notes`;
+        const setUserInvoiceNoteActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}`;
         const response = yield call(request, {
             url: setUserInvoiceNoteActionUrl,
             method: 'PATCH',
@@ -104,9 +105,9 @@ export function* setUserInvoiceNoteActionSaga(action) {
         yield put(openNotification('error', i18n.t('extensions.billing.feedback.invoiceSavingError'), 3000));
     }
 }
-export function* getUserTransactionsActionSaga() {
+export function* getUserTransactionsActionSaga(action) {
     try {
-        const getTransactionsUrl = `${BILLING_API_URL}/purchases`;
+        const getTransactionsUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases`;
         const response = yield call(request, {
             url: getTransactionsUrl,
             method: 'GET',
@@ -134,7 +135,7 @@ export function* getUserTransactionsActionSaga() {
 }
 export function* getTransactionDetailsActionSaga(action) {
     try {
-        const getTransactionDetailsActionUrl = `${BILLING_API_URL}/purchases/${action.transactionID}`;
+        const getTransactionDetailsActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/${action.transactionID}`;
         const response = yield call(request, {
             url: getTransactionDetailsActionUrl,
             method: 'GET',
@@ -162,7 +163,7 @@ export function* getTransactionDetailsActionSaga(action) {
 }
 export function* purchaseCreditsActionSaga(action) {
     try {
-        const purchaseCreditsActionUrl = `${BILLING_API_URL}/purchases/packages/${action.creditPackID}`;
+        const purchaseCreditsActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/packages/${action.creditPackID}`;
         const response = yield call(request, {
             url: purchaseCreditsActionUrl,
             method: 'POST',
@@ -176,9 +177,9 @@ export function* purchaseCreditsActionSaga(action) {
         yield put(purchaseCreditsActionError(error.message));
     }
 }
-export function* editPaymentInformationSaga() {
+export function* editPaymentInformationSaga(action) {
     try {
-        const editPaymentInfoUrl = `${BILLING_API_URL}/purchases/subscriptions/`;
+        const editPaymentInfoUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/method`;
         const response = yield call(request, {
             url: editPaymentInfoUrl,
             method: 'PATCH',
@@ -191,7 +192,7 @@ export function* editPaymentInformationSaga() {
 }
 export function* startSubscriptionActionSaga(action) {
     try {
-        const startSubscriptionActionUrl = `${BILLING_API_URL}/purchases/subscriptions/${action.subscriptionPlanID}`;
+        const startSubscriptionActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/subscriptions/${action.subscriptionPlanID}`;
         const response = yield call(request, {
             url: startSubscriptionActionUrl,
             method: 'POST',
@@ -213,8 +214,8 @@ export function* startSubscriptionActionSaga(action) {
 }
 export function* cancelSubscriptionSaga() {
     try {
-        const userID = yield select((store) => store.billing.allUserDetails.userID);
-        const cancelSubscriptionActionUrl = `${BILLING_API_URL}/users/${userID}/subscriptions`;
+        const orgId = yield select((store) => store.profile.profile.current_org.id);
+        const cancelSubscriptionActionUrl = `${BILLING_API_URL}/organizations/${orgId}/subscriptions`;
         yield call(request, {
             url: cancelSubscriptionActionUrl,
             method: 'DELETE',
@@ -241,10 +242,39 @@ export function* getBillingSettingsActionSaga() {
         yield put(getBillingSettingsActionError(error));
     }
 }
+export function* setUserBillingOrgActionSaga(action) {
+    try {
+        const setBillingOrgUrl = `${BILLING_API_URL}/users/${action.userID}/organizations/${action.orgID}`;
+        yield call(request, {
+            url: setBillingOrgUrl,
+            method: 'PUT',
+        });
+        const response = yield call(request, {
+            url: `${BILLING_API_URL}/users/${action.userID}`,
+            method: 'GET',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+        });
+        const userDetails = {
+            billingOrganizationId: response.data.billingOrganizationId,
+            subscriptionID: response.data.subscriptionId,
+            userCredits: response.data.credits,
+            userID: response.data.id,
+            nextPaymentDate: response.data.nextPaymentDate,
+        };
+        yield put(setUserBillingOrgActionSuccess(userDetails));
+        yield put(openNotification('success', i18n.t('extensions.billing.billingOrg.setSuccessful'), 3000));
+    }
+    catch (error) {
+        yield put(openNotification('error', i18n.t('extensions.billing.billingOrg.setFailed'), 3000));
+        console.log('Error setting user billing organisation.', error);
+    }
+}
 function* billingRootSaga() {
     yield takeLatest(GET_CREDIT_PACKS_ACTION, getCreditPacksActionSaga);
     yield takeLatest(GET_SUBSCRIPTION_PLANS_ACTION, getSubscriptionPlansActionSaga);
-    yield takeLatest(GET_USER_INVOICE_NOTES_ACTION, getUserInvoiceNoteActionSaga);
+    yield takeLatest(GET_USER_ORGANIZATION_ACTION, getOrganizationSaga);
     yield takeLatest(SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSaga);
     yield takeLatest(GET_USER_DETAILS_ACTION, getUserDetailsActionSaga);
     yield takeLatest(GET_USER_TRANSACTIONS_ACTION, getUserTransactionsActionSaga);
@@ -254,5 +284,6 @@ function* billingRootSaga() {
     yield takeLatest(CANCEL_SUBSCRIPTION, cancelSubscriptionSaga);
     yield takeLatest(EDIT_PAYMENT_INFORMATION, editPaymentInformationSaga);
     yield takeLatest(GET_BILLING_SETTINGS, getBillingSettingsActionSaga);
+    yield takeLatest(SET_BILLING_ORGANIZATION, setUserBillingOrgActionSaga);
 }
 export default billingRootSaga;

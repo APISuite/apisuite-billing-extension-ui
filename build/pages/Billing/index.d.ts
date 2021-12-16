@@ -1,27 +1,26 @@
 import { Dispatch } from 'redux';
-import { getBillingSettingsAction, getCreditPacksAction, getSubscriptionPlansAction, getUserDetailsAction, getUserInvoiceNoteAction, getUserTransactionsAction, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, cancelSubscriptionAction, clearSubscriptionInfoAction, editPaymentInfoAction } from './ducks';
-export declare const mapStateToProps: ({ auth, billing }: {
-    auth: any;
+import { getBillingSettingsAction, getCreditPacksAction, getSubscriptionPlansAction, getOrganizationAction, getUserTransactionsAction, purchaseCreditsAction, setUserInvoiceNoteAction, startSubscriptionAction, cancelSubscriptionAction, clearSubscriptionInfoAction, editPaymentInfoAction } from './ducks';
+export declare const mapStateToProps: ({ billing, profile }: {
     billing: any;
+    profile: any;
 }) => {
     creditPacks: any;
     subscriptions: any;
     invoiceNote: any;
-    allUserDetails: any;
     transactions: import("./types").TransactionDetails;
     dialogInfo: any;
     hasRetrievedAllCreditPacks: any;
     hasRetrievedAllSubscriptions: any;
     settings: any;
     successfullySubscribedToPlan: any;
-    user: any;
+    orgId: any;
+    orgDetails: any;
 };
 export declare const mapDispatchToProps: (dispatch: Dispatch) => {
     getBillingSettingsAction: typeof getBillingSettingsAction;
     getCreditPacksAction: typeof getCreditPacksAction;
     getSubscriptionPlansAction: typeof getSubscriptionPlansAction;
-    getUserDetailsAction: typeof getUserDetailsAction;
-    getUserInvoiceNoteAction: typeof getUserInvoiceNoteAction;
+    getOrganizationAction: typeof getOrganizationAction;
     getUserTransactionsAction: typeof getUserTransactionsAction;
     purchaseCreditsAction: typeof purchaseCreditsAction;
     setUserInvoiceNoteAction: typeof setUserInvoiceNoteAction;
