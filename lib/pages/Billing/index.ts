@@ -5,8 +5,7 @@ import {
   getBillingSettingsAction,
   getCreditPacksAction,
   getSubscriptionPlansAction,
-  getUserDetailsAction,
-  getUserInvoiceNoteAction,
+  getOrganizationAction,
   getUserTransactionsAction,
   purchaseCreditsAction,
   setUserInvoiceNoteAction,
@@ -18,18 +17,18 @@ import {
 import Billing from './Billing'
 import { BillingStore } from './types'
 
-export const mapStateToProps = ({ auth, billing }) => ({
+export const mapStateToProps = ({ billing, profile }) => ({
   creditPacks: billing.creditPacks,
   subscriptions: billing.subscriptions,
   invoiceNote: billing.invoiceNote,
-  allUserDetails: billing.allUserDetails,
   transactions: billing.transactions as BillingStore['transactionDetails'],
   dialogInfo: billing.subscriptionsDialogInfo,
   hasRetrievedAllCreditPacks: billing.hasRetrievedAllCreditPacks,
   hasRetrievedAllSubscriptions: billing.hasRetrievedAllSubscriptions,
   settings: billing.settings,
   successfullySubscribedToPlan: billing.successfullySubscribedToPlan,
-  user: auth.user,
+  orgId: profile.profile.current_org.id,
+  orgDetails: billing.organizationDetails,
 })
 
 export const mapDispatchToProps = (dispatch: Dispatch) =>
@@ -38,8 +37,7 @@ export const mapDispatchToProps = (dispatch: Dispatch) =>
       getBillingSettingsAction,
       getCreditPacksAction,
       getSubscriptionPlansAction,
-      getUserDetailsAction,
-      getUserInvoiceNoteAction,
+      getOrganizationAction,
       getUserTransactionsAction,
       purchaseCreditsAction,
       setUserInvoiceNoteAction,

@@ -8,6 +8,7 @@ import { TransactionCard } from '../../components/TransactionCard'
 
 const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
   getTransactionDetailsAction,
+  orgId,
   transactionDetails,
 }) => {
   const classes = useStyles()
@@ -21,7 +22,7 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
     const urlParameters = new URLSearchParams(window.location.search)
     const transactionID = urlParameters.get('id')
 
-    getTransactionDetailsAction(transactionID)
+    getTransactionDetailsAction(orgId, transactionID)
   }, [])
 
   // const handlePrint = () => {

@@ -21,7 +21,6 @@ import Link from '../../components/Link'
 import { Notice } from '../../components/Notice'
 
 const Billing: React.FC<BillingProps> = ({
-  allUserDetails,
   cancelSubscriptionAction,
   clearSubscriptionInfoAction,
   creditPacks,
@@ -30,12 +29,13 @@ const Billing: React.FC<BillingProps> = ({
   getBillingSettingsAction,
   getCreditPacksAction,
   getSubscriptionPlansAction,
-  getUserDetailsAction,
-  getUserInvoiceNoteAction,
+  getOrganizationAction,
   getUserTransactionsAction,
   hasRetrievedAllCreditPacks,
   hasRetrievedAllSubscriptions,
   invoiceNote,
+  orgId,
+  orgDetails,
   purchaseCreditsAction,
   setUserInvoiceNoteAction,
   startSubscriptionAction,
@@ -43,7 +43,6 @@ const Billing: React.FC<BillingProps> = ({
   subscriptions,
   successfullySubscribedToPlan,
   transactions,
-  user,
 }) => {
   const classes = useStyles()
   const trans = useTranslation()
@@ -59,9 +58,8 @@ const Billing: React.FC<BillingProps> = ({
   useEffect(() => {
     getCreditPacksAction('price', 'asc')
     getSubscriptionPlansAction('price', 'asc')
-    getUserInvoiceNoteAction(user.id)
-    getUserDetailsAction(user.id)
-    getUserTransactionsAction()
+    getOrganizationAction(orgId)
+    getUserTransactionsAction(orgId)
     getBillingSettingsAction()
   }, [])
 
@@ -162,7 +160,7 @@ const Billing: React.FC<BillingProps> = ({
       return (
         <>
           <SubscriptionsCatalog
-            activeSubscriptionID={parseInt(allUserDetails.subscriptionID, 10)}
+            activeSubscriptionID={parseInt(orgDetails.subscriptionId, 10)}
             subscriptions={subscriptions}
             selectedSubscription={selectedSubscriptionPlan}
             handleSubscriptionSelection={handleSubscriptionPlanSelection}
@@ -260,8 +258,8 @@ const Billing: React.FC<BillingProps> = ({
   starts or changes his subscription plan. */
   useEffect(() => {
     if (successfullySubscribedToPlan) {
-      getUserDetailsAction(user.id)
-      getUserTransactionsAction()
+      getOrganizationAction(orgId)
+      getUserTransactionsAction(orgId)
     }
   }, [successfullySubscribedToPlan])
 
@@ -359,7 +357,7 @@ const Billing: React.FC<BillingProps> = ({
             </Typography>
 
             <Typography variant="h1" color="inherit">
-              {allUserDetails.userCredits}
+              {orgDetails.credits}
             </Typography>
           </Box>
 
@@ -436,7 +434,7 @@ const Billing: React.FC<BillingProps> = ({
           <Typography variant="h3">{t('yourSubscriptionsTitle')}</Typography>
         </Box>
 
-        {allUserDetails.subscriptionID ? (
+        {orgDetails.subscriptionId ? (
           <>
             <SubscriptionsTable
               subscriptions={[
@@ -444,14 +442,14 @@ const Billing: React.FC<BillingProps> = ({
                   name: subscriptions.find((subscriptionPlan) => {
                     return (
                       subscriptionPlan.id ===
-                      parseInt(allUserDetails.subscriptionID)
+                      parseInt(orgDetails.subscriptionId)
                     )
                   })?.name,
-                  nextBillingDate: allUserDetails.nextPaymentDate,
+                  nextBillingDate: orgDetails.nextPaymentDate,
                 },
               ]}
               onCancelSubscription={cancelSubscriptionAction}
-              onEditPaymentClick={editPaymentInfoAction}
+              onEditPaymentClick={() => editPaymentInfoAction(orgId)}
             />
 
             {!wantsToCheckAllSubPlans && (
@@ -621,7 +619,7 @@ const Billing: React.FC<BillingProps> = ({
             color="primary"
             disabled={userInvoiceNote === invoiceNote}
             disableElevation
-            onClick={() => setUserInvoiceNoteAction(user.id, userInvoiceNote)}
+            onClick={() => setUserInvoiceNoteAction(orgId, userInvoiceNote)}
             size="large"
             variant="contained"
           >
@@ -659,7 +657,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="openTopUpDialog"
             onClick={() => {
-              purchaseCreditsAction(selectedCreditPack.id)
+              purchaseCreditsAction(orgId, selectedCreditPack.id)
             }}
           >
             {t('confirmCreditTopUpDialog.confirmButtonLabel')}
@@ -691,7 +689,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanStart"
             onClick={() => {
-              startSubscriptionAction(selectedSubscriptionPlan.id)
+              startSubscriptionAction(orgId, selectedSubscriptionPlan.id)
             }}
           >
             {t('startSubscriptionDialog.confirmButtonLabel')}
@@ -741,7 +739,7 @@ const Billing: React.FC<BillingProps> = ({
             className={classes.dialogConfirmButton}
             key="confirmSubscriptionPlanChange"
             onClick={() => {
-              startSubscriptionAction(selectedSubscriptionPlan.id)
+              startSubscriptionAction(orgId, selectedSubscriptionPlan.id)
             }}
           >
             {t('changeSubscriptionDialog.confirmButtonLabel')}

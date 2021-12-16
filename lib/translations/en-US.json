@@ -122,7 +122,15 @@
           "billingLabel": "Go back to Billing"
         }
       },
-      "vatNotice": "All prices include a VAT rate of {{vatRate}}%."
+      "vatNotice": "All prices include a VAT rate of {{vatRate}}%.",
+      "billingOrg": {
+        "info": "Select the organisation where your credits will be made available for service usage, and for other users in the organisation to consume them.",
+        "saveButton": "Save billing organisation",
+        "setFailed": "An error occurred while trying to save the billing organisation.",
+        "setSuccessful": "Billing organisation set successfully.",
+        "selectText": "Organisation",
+        "title": "Billing Organisation"
+      }
     }
   }
 }
