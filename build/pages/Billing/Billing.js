@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Icon, TextField, Trans, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
+import { Box, Button, Icon, CircularProgress, TextField, Trans, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
 import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog';
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog';
 import SubscriptionsCatalog from '../../components/SubscriptionsCatalog';
@@ -19,12 +19,14 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
     of all credit packs and subscription plans we presently offer, as well as
     all information we have on a user and his transactions. */
     useEffect(() => {
-        getCreditPacksAction('price', 'asc');
-        getSubscriptionPlansAction('price', 'asc');
-        getOrganizationAction(orgId);
-        getUserTransactionsAction(orgId);
-        getBillingSettingsAction();
-    }, []);
+        if (orgId) {
+            getCreditPacksAction('price', 'asc');
+            getSubscriptionPlansAction('price', 'asc');
+            getOrganizationAction(orgId);
+            getUserTransactionsAction(orgId);
+            getBillingSettingsAction();
+        }
+    }, [orgId]);
     /* Credits logic */
     const showCreditPacks = () => {
         if (!hasRetrievedAllCreditPacks) {
@@ -147,18 +149,18 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
     of all information we have on a user and his transactions AFTER the user
     starts or changes his subscription plan. */
     useEffect(() => {
-        if (successfullySubscribedToPlan) {
+        if (successfullySubscribedToPlan && orgId) {
             getOrganizationAction(orgId);
             getUserTransactionsAction(orgId);
         }
-    }, [successfullySubscribedToPlan]);
+    }, [successfullySubscribedToPlan, orgId]);
     /* Invoice-related logic */
     const [userInvoiceNote, setUserInvoiceNote] = useState('');
     const handleUserInvoiceNote = (invoiceNoteText) => {
         setUserInvoiceNote(invoiceNoteText);
     };
     useEffect(() => {
-        setUserInvoiceNote(invoiceNote);
+        setUserInvoiceNote(invoiceNote || '');
     }, [invoiceNote, setUserInvoiceNoteAction]);
     /* Dialog-related logic */
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -190,82 +192,85 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
     };
     return (React.createElement(React.Fragment, null,
         React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
-            React.createElement(Typography, { variant: "h2" }, t('title')),
-            React.createElement(Box, { clone: true, mb: 5 },
-                React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('subtitle'))),
-            React.createElement(Box, { mt: 1.5, mb: 3 },
-                React.createElement(Typography, { variant: "h3" }, t('yourBalance'))),
-            React.createElement("div", { className: wantsToTopUpCredits
-                    ? classes.yourCreditBalanceContainerWithCreditPacks
-                    : classes.yourCreditBalanceContainerWithoutCreditPacks },
-                React.createElement(Box, { color: palette.common.white },
-                    React.createElement(Typography, { variant: "body1", color: "inherit" }, t('availableCredits')),
-                    React.createElement(Typography, { variant: "h1", color: "inherit" }, orgDetails.credits)),
-                wantsToTopUpCredits ? (React.createElement(Box, { color: palette.common.white },
-                    React.createElement("hr", { className: classes.separator }),
-                    showCreditPacks(),
-                    React.createElement("div", null,
-                        React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, disabled: !selectedCreditPack.id, onClick: handleOpenTopUpDialog }, t('purchaseCreditsButtonLabel')),
-                        React.createElement(Box, { clone: true, ml: 1, style: { backgroundColor: palette.common.white } },
-                            React.createElement(Button, { variant: "outlined", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('cancelCreditsPurchaseButtonLabel')))),
-                    settings.data.vatRate !== null && (React.createElement(Box, { mr: 3, mt: 3 },
-                        React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
-                                vatRate: settings.data.vatRate,
-                            })), type: "info" }))))) : (React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
-            React.createElement(Box, { clone: true, mb: 3 },
-                React.createElement(Typography, { variant: "h3" }, t('yourSubscriptionsTitle'))),
-            orgDetails.subscriptionId ? (React.createElement(React.Fragment, null,
-                React.createElement(SubscriptionsTable, { subscriptions: [
-                        {
-                            name: subscriptions.find((subscriptionPlan) => {
-                                return (subscriptionPlan.id ===
-                                    parseInt(orgDetails.subscriptionId));
-                            })?.name,
-                            nextBillingDate: orgDetails.nextPaymentDate,
-                        },
-                    ], onCancelSubscription: cancelSubscriptionAction, onEditPaymentClick: () => editPaymentInfoAction(orgId) }),
-                !wantsToCheckAllSubPlans && (React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('checkSubPlansButtonLabel'))),
-                wantsToCheckAllSubPlans && (React.createElement(React.Fragment, null,
+            !orgId && (React.createElement(Box, { alignItems: "center", display: "flex", height: "100vh", justifyContent: "center" },
+                React.createElement(CircularProgress, { color: "secondary" }))),
+            !!orgId && (React.createElement(Box, null,
+                React.createElement(Typography, { variant: "h2" }, t('title')),
+                React.createElement(Box, { clone: true, mb: 5 },
+                    React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('subtitle'))),
+                React.createElement(Box, { mt: 1.5, mb: 3 },
+                    React.createElement(Typography, { variant: "h3" }, t('yourBalance'))),
+                React.createElement("div", { className: wantsToTopUpCredits
+                        ? classes.yourCreditBalanceContainerWithCreditPacks
+                        : classes.yourCreditBalanceContainerWithoutCreditPacks },
+                    React.createElement(Box, { color: palette.common.white },
+                        React.createElement(Typography, { variant: "body1", color: "inherit" }, t('availableCredits')),
+                        React.createElement(Typography, { variant: "h1", color: "inherit" }, orgDetails.credits)),
+                    wantsToTopUpCredits ? (React.createElement(Box, { color: palette.common.white },
+                        React.createElement("hr", { className: classes.separator }),
+                        showCreditPacks(),
+                        React.createElement("div", null,
+                            React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, disabled: !selectedCreditPack.id, onClick: handleOpenTopUpDialog }, t('purchaseCreditsButtonLabel')),
+                            React.createElement(Box, { clone: true, ml: 1, style: { backgroundColor: palette.common.white } },
+                                React.createElement(Button, { variant: "outlined", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('cancelCreditsPurchaseButtonLabel')))),
+                        settings.data.vatRate !== null && (React.createElement(Box, { mr: 3, mt: 3 },
+                            React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
+                                    vatRate: settings.data.vatRate,
+                                })), type: "info" }))))) : (React.createElement(Button, { variant: "contained", size: "large", color: "primary", disableElevation: true, onClick: handleWantsToTopUpCredits }, t('addCreditsButtonLabel')))),
+                React.createElement(Box, { clone: true, mb: 3 },
+                    React.createElement(Typography, { variant: "h3" }, t('yourSubscriptionsTitle'))),
+                orgDetails.subscriptionId ? (React.createElement(React.Fragment, null,
+                    React.createElement(SubscriptionsTable, { subscriptions: [
+                            {
+                                name: subscriptions.find((subscriptionPlan) => {
+                                    return (subscriptionPlan.id ===
+                                        parseInt(orgDetails.subscriptionId));
+                                })?.name,
+                                nextBillingDate: orgDetails.nextPaymentDate,
+                            },
+                        ], onCancelSubscription: cancelSubscriptionAction, onEditPaymentClick: () => editPaymentInfoAction(orgId) }),
+                    !wantsToCheckAllSubPlans && (React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('checkSubPlansButtonLabel'))),
+                    wantsToCheckAllSubPlans && (React.createElement(React.Fragment, null,
+                        React.createElement(Box, { clone: true, mb: 3 },
+                            React.createElement(Typography, { variant: "h6" }, t('chooseNewSubPlan'))),
+                        showSubscriptions(),
+                        React.createElement(Box, { display: "flex", flexDirection: "row", justifyContent: "space-between", mt: 2 },
+                            React.createElement(Box, null,
+                                React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan, style: { marginRight: spacing(1.5) } }, t('startNewSubPlanButtonLabel')),
+                                React.createElement(Button, { variant: "outlined", color: "secondary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('cancelSubPlansCheckingButtonLabel'))),
+                            React.createElement(Box, { mr: 2 }, settings.data.vatRate !== null && (React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
+                                    vatRate: settings.data.vatRate,
+                                })), type: "info" })))))))) : (React.createElement(React.Fragment, null,
                     React.createElement(Box, { clone: true, mb: 3 },
-                        React.createElement(Typography, { variant: "h6" }, t('chooseNewSubPlan'))),
+                        React.createElement(Typography, { variant: "body1" }, t('noActiveSubscriptions'))),
+                    React.createElement(Box, { clone: true, mb: 3 },
+                        React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
                     showSubscriptions(),
                     React.createElement(Box, { display: "flex", flexDirection: "row", justifyContent: "space-between", mt: 2 },
-                        React.createElement(Box, null,
-                            React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToChangeSubscriptionPlan, style: { marginRight: spacing(1.5) } }, t('startNewSubPlanButtonLabel')),
-                            React.createElement(Button, { variant: "outlined", color: "secondary", size: "large", disableElevation: true, onClick: handleWantsToCheckAllSubPlans }, t('cancelSubPlansCheckingButtonLabel'))),
-                        React.createElement(Box, { mr: 2 }, settings.data.vatRate !== null && (React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
-                                vatRate: settings.data.vatRate,
-                            })), type: "info" })))))))) : (React.createElement(React.Fragment, null,
+                        React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToStartSubscriptionPlan }, t('startSubscriptionButtonLabel')),
+                        settings.data.vatRate !== null && (React.createElement(Box, { mr: 2 },
+                            React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
+                                    vatRate: settings.data.vatRate,
+                                })), type: "info" })))))),
+                React.createElement(Box, { clone: true, mb: 1.5, mt: 5 },
+                    React.createElement(Typography, { variant: "h3" }, t('invoiceNote.title'))),
                 React.createElement(Box, { clone: true, mb: 3 },
-                    React.createElement(Typography, { variant: "body1" }, t('noActiveSubscriptions'))),
+                    React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('invoiceNote.subtitle'))),
+                React.createElement(Box, { clone: true, style: {
+                        display: 'block',
+                        maxWidth: 450,
+                        width: '100%',
+                    } },
+                    React.createElement(TextField, { className: classes.invoiceNoteTextField, fullWidth: true, InputLabelProps: {
+                            shrink: true,
+                        }, label: t('invoiceNote.textFieldLabel'), margin: "dense", multiline: true, onChange: (event) => handleUserInvoiceNote(event.target.value), rows: 4, type: "text", value: userInvoiceNote, variant: "outlined" })),
+                React.createElement(Box, { clone: true, mt: 3 },
+                    React.createElement(Button, { color: "primary", disabled: userInvoiceNote === invoiceNote, disableElevation: true, onClick: () => setUserInvoiceNoteAction(orgId, userInvoiceNote), size: "large", variant: "contained" }, t('invoiceNote.saveInvoiceNoteButtonLabel'))),
+                React.createElement(Box, { clone: true, mt: 5, mb: 1.5 },
+                    React.createElement(Typography, { variant: "h3" }, t('transactionHistoryTitle'))),
                 React.createElement(Box, { clone: true, mb: 3 },
-                    React.createElement(Typography, { variant: "h3" }, t('chooseSubscription'))),
-                showSubscriptions(),
-                React.createElement(Box, { display: "flex", flexDirection: "row", justifyContent: "space-between", mt: 2 },
-                    React.createElement(Button, { variant: "contained", color: "primary", size: "large", disableElevation: true, disabled: !hasSelectedSubscriptionPlan, onClick: handleWantsToStartSubscriptionPlan }, t('startSubscriptionButtonLabel')),
-                    settings.data.vatRate !== null && (React.createElement(Box, { mr: 2 },
-                        React.createElement(Notice, { noticeIcon: React.createElement(Icon, null, "announcement"), noticeText: React.createElement(Typography, { variant: "body2", display: "block", style: { color: palette.info.dark } }, t('vatNotice', {
-                                vatRate: settings.data.vatRate,
-                            })), type: "info" })))))),
-            React.createElement(Box, { clone: true, mb: 1.5, mt: 5 },
-                React.createElement(Typography, { variant: "h3" }, t('invoiceNote.title'))),
-            React.createElement(Box, { clone: true, mb: 3 },
-                React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('invoiceNote.subtitle'))),
-            React.createElement(Box, { clone: true, style: {
-                    display: 'block',
-                    maxWidth: 450,
-                    width: '100%',
-                } },
-                React.createElement(TextField, { className: classes.invoiceNoteTextField, fullWidth: true, InputLabelProps: {
-                        shrink: true,
-                    }, label: t('invoiceNote.textFieldLabel'), margin: "dense", multiline: true, onChange: (event) => handleUserInvoiceNote(event.target.value), rows: 4, type: "text", value: userInvoiceNote, variant: "outlined" })),
-            React.createElement(Box, { clone: true, mt: 3 },
-                React.createElement(Button, { color: "primary", disabled: userInvoiceNote === invoiceNote, disableElevation: true, onClick: () => setUserInvoiceNoteAction(orgId, userInvoiceNote), size: "large", variant: "contained" }, t('invoiceNote.saveInvoiceNoteButtonLabel'))),
-            React.createElement(Box, { clone: true, mt: 5, mb: 1.5 },
-                React.createElement(Typography, { variant: "h3" }, t('transactionHistoryTitle'))),
-            React.createElement(Box, { clone: true, mb: 3 },
-                React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('transactionHistorySubtitle'))),
-            React.createElement(TransactionsTable, { transactions: transactions })),
+                    React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('transactionHistorySubtitle'))),
+                React.createElement(TransactionsTable, { transactions: transactions })))),
         React.createElement(CustomizableDialog, { actions: [
                 React.createElement(Button, { className: classes.dialogCancelButton, key: "cancelCreditTopUp", onClick: handleOpenTopUpDialog, variant: "outlined" }, t('confirmCreditTopUpDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "openTopUpDialog", onClick: () => {

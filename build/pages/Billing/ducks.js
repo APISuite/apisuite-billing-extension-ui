@@ -222,8 +222,8 @@ export function getOrganizationActionSuccess(orgData) {
         orgData,
     };
 }
-export function setUserInvoiceNoteAction(userID, invoiceNote) {
-    return { type: SET_USER_INVOICE_NOTES_ACTION, userID, invoiceNote };
+export function setUserInvoiceNoteAction(orgId, invoiceNote) {
+    return { type: SET_USER_INVOICE_NOTES_ACTION, orgId, invoiceNote };
 }
 export function setUserInvoiceNoteActionSuccess(invoiceNote) {
     return {

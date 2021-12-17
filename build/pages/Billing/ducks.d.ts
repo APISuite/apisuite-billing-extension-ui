@@ -67,9 +67,9 @@ export declare function getOrganizationActionSuccess(orgData: OrgDetails): {
     type: string;
     orgData: OrgDetails;
 };
-export declare function setUserInvoiceNoteAction(userID: number, invoiceNote: string): {
+export declare function setUserInvoiceNoteAction(orgId: number, invoiceNote: string): {
     type: string;
-    userID: number;
+    orgId: number;
     invoiceNote: string;
 };
 export declare function setUserInvoiceNoteActionSuccess(invoiceNote: string): {

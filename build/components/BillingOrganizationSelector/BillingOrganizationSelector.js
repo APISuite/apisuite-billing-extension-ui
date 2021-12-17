@@ -20,15 +20,26 @@ export const BillingOrganizationSelector = ({ billingOrganizationId, getUserDeta
     }, []);
     React.useEffect(() => {
         if (billingOrganizationId) {
-            const org = organisationSelector(orgs).find((o) => {
-                return o.value === billingOrganizationId;
+            const org = orgs.find((o) => {
+                return o.id === billingOrganizationId;
             });
             if (org) {
-                setSelectedOrg(org);
+                setSelectedOrg({
+                    group: '',
+                    label: org.name,
+                    value: org.id,
+                });
             }
         }
+        else if (orgs && orgs.length === 1) {
+            setSelectedOrg({
+                group: '',
+                label: orgs[0].name,
+                value: orgs[0].id,
+            });
+        }
     }, [billingOrganizationId]);
-    const organisationSelector = (organisations) => {
+    const organisationMapper = (organisations) => {
         return organisations.map((organisation) => ({
             group: '',
             label: organisation.name,
@@ -53,11 +64,7 @@ export const BillingOrganizationSelector = ({ billingOrganizationId, getUserDeta
         React.createElement(Box, { mb: 2 },
             React.createElement(Typography, { variant: "h3" }, t('billingOrg.title'))),
         React.createElement(Box, { mb: 1 },
-            React.createElement(Select, { customCloseIcon: React.createElement(Icon, null, "expand_less"), customOpenIcon: React.createElement(Icon, null, "expand_more"), disabled: orgs.length <= 1, fieldLabel: t('billingOrg.selectText'), onChange: handleChange, options: organisationSelector(orgs), selected: organisationSelector(orgs).find((selectedOrganisation) => {
-                    return selectedOrg.value === ''
-                        ? selectedOrganisation.value === billingOrganizationId
-                        : selectedOrganisation.value === selectedOrg.value;
-                }) })),
+            React.createElement(Select, { customCloseIcon: React.createElement(Icon, null, "expand_less"), customOpenIcon: React.createElement(Icon, null, "expand_more"), disabled: orgs.length <= 1, fieldLabel: t('billingOrg.selectText'), onChange: handleChange, options: organisationMapper(orgs), selected: selectedOrg })),
         React.createElement(Box, { clone: true, my: 2, maxWidth: "250px" },
             React.createElement(Button, { disabled: selectedOrg.value === billingOrganizationId ||
                     selectedOrg.value === '', size: "large", color: "primary", variant: "contained", disableElevation: true, onClick: saveBillingOrg }, t('billingOrg.saveButton'))),
