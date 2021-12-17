@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Icon,
+  CircularProgress,
   TextField,
   Trans,
   Typography,
@@ -56,12 +57,14 @@ const Billing: React.FC<BillingProps> = ({
   of all credit packs and subscription plans we presently offer, as well as
   all information we have on a user and his transactions. */
   useEffect(() => {
-    getCreditPacksAction('price', 'asc')
-    getSubscriptionPlansAction('price', 'asc')
-    getOrganizationAction(orgId)
-    getUserTransactionsAction(orgId)
-    getBillingSettingsAction()
-  }, [])
+    if (orgId) {
+      getCreditPacksAction('price', 'asc')
+      getSubscriptionPlansAction('price', 'asc')
+      getOrganizationAction(orgId)
+      getUserTransactionsAction(orgId)
+      getBillingSettingsAction()
+    }
+  }, [orgId])
 
   /* Credits logic */
 
@@ -257,11 +260,11 @@ const Billing: React.FC<BillingProps> = ({
   of all information we have on a user and his transactions AFTER the user
   starts or changes his subscription plan. */
   useEffect(() => {
-    if (successfullySubscribedToPlan) {
+    if (successfullySubscribedToPlan && orgId) {
       getOrganizationAction(orgId)
       getUserTransactionsAction(orgId)
     }
-  }, [successfullySubscribedToPlan])
+  }, [successfullySubscribedToPlan, orgId])
 
   /* Invoice-related logic */
 
@@ -272,7 +275,7 @@ const Billing: React.FC<BillingProps> = ({
   }
 
   useEffect(() => {
-    setUserInvoiceNote(invoiceNote)
+    setUserInvoiceNote(invoiceNote || '')
   }, [invoiceNote, setUserInvoiceNoteAction])
 
   /* Dialog-related logic */
@@ -330,178 +333,84 @@ const Billing: React.FC<BillingProps> = ({
   return (
     <>
       <main className={`page-container ${classes.billingContentContainer}`}>
-        <Typography variant="h2">{t('title')}</Typography>
-
-        <Box clone mb={5}>
-          <Typography variant="body1" color="textSecondary">
-            {t('subtitle')}
-          </Typography>
-        </Box>
-
-        {/* 'Your balance' section */}
-
-        <Box mt={1.5} mb={3}>
-          <Typography variant="h3">{t('yourBalance')}</Typography>
-        </Box>
-
-        <div
-          className={
-            wantsToTopUpCredits
-              ? classes.yourCreditBalanceContainerWithCreditPacks
-              : classes.yourCreditBalanceContainerWithoutCreditPacks
-          }
-        >
-          <Box color={palette.common.white}>
-            <Typography variant="body1" color="inherit">
-              {t('availableCredits')}
-            </Typography>
-
-            <Typography variant="h1" color="inherit">
-              {orgDetails.credits}
-            </Typography>
+        {!orgId ? (
+          <Box
+            alignItems="center"
+            display="flex"
+            height="100vh"
+            justifyContent="center"
+          >
+            <CircularProgress color="secondary" />
           </Box>
+        ) : (
+          <Box>
+            <Typography variant="h2">{t('title')}</Typography>
 
-          {wantsToTopUpCredits ? (
-            <Box color={palette.common.white}>
-              <hr className={classes.separator} />
-
-              {showCreditPacks()}
-
-              <div>
-                <Button
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  disableElevation
-                  disabled={!selectedCreditPack.id}
-                  onClick={handleOpenTopUpDialog}
-                >
-                  {t('purchaseCreditsButtonLabel')}
-                </Button>
-
-                <Box
-                  clone
-                  ml={1}
-                  style={{ backgroundColor: palette.common.white }}
-                >
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    color="primary"
-                    disableElevation
-                    onClick={handleWantsToTopUpCredits}
-                  >
-                    {t('cancelCreditsPurchaseButtonLabel')}
-                  </Button>
-                </Box>
-              </div>
-              {settings.data.vatRate !== null && (
-                <Box mr={3} mt={3}>
-                  <Notice
-                    noticeIcon={<Icon>announcement</Icon>}
-                    noticeText={
-                      <Typography
-                        variant="body2"
-                        display="block"
-                        style={{ color: palette.info.dark }}
-                      >
-                        {t('vatNotice', {
-                          vatRate: settings.data.vatRate,
-                        })}
-                      </Typography>
-                    }
-                    type="info"
-                  />
-                </Box>
-              )}
+            <Box clone mb={5}>
+              <Typography variant="body1" color="textSecondary">
+                {t('subtitle')}
+              </Typography>
             </Box>
-          ) : (
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              disableElevation
-              onClick={handleWantsToTopUpCredits}
+
+            {/* 'Your balance' section */}
+
+            <Box mt={1.5} mb={3}>
+              <Typography variant="h3">{t('yourBalance')}</Typography>
+            </Box>
+
+            <div
+              className={
+                wantsToTopUpCredits
+                  ? classes.yourCreditBalanceContainerWithCreditPacks
+                  : classes.yourCreditBalanceContainerWithoutCreditPacks
+              }
             >
-              {t('addCreditsButtonLabel')}
-            </Button>
-          )}
-        </div>
+              <Box color={palette.common.white}>
+                <Typography variant="body1" color="inherit">
+                  {t('availableCredits')}
+                </Typography>
 
-        {/* 'Your subscription' section */}
+                <Typography variant="h1" color="inherit">
+                  {orgDetails.credits}
+                </Typography>
+              </Box>
 
-        <Box clone mb={3}>
-          <Typography variant="h3">{t('yourSubscriptionsTitle')}</Typography>
-        </Box>
+              {wantsToTopUpCredits ? (
+                <Box color={palette.common.white}>
+                  <hr className={classes.separator} />
 
-        {orgDetails.subscriptionId ? (
-          <>
-            <SubscriptionsTable
-              subscriptions={[
-                {
-                  name: subscriptions.find((subscriptionPlan) => {
-                    return (
-                      subscriptionPlan.id ===
-                      parseInt(orgDetails.subscriptionId)
-                    )
-                  })?.name,
-                  nextBillingDate: orgDetails.nextPaymentDate,
-                },
-              ]}
-              onCancelSubscription={cancelSubscriptionAction}
-              onEditPaymentClick={() => editPaymentInfoAction(orgId)}
-            />
+                  {showCreditPacks()}
 
-            {!wantsToCheckAllSubPlans && (
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disableElevation
-                onClick={handleWantsToCheckAllSubPlans}
-              >
-                {t('checkSubPlansButtonLabel')}
-              </Button>
-            )}
-
-            {wantsToCheckAllSubPlans && (
-              <>
-                <Box clone mb={3}>
-                  <Typography variant="h6">{t('chooseNewSubPlan')}</Typography>
-                </Box>
-
-                {showSubscriptions()}
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="space-between"
-                  mt={2}
-                >
-                  <Box>
+                  <div>
                     <Button
                       variant="contained"
-                      color="primary"
                       size="large"
+                      color="primary"
                       disableElevation
-                      disabled={!hasSelectedSubscriptionPlan}
-                      onClick={handleWantsToChangeSubscriptionPlan}
-                      style={{ marginRight: spacing(1.5) }}
+                      disabled={!selectedCreditPack.id}
+                      onClick={handleOpenTopUpDialog}
                     >
-                      {t('startNewSubPlanButtonLabel')}
+                      {t('purchaseCreditsButtonLabel')}
                     </Button>
 
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      size="large"
-                      disableElevation
-                      onClick={handleWantsToCheckAllSubPlans}
+                    <Box
+                      clone
+                      ml={1}
+                      style={{ backgroundColor: palette.common.white }}
                     >
-                      {t('cancelSubPlansCheckingButtonLabel')}
-                    </Button>
-                  </Box>
-                  <Box mr={2}>
-                    {settings.data.vatRate !== null && (
+                      <Button
+                        variant="outlined"
+                        size="large"
+                        color="primary"
+                        disableElevation
+                        onClick={handleWantsToTopUpCredits}
+                      >
+                        {t('cancelCreditsPurchaseButtonLabel')}
+                      </Button>
+                    </Box>
+                  </div>
+                  {settings.data.vatRate !== null && (
+                    <Box mr={3} mt={3}>
                       <Notice
                         noticeIcon={<Icon>announcement</Icon>}
                         noticeText={
@@ -517,129 +426,244 @@ const Billing: React.FC<BillingProps> = ({
                         }
                         type="info"
                       />
-                    )}
-                  </Box>
+                    </Box>
+                  )}
+                </Box>
+              ) : (
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  disableElevation
+                  onClick={handleWantsToTopUpCredits}
+                >
+                  {t('addCreditsButtonLabel')}
+                </Button>
+              )}
+            </div>
+
+            {/* 'Your subscription' section */}
+
+            <Box clone mb={3}>
+              <Typography variant="h3">
+                {t('yourSubscriptionsTitle')}
+              </Typography>
+            </Box>
+
+            {orgDetails.subscriptionId ? (
+              <>
+                <SubscriptionsTable
+                  subscriptions={[
+                    {
+                      name: subscriptions.find((subscriptionPlan) => {
+                        return (
+                          subscriptionPlan.id ===
+                          parseInt(orgDetails.subscriptionId)
+                        )
+                      })?.name,
+                      nextBillingDate: orgDetails.nextPaymentDate,
+                    },
+                  ]}
+                  onCancelSubscription={cancelSubscriptionAction}
+                  onEditPaymentClick={() => editPaymentInfoAction(orgId)}
+                />
+
+                {!wantsToCheckAllSubPlans && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    disableElevation
+                    onClick={handleWantsToCheckAllSubPlans}
+                  >
+                    {t('checkSubPlansButtonLabel')}
+                  </Button>
+                )}
+
+                {wantsToCheckAllSubPlans && (
+                  <>
+                    <Box clone mb={3}>
+                      <Typography variant="h6">
+                        {t('chooseNewSubPlan')}
+                      </Typography>
+                    </Box>
+
+                    {showSubscriptions()}
+                    <Box
+                      display="flex"
+                      flexDirection="row"
+                      justifyContent="space-between"
+                      mt={2}
+                    >
+                      <Box>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          disableElevation
+                          disabled={!hasSelectedSubscriptionPlan}
+                          onClick={handleWantsToChangeSubscriptionPlan}
+                          style={{ marginRight: spacing(1.5) }}
+                        >
+                          {t('startNewSubPlanButtonLabel')}
+                        </Button>
+
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          size="large"
+                          disableElevation
+                          onClick={handleWantsToCheckAllSubPlans}
+                        >
+                          {t('cancelSubPlansCheckingButtonLabel')}
+                        </Button>
+                      </Box>
+                      <Box mr={2}>
+                        {settings.data.vatRate !== null && (
+                          <Notice
+                            noticeIcon={<Icon>announcement</Icon>}
+                            noticeText={
+                              <Typography
+                                variant="body2"
+                                display="block"
+                                style={{ color: palette.info.dark }}
+                              >
+                                {t('vatNotice', {
+                                  vatRate: settings.data.vatRate,
+                                })}
+                              </Typography>
+                            }
+                            type="info"
+                          />
+                        )}
+                      </Box>
+                    </Box>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <Box clone mb={3}>
+                  <Typography variant="body1">
+                    {t('noActiveSubscriptions')}
+                  </Typography>
+                </Box>
+
+                <Box clone mb={3}>
+                  <Typography variant="h3">
+                    {t('chooseSubscription')}
+                  </Typography>
+                </Box>
+
+                {showSubscriptions()}
+
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  mt={2}
+                >
+                  {/* FIXME */}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    disableElevation
+                    disabled={!hasSelectedSubscriptionPlan}
+                    onClick={handleWantsToStartSubscriptionPlan}
+                  >
+                    {t('startSubscriptionButtonLabel')}
+                  </Button>
+                  {settings.data.vatRate !== null && (
+                    <Box mr={2}>
+                      <Notice
+                        noticeIcon={<Icon>announcement</Icon>}
+                        noticeText={
+                          <Typography
+                            variant="body2"
+                            display="block"
+                            style={{ color: palette.info.dark }}
+                          >
+                            {t('vatNotice', {
+                              vatRate: settings.data.vatRate,
+                            })}
+                          </Typography>
+                        }
+                        type="info"
+                      />
+                    </Box>
+                  )}
                 </Box>
               </>
             )}
-          </>
-        ) : (
-          <>
+
+            {/* 'Invoice notes' section */}
+
+            <Box clone mb={1.5} mt={5}>
+              <Typography variant="h3">{t('invoiceNote.title')}</Typography>
+            </Box>
+
             <Box clone mb={3}>
-              <Typography variant="body1">
-                {t('noActiveSubscriptions')}
+              <Typography variant="body1" color="textSecondary">
+                {t('invoiceNote.subtitle')}
+              </Typography>
+            </Box>
+
+            <Box
+              clone
+              style={{
+                display: 'block',
+                maxWidth: 450,
+                width: '100%',
+              }}
+            >
+              <TextField
+                className={classes.invoiceNoteTextField}
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                label={t('invoiceNote.textFieldLabel')}
+                margin="dense"
+                multiline
+                onChange={(event) => handleUserInvoiceNote(event.target.value)}
+                rows={4}
+                type="text"
+                value={userInvoiceNote}
+                variant="outlined"
+              />
+            </Box>
+
+            <Box clone mt={3}>
+              <Button
+                color="primary"
+                disabled={userInvoiceNote === invoiceNote}
+                disableElevation
+                onClick={() => setUserInvoiceNoteAction(orgId, userInvoiceNote)}
+                size="large"
+                variant="contained"
+              >
+                {t('invoiceNote.saveInvoiceNoteButtonLabel')}
+              </Button>
+            </Box>
+
+            {/* 'Transaction history' section */}
+
+            <Box clone mt={5} mb={1.5}>
+              <Typography variant="h3">
+                {t('transactionHistoryTitle')}
               </Typography>
             </Box>
 
             <Box clone mb={3}>
-              <Typography variant="h3">{t('chooseSubscription')}</Typography>
+              <Typography variant="body1" color="textSecondary">
+                {t('transactionHistorySubtitle')}
+              </Typography>
             </Box>
 
-            {showSubscriptions()}
-
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              mt={2}
-            >
-              {/* FIXME */}
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disableElevation
-                disabled={!hasSelectedSubscriptionPlan}
-                onClick={handleWantsToStartSubscriptionPlan}
-              >
-                {t('startSubscriptionButtonLabel')}
-              </Button>
-              {settings.data.vatRate !== null && (
-                <Box mr={2}>
-                  <Notice
-                    noticeIcon={<Icon>announcement</Icon>}
-                    noticeText={
-                      <Typography
-                        variant="body2"
-                        display="block"
-                        style={{ color: palette.info.dark }}
-                      >
-                        {t('vatNotice', {
-                          vatRate: settings.data.vatRate,
-                        })}
-                      </Typography>
-                    }
-                    type="info"
-                  />
-                </Box>
-              )}
-            </Box>
-          </>
+            <TransactionsTable transactions={transactions} />
+          </Box>
         )}
-
-        {/* 'Invoice notes' section */}
-
-        <Box clone mb={1.5} mt={5}>
-          <Typography variant="h3">{t('invoiceNote.title')}</Typography>
-        </Box>
-
-        <Box clone mb={3}>
-          <Typography variant="body1" color="textSecondary">
-            {t('invoiceNote.subtitle')}
-          </Typography>
-        </Box>
-
-        <Box
-          clone
-          style={{
-            display: 'block',
-            maxWidth: 450,
-            width: '100%',
-          }}
-        >
-          <TextField
-            className={classes.invoiceNoteTextField}
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            label={t('invoiceNote.textFieldLabel')}
-            margin="dense"
-            multiline
-            onChange={(event) => handleUserInvoiceNote(event.target.value)}
-            rows={4}
-            type="text"
-            value={userInvoiceNote}
-            variant="outlined"
-          />
-        </Box>
-
-        <Box clone mt={3}>
-          <Button
-            color="primary"
-            disabled={userInvoiceNote === invoiceNote}
-            disableElevation
-            onClick={() => setUserInvoiceNoteAction(orgId, userInvoiceNote)}
-            size="large"
-            variant="contained"
-          >
-            {t('invoiceNote.saveInvoiceNoteButtonLabel')}
-          </Button>
-        </Box>
-
-        {/* 'Transaction history' section */}
-
-        <Box clone mt={5} mb={1.5}>
-          <Typography variant="h3">{t('transactionHistoryTitle')}</Typography>
-        </Box>
-
-        <Box clone mb={3}>
-          <Typography variant="body1" color="textSecondary">
-            {t('transactionHistorySubtitle')}
-          </Typography>
-        </Box>
-
-        <TransactionsTable transactions={transactions} />
       </main>
 
       {/* Credit top-up dialog */}

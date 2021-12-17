@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react'
-import { Box, Button, Typography, useTranslation } from '@apisuite/fe-base'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  useTranslation,
+} from '@apisuite/fe-base'
 
 import { BASE_URI } from '../../helpers/constants'
 import { EditPaymentConfirmProps } from './types'
@@ -19,11 +25,13 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
   }
 
   useEffect(() => {
-    const urlParameters = new URLSearchParams(window.location.search)
-    const transactionID = urlParameters.get('id')
+    if (orgId) {
+      const urlParameters = new URLSearchParams(window.location.search)
+      const transactionID = urlParameters.get('id')
 
-    getTransactionDetailsAction(orgId, transactionID)
-  }, [])
+      getTransactionDetailsAction(orgId, transactionID)
+    }
+  }, [orgId])
 
   // const handlePrint = () => {
   //   window.print()
@@ -31,45 +39,62 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      <Box mb={3}>
-        <Typography variant="h2">{t('editPaymentConfirm.title')}</Typography>
-      </Box>
-
-      <Box mb={5}>
-        <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
-          {t('editPaymentConfirm.message')}
-        </Typography>
-      </Box>
-
-      <Box mb={3}>
-        <Typography variant="h4">{t('editPaymentConfirm.subtitle')}</Typography>
-      </Box>
-
-      <Box mb={5}>
-        <TransactionCard transaction={transactionDetails} />
-      </Box>
-
-      <Box display="flex" justifyContent="flex-end" mb={3}>
-        {/* <Button
-          variant="outlined"
-          color="secondary"
-          size="large"
-          onClick={handlePrint}
+      {!orgId ? (
+        <Box
+          alignItems="center"
+          display="flex"
+          height="100vh"
+          justifyContent="center"
         >
-          {t('editPaymentConfirm.buttons.printLabel')}
-        </Button> */}
-
-        <Box alignSelf="flex-end">
-          <Button
-            variant="outlined"
-            color="secondary"
-            size="large"
-            href={BASE_URI}
-          >
-            {t('editPaymentConfirm.buttons.billingLabel')}
-          </Button>
+          <CircularProgress color="secondary" />
         </Box>
-      </Box>
+      ) : (
+        <Box>
+          <Box mb={3}>
+            <Typography variant="h2">
+              {t('editPaymentConfirm.title')}
+            </Typography>
+          </Box>
+
+          <Box mb={5}>
+            <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
+              {t('editPaymentConfirm.message')}
+            </Typography>
+          </Box>
+
+          <Box mb={3}>
+            <Typography variant="h4">
+              {t('editPaymentConfirm.subtitle')}
+            </Typography>
+          </Box>
+
+          <Box mb={5}>
+            <TransactionCard transaction={transactionDetails} />
+          </Box>
+
+          <Box display="flex" justifyContent="flex-end" mb={3}>
+            {/* <Button
+              variant="outlined"
+              color="secondary"
+              size="large"
+              onClick={handlePrint}
+            >
+              {t('editPaymentConfirm.buttons.printLabel')}
+            </Button> */}
+
+            <Box alignSelf="flex-end">
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="large"
+                href={BASE_URI}
+              >
+                {t('editPaymentConfirm.buttons.billingLabel')}
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      )}
     </main>
   )
 }

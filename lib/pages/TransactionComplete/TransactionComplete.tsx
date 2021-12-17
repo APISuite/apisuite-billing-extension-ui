@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Typography,
   useTheme,
@@ -28,102 +29,119 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   }
 
   useEffect(() => {
-    const urlParameters = new URLSearchParams(window.location.search)
-    const idOfTransaction = urlParameters.get('id')
+    if (orgId) {
+      const urlParameters = new URLSearchParams(window.location.search)
+      const idOfTransaction = urlParameters.get('id')
 
-    getTransactionDetailsAction(orgId, idOfTransaction)
-  }, [])
+      getTransactionDetailsAction(orgId, idOfTransaction)
+    }
+  }, [orgId])
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      <Typography variant="h1">{t('transactionComplete.title')}</Typography>
-
-      <Box my={3}>
-        <Typography variant="h5">
-          {t('transactionComplete.subtitle')}
-        </Typography>
-      </Box>
-
-      <Box display="flex">
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          href="/marketplace"
+      {!orgId ? (
+        <Box
+          alignItems="center"
+          display="flex"
+          height="100vh"
+          justifyContent="center"
         >
-          {t('transactionComplete.goToMarketplaceButtonLabel')}
-        </Button>
-
-        <Box ml={1.5}>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            href={BASE_URI}
-          >
-            {t('transactionComplete.goToBillingButtonLabel')}
-          </Button>
+          <CircularProgress color="secondary" />
         </Box>
-      </Box>
+      ) : (
+        <Box>
+          <Typography variant="h1">{t('transactionComplete.title')}</Typography>
 
-      <Box my={5}>
-        <Divider style={{ backgroundColor: palette.primary.main }} />
-      </Box>
+          <Box my={3}>
+            <Typography variant="h5">
+              {t('transactionComplete.subtitle')}
+            </Typography>
+          </Box>
 
-      <Box mb={3}>
-        <Typography variant="h3">
-          {t('transactionComplete.transactionDetails.title')}
-        </Typography>
-      </Box>
+          <Box display="flex">
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              href="/marketplace"
+            >
+              {t('transactionComplete.goToMarketplaceButtonLabel')}
+            </Button>
 
-      <div className={classes.allTransactionDetailsContainer}>
-        <p className={classes.transactionTitle}>
-          {transactionDetails.type === 'topup'
-            ? t(
-                'transactionComplete.transactionDetails.creditTopUpTransactionType'
-              )
-            : t(
-                'transactionComplete.transactionDetails.subscriptionTransactionType'
-              )}
+            <Box ml={1.5}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                href={BASE_URI}
+              >
+                {t('transactionComplete.goToBillingButtonLabel')}
+              </Button>
+            </Box>
+          </Box>
 
-          <span>({transactionDetails.description})</span>
-        </p>
+          <Box my={5}>
+            <Divider style={{ backgroundColor: palette.primary.main }} />
+          </Box>
 
-        <div className={classes.transactionDetailContainer}>
-          <p>{t('transactionComplete.transactionDetails.reference')}</p>
+          <Box mb={3}>
+            <Typography variant="h3">
+              {t('transactionComplete.transactionDetails.title')}
+            </Typography>
+          </Box>
 
-          <p>{transactionDetails.id}</p>
-        </div>
+          <div className={classes.allTransactionDetailsContainer}>
+            <p className={classes.transactionTitle}>
+              {transactionDetails.type === 'topup'
+                ? t(
+                    'transactionComplete.transactionDetails.creditTopUpTransactionType'
+                  )
+                : t(
+                    'transactionComplete.transactionDetails.subscriptionTransactionType'
+                  )}
 
-        <div className={classes.transactionDetailContainer}>
-          <p>{t('transactionComplete.transactionDetails.price')}</p>
+              <span>({transactionDetails.description})</span>
+            </p>
 
-          <p>
-            {transactionDetails.amount.value &&
-              transactionDetails.amount.currency &&
-              currencyConverter(
-                trans.i18n.language,
-                transactionDetails.amount.value,
-                transactionDetails.amount.currency
-              )}
-          </p>
-        </div>
+            <div className={classes.transactionDetailContainer}>
+              <p>{t('transactionComplete.transactionDetails.reference')}</p>
 
-        <div className={classes.transactionDetailContainer}>
-          <p>{t('transactionComplete.transactionDetails.creditAmount')}</p>
+              <p>{transactionDetails.id}</p>
+            </div>
 
-          <p>{transactionDetails.credits} Cr</p>
-        </div>
+            <div className={classes.transactionDetailContainer}>
+              <p>{t('transactionComplete.transactionDetails.price')}</p>
 
-        <div className={classes.transactionDetailContainer}>
-          <p>{t('transactionComplete.transactionDetails.transactionDate')}</p>
+              <p>
+                {transactionDetails.amount.value &&
+                  transactionDetails.amount.currency &&
+                  currencyConverter(
+                    trans.i18n.language,
+                    transactionDetails.amount.value,
+                    transactionDetails.amount.currency
+                  )}
+              </p>
+            </div>
 
-          <p>
-            {transactionDetails.date &&
-              convertDate(trans.i18n.language, transactionDetails.date)}
-          </p>
-        </div>
-      </div>
+            <div className={classes.transactionDetailContainer}>
+              <p>{t('transactionComplete.transactionDetails.creditAmount')}</p>
+
+              <p>{transactionDetails.credits} Cr</p>
+            </div>
+
+            <div className={classes.transactionDetailContainer}>
+              <p>
+                {t('transactionComplete.transactionDetails.transactionDate')}
+              </p>
+
+              <p>
+                {transactionDetails.date &&
+                  convertDate(trans.i18n.language, transactionDetails.date)}
+              </p>
+            </div>
+          </div>
+        </Box>
+      )}
     </main>
   )
 }

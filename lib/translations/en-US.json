@@ -3,7 +3,7 @@
     "billing": {
       "title": "Billing",
       "subtitle": "Manage your subcription, top-up your credit balance, and edit your payment information.",
-      "yourBalance": "Your balance",
+      "yourBalance": "Organisation balance",
       "availableCredits": "Available credits",
       "creditPacksTitle": "Select a credit pack",
       "retrievingCreditPacks": "Retrieving all available credit packs...",
@@ -11,7 +11,7 @@
       "purchaseCreditsButtonLabel": "Purchase credits",
       "cancelCreditsPurchaseButtonLabel": "Cancel",
       "addCreditsButtonLabel": "Add credits",
-      "yourSubscriptionsTitle": "Your subscription",
+      "yourSubscriptionsTitle": "Organisation subscription",
       "editPaymentInfoButtonLabel": "Edit payment information",
       "noActiveSubscriptions": "You don't have any active subscriptions.",
       "chooseSubscription": "Choose subscription",
