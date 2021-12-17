@@ -31,6 +31,7 @@ import {
   SET_BILLING_ORGANIZATION,
   SET_BILLING_ORGANIZATION_SUCCESS,
   EDIT_PAYMENT_INFORMATION,
+  GET_USER_ORGANIZATION_ACTION_ERROR,
 } from './ducks'
 
 export type PackageSortMode = 'name' | 'price' | 'credits'
@@ -194,6 +195,11 @@ export interface GetOrganizationActionSuccess extends Action {
   orgData: OrgDetails
 }
 
+export interface GetOrganizationActionError extends Action {
+  type: typeof GET_USER_ORGANIZATION_ACTION_ERROR
+  orgData: OrgDetails
+}
+
 export interface SetUserInvoiceNoteAction extends Action {
   type: typeof SET_USER_INVOICE_NOTES_ACTION
   orgId: string
@@ -310,6 +316,7 @@ export type BillingActions =
   | GetSubscriptionPlansActionSuccess
   | GetOrganizationAction
   | GetOrganizationActionSuccess
+  | GetOrganizationActionError
   | SetUserInvoiceNoteAction
   | SetUserInvoiceNoteActionSuccess
   | GetUserDetailsAction

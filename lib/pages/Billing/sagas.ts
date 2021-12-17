@@ -13,6 +13,7 @@ import {
   GET_SUBSCRIPTION_PLANS_ACTION,
   GET_USER_DETAILS_ACTION,
   GET_USER_ORGANIZATION_ACTION,
+  getOrganizationActionError,
   getOrganizationActionSuccess,
   SET_USER_INVOICE_NOTES_ACTION,
   setUserInvoiceNoteActionSuccess,
@@ -143,9 +144,18 @@ export function* getOrganizationSaga(action: GetOrganizationAction) {
     yield put(
       openNotification(
         'error',
-        i18n.t('extensions.billing.feedback.invoiceRetrievalError'),
+        i18n.t('extensions.billing.feedback.orgRetrievalError'),
         3000
       )
+    )
+    yield put(
+      getOrganizationActionError({
+        id: 0,
+        subscriptionId: '',
+        credits: 0,
+        invoiceNotes: '',
+        nextPaymentDate: '',
+      })
     )
   }
 }

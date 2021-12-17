@@ -103,9 +103,9 @@
       "closeCTA": "Close",
       "feedback": {
         "editPaymentInfoError": "The request to edit payment information has failed.",
-        "invoiceRetrievalError": "An error retrieving your invoice note occurred.",
         "invoiceSavingSuccessful": "Your invoice note was saved successfully!",
-        "invoiceSavingError": "An error saving your invoice note occurred."
+        "invoiceSavingError": "An error saving your invoice note occurred.",
+        "orgRetrievalError": "An error occurred while retrieving your organisation billing information."
       },
       "transactioncard": {
         "reference" : "Reference",
