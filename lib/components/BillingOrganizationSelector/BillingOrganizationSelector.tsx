@@ -40,17 +40,27 @@ export const BillingOrganizationSelector: React.FC<BillingOrganizationSelectorPr
 
   React.useEffect(() => {
     if (billingOrganizationId) {
-      const org = organisationSelector(orgs).find((o) => {
-        return o.value === billingOrganizationId
+      const org = orgs.find((o) => {
+        return o.id === billingOrganizationId
       })
 
       if (org) {
-        setSelectedOrg(org)
+        setSelectedOrg({
+          group: '',
+          label: org.name,
+          value: org.id,
+        })
       }
+    } else if (orgs && orgs.length === 1) {
+      setSelectedOrg({
+        group: '',
+        label: orgs[0].name,
+        value: orgs[0].id,
+      })
     }
   }, [billingOrganizationId])
 
-  const organisationSelector = (organisations: Organization[]) => {
+  const organisationMapper = (organisations: Organization[]) => {
     return organisations.map((organisation) => ({
       group: '',
       label: organisation.name,
@@ -94,12 +104,8 @@ export const BillingOrganizationSelector: React.FC<BillingOrganizationSelectorPr
           disabled={orgs.length <= 1}
           fieldLabel={t('billingOrg.selectText')}
           onChange={handleChange}
-          options={organisationSelector(orgs)}
-          selected={organisationSelector(orgs).find((selectedOrganisation) => {
-            return selectedOrg.value === ''
-              ? selectedOrganisation.value === billingOrganizationId
-              : selectedOrganisation.value === selectedOrg.value
-          })}
+          options={organisationMapper(orgs)}
+          selected={selectedOrg}
         />
       </Box>
       <Box clone my={2} maxWidth="250px">

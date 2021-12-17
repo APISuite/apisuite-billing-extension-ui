@@ -306,8 +306,8 @@ export function getOrganizationActionSuccess(orgData: OrgDetails) {
   }
 }
 
-export function setUserInvoiceNoteAction(userID: number, invoiceNote: string) {
-  return { type: SET_USER_INVOICE_NOTES_ACTION, userID, invoiceNote }
+export function setUserInvoiceNoteAction(orgId: number, invoiceNote: string) {
+  return { type: SET_USER_INVOICE_NOTES_ACTION, orgId, invoiceNote }
 }
 
 export function setUserInvoiceNoteActionSuccess(invoiceNote: string) {
