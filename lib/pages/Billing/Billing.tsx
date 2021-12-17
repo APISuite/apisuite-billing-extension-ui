@@ -333,7 +333,7 @@ const Billing: React.FC<BillingProps> = ({
   return (
     <>
       <main className={`page-container ${classes.billingContentContainer}`}>
-        {!orgId ? (
+        {!orgId && (
           <Box
             alignItems="center"
             display="flex"
@@ -342,7 +342,8 @@ const Billing: React.FC<BillingProps> = ({
           >
             <CircularProgress color="secondary" />
           </Box>
-        ) : (
+        )}
+        {!!orgId && (
           <Box>
             <Typography variant="h2">{t('title')}</Typography>
 

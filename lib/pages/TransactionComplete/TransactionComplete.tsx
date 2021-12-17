@@ -39,7 +39,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      {!orgId ? (
+      {!orgId && (
         <Box
           alignItems="center"
           display="flex"
@@ -48,7 +48,8 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
         >
           <CircularProgress color="secondary" />
         </Box>
-      ) : (
+      )}
+      {!!orgId && (
         <Box>
           <Typography variant="h1">{t('transactionComplete.title')}</Typography>
 

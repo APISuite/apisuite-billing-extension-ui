@@ -39,7 +39,7 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      {!orgId ? (
+      {!orgId && (
         <Box
           alignItems="center"
           display="flex"
@@ -48,7 +48,8 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
         >
           <CircularProgress color="secondary" />
         </Box>
-      ) : (
+      )}
+      {!!orgId && (
         <Box>
           <Box mb={3}>
             <Typography variant="h2">
