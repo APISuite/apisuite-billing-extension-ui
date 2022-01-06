@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
-  Icon,
   CircularProgress,
+  Icon,
   TextField,
   Trans,
   Typography,
@@ -297,13 +297,13 @@ const Billing: React.FC<BillingProps> = ({
     }
   }, [dialogInfo.transKeys.title])
 
-  const generateWarning = () => {
+  const generateWarning = (type) => {
     const replacementTagsArray = []
 
     /* The 'dialogToSWarning.text' translation includes a replacement tag (<0></0>).
     If a 'dialogToSWarning.url' translation exists and is not empty, this will be
     replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally. */
-    if (t('dialogToSWarning.url')) {
+    if (t(`dialogToSWarning.${type}.url`)) {
       replacementTagsArray.push(
         <Link
           style={{
@@ -313,17 +313,16 @@ const Billing: React.FC<BillingProps> = ({
           key="warningUrl"
           rel="noopener noreferrer"
           target="_blank"
-          to={t('dialogToSWarning.url')}
+          to={t(`dialogToSWarning.${type}.url`)}
         />
       )
     }
-
     return (
       <Typography
         style={{ color: palette.text.primary, fontWeight: 300 }}
         variant="body2"
       >
-        <Trans i18nKey="dialogToSWarning.text" t={t}>
+        <Trans i18nKey={`dialogToSWarning.${type}.text`} t={t}>
           {replacementTagsArray}
         </Trans>
       </Typography>
@@ -697,7 +696,7 @@ const Billing: React.FC<BillingProps> = ({
         })}
         title={t('confirmCreditTopUpDialog.title')}
       >
-        {generateWarning()}
+        {generateWarning('topup')}
       </CustomizableDialog>
 
       {/* Subscription-related dialogs */}
@@ -729,7 +728,7 @@ const Billing: React.FC<BillingProps> = ({
         })}
         title={t('startSubscriptionDialog.title')}
       >
-        {generateWarning()}
+        {generateWarning('subscription')}
       </CustomizableDialog>
 
       <CustomizableDialog
@@ -779,7 +778,7 @@ const Billing: React.FC<BillingProps> = ({
         })}
         title={t('changeSubscriptionDialog.title')}
       >
-        {generateWarning()}
+        {generateWarning('subscription')}
       </CustomizableDialog>
     </>
   )

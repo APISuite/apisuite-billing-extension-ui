@@ -49,8 +49,14 @@
         "confirmButtonLabel": "Start new subscription"
       },
       "dialogToSWarning": {
-        "url": "",
-        "text": ""
+        "topup": {
+          "url": "",
+          "text": "Dit is een test voor popups"
+        },
+        "subscription": {
+          "url": "",
+          "text": "Dit is een test voor subscriptions"
+        }
       },
       "subscriptionsTable": {
         "title": "Subscription",
@@ -108,10 +114,10 @@
         "invoiceSavingError": "An error saving your invoice note occurred."
       },
       "transactioncard": {
-        "reference" : "Reference",
-        "price" : "Price",
-        "creditAmount" : "Credit amount",
-        "purchaseDate" : "Date of purchase"
+        "reference": "Reference",
+        "price": "Price",
+        "creditAmount": "Credit amount",
+        "purchaseDate": "Date of purchase"
       },
       "editPaymentConfirm": {
         "title": "You have edited your payment method!",

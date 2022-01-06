@@ -49,8 +49,14 @@
                 "confirmButtonLabel": "Start new subscription"
             },
             "dialogToSWarning": {
-                "url": "",
-                "text": ""
+                "topup": {
+                    "url": "",
+                    "text": "Dit is een test voor popups"
+                },
+                "subscription": {
+                    "url": "",
+                    "text": "Dit is een test voor subscriptions"
+                }
             },
             "subscriptionsTable": {
                 "title": "Subscription",

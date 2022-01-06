@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Icon, CircularProgress, TextField, Trans, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
+import { Box, Button, CircularProgress, Icon, TextField, Trans, Typography, useTheme, useTranslation, } from '@apisuite/fe-base';
 import { CustomizableDialog } from '../../components/CustomizableDialog/CustomizableDialog';
 import CreditPacksCatalog from '../../components/CreditPacksCatalog/CreditPacksCatalog';
 import SubscriptionsCatalog from '../../components/SubscriptionsCatalog';
@@ -176,19 +176,19 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
             setDialogOpen(true);
         }
     }, [dialogInfo.transKeys.title]);
-    const generateWarning = () => {
+    const generateWarning = (type) => {
         const replacementTagsArray = [];
         /* The 'dialogToSWarning.text' translation includes a replacement tag (<0></0>).
         If a 'dialogToSWarning.url' translation exists and is not empty, this will be
         replaced by a <Link> tag, otherwise, no replacement takes place and the translation is rendered normally. */
-        if (t('dialogToSWarning.url')) {
+        if (t(`dialogToSWarning.${type}.url`)) {
             replacementTagsArray.push(React.createElement(Link, { style: {
                     color: palette.info.main,
                     fontWeight: 400,
-                }, key: "warningUrl", rel: "noopener noreferrer", target: "_blank", to: t('dialogToSWarning.url') }));
+                }, key: "warningUrl", rel: "noopener noreferrer", target: "_blank", to: t(`dialogToSWarning.${type}.url`) }));
         }
         return (React.createElement(Typography, { style: { color: palette.text.primary, fontWeight: 300 }, variant: "body2" },
-            React.createElement(Trans, { i18nKey: "dialogToSWarning.text", t: t }, replacementTagsArray)));
+            React.createElement(Trans, { i18nKey: `dialogToSWarning.${type}.text`, t: t }, replacementTagsArray)));
     };
     return (React.createElement(React.Fragment, null,
         React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
@@ -278,7 +278,7 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
                     } }, t('confirmCreditTopUpDialog.confirmButtonLabel')),
             ], icon: "warning", onClose: handleOpenTopUpDialog, open: openTopUpDialog, subText: t('confirmCreditTopUpDialog.subText'), text: t('confirmCreditTopUpDialog.text', {
                 creditAmount: selectedCreditPack.credits,
-            }), title: t('confirmCreditTopUpDialog.title') }, generateWarning()),
+            }), title: t('confirmCreditTopUpDialog.title') }, generateWarning('topup')),
         React.createElement(CustomizableDialog, { actions: [
                 React.createElement(Button, { key: "cancelSubscriptionPlanStart", onClick: handleWantsToStartSubscriptionPlan, variant: "outlined" }, t('startSubscriptionDialog.cancelButtonLabel')),
                 React.createElement(Button, { className: classes.dialogConfirmButton, key: "confirmSubscriptionPlanStart", onClick: () => {
@@ -286,7 +286,7 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
                     } }, t('startSubscriptionDialog.confirmButtonLabel')),
             ], icon: "warning", onClose: handleWantsToStartSubscriptionPlan, open: wantsToStartSubscriptionPlan, subText: t('startSubscriptionDialog.subText'), text: t('startSubscriptionDialog.text', {
                 selectedSubscriptionPlan: selectedSubscriptionPlan.name,
-            }), title: t('startSubscriptionDialog.title') }, generateWarning()),
+            }), title: t('startSubscriptionDialog.title') }, generateWarning('subscription')),
         React.createElement(CustomizableDialog, { actions: [
                 React.createElement(Button, { key: "cancel-sub-confirm", onClick: handleDialogClose, variant: "outlined" }, t('closeCTA')),
             ], icon: dialogInfo.type, onClose: handleDialogClose, open: dialogOpen, subText: t(dialogInfo.transKeys.subText), text: t(dialogInfo.transKeys.text), title: t(dialogInfo.transKeys.title) }),
@@ -297,6 +297,6 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
                     } }, t('changeSubscriptionDialog.confirmButtonLabel')),
             ], icon: "warning", onClose: handleWantsToChangeSubscriptionPlan, open: wantsToChangeSubscriptionPlan, subText: t('changeSubscriptionDialog.subText'), text: t('changeSubscriptionDialog.text', {
                 newlySelectedSubscriptionPlan: selectedSubscriptionPlan.name,
-            }), title: t('changeSubscriptionDialog.title') }, generateWarning())));
+            }), title: t('changeSubscriptionDialog.title') }, generateWarning('subscription'))));
 };
 export default Billing;
