@@ -16,7 +16,7 @@ const CreditPacksCatalog = ({ creditPacks, selectedCreditPack, handleCreditPackS
                     React.createElement(Typography, { variant: "body1", color: "inherit" },
                         React.createElement("b", null,
                             "\u20AC ",
-                            creditPack.price)),
+                            creditPack.price.toFixed(2))),
                     React.createElement(Typography, { variant: "body2", color: "inherit" },
                         creditPack.credits,
                         " Cr"))));

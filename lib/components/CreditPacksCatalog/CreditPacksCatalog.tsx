@@ -38,7 +38,7 @@ const CreditPacksCatalog: React.FC<CreditPacksCatalogProps> = ({
 
           <Box color={palette.text.primary}>
             <Typography variant="body1" color="inherit">
-              <b>€ {creditPack.price}</b>
+              <b>€ {creditPack.price.toFixed(2)}</b>
             </Typography>
 
             <Typography variant="body2" color="inherit">
