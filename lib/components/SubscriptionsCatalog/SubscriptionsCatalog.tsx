@@ -53,7 +53,7 @@ const SubscriptionsCatalog: React.FC<SubscriptionsCatalogProps> = ({
 
             <div>
               <Typography variant="body1">
-                <b>€ {sub.price}</b>
+                <b>€ {sub.price.toFixed(2)}</b>
               </Typography>
 
               <Typography variant="body2">{sub.periodicity}</Typography>

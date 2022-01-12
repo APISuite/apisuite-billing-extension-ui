@@ -27,7 +27,7 @@ const SubscriptionsCatalog = ({ activeSubscriptionID, subscriptions, selectedSub
                         React.createElement(Typography, { variant: "body1" },
                             React.createElement("b", null,
                                 "\u20AC ",
-                                sub.price)),
+                                sub.price.toFixed(2))),
                         React.createElement(Typography, { variant: "body2" }, sub.periodicity))),
                 sub.id === activeSubscriptionID && (React.createElement("div", { className: classes.disabledSubscriptionContainer, onClick: (event) => {
                         event.stopPropagation();
