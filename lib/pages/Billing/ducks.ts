@@ -84,6 +84,8 @@ export const GET_USER_ORGANIZATION_ACTION =
   'Billing/GET_USER_ORGANIZATION_ACTION'
 export const GET_USER_ORGANIZATION_ACTION_SUCCESS =
   'Billing/GET_USER_ORGANIZATION_ACTION_SUCCESS'
+export const GET_USER_ORGANIZATION_ACTION_ERROR =
+  'Billing/GET_USER_ORGANIZATION_ACTION_ERROR'
 
 export const SET_USER_INVOICE_NOTES_ACTION =
   'Billing/SET_USER_INVOICE_NOTES_ACTION'
@@ -157,7 +159,8 @@ export default function billingReducer(
       })
     }
 
-    case GET_USER_ORGANIZATION_ACTION_SUCCESS: {
+    case GET_USER_ORGANIZATION_ACTION_SUCCESS:
+    case GET_USER_ORGANIZATION_ACTION_ERROR: {
       return update(state, {
         allUserDetails: {
           nextPaymentDate: { $set: action.orgData.nextPaymentDate },
@@ -302,6 +305,13 @@ export function getOrganizationAction(orgId: string) {
 export function getOrganizationActionSuccess(orgData: OrgDetails) {
   return {
     type: GET_USER_ORGANIZATION_ACTION_SUCCESS,
+    orgData,
+  }
+}
+
+export function getOrganizationActionError(orgData: OrgDetails) {
+  return {
+    type: GET_USER_ORGANIZATION_ACTION_ERROR,
     orgData,
   }
 }
