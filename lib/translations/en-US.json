@@ -49,8 +49,14 @@
         "confirmButtonLabel": "Start new subscription"
       },
       "dialogToSWarning": {
-        "url": "",
-        "text": ""
+        "topup": {
+          "url": "",
+          "text": ""
+        },
+        "subscription": {
+          "url": "",
+          "text": ""
+        }
       },
       "subscriptionsTable": {
         "title": "Subscription",
@@ -108,10 +114,10 @@
         "orgRetrievalError": "An error occurred while retrieving your organisation's billing information."
       },
       "transactioncard": {
-        "reference" : "Reference",
-        "price" : "Price",
-        "creditAmount" : "Credit amount",
-        "purchaseDate" : "Date of purchase"
+        "reference": "Reference",
+        "price": "Price",
+        "creditAmount": "Credit amount",
+        "purchaseDate": "Date of purchase"
       },
       "editPaymentConfirm": {
         "title": "You have edited your payment method!",
