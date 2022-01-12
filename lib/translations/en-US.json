@@ -51,11 +51,11 @@
       "dialogToSWarning": {
         "topup": {
           "url": "",
-          "text": "Dit is een test voor popups"
+          "text": ""
         },
         "subscription": {
           "url": "",
-          "text": "Dit is een test voor subscriptions"
+          "text": ""
         }
       },
       "subscriptionsTable": {
