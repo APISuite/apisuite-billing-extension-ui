@@ -3,7 +3,7 @@ import { i18n } from '@apisuite/fe-base';
 import { openNotification } from '../../components/NotificationStack/ducks';
 import { BILLING_API_URL } from '../../constants/endpoints';
 import request from '../../util/request';
-import { CANCEL_SUBSCRIPTION, cancelSubscriptionActionError, cancelSubscriptionActionSuccess, EDIT_PAYMENT_INFORMATION, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION, GET_USER_ORGANIZATION_ACTION, getOrganizationActionSuccess, SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSuccess, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getCreditPacksActionSuccess, getSubscriptionPlansActionSuccess, getUserDetailsActionSuccess, getUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, START_SUBSCRIPTION_ACTION, startSubscriptionActionError, startSubscriptionActionSuccess, GET_BILLING_SETTINGS, getBillingSettingsActionSuccess, getBillingSettingsActionError, setUserBillingOrgActionSuccess, SET_BILLING_ORGANIZATION, } from './ducks';
+import { CANCEL_SUBSCRIPTION, cancelSubscriptionActionError, cancelSubscriptionActionSuccess, EDIT_PAYMENT_INFORMATION, GET_CREDIT_PACKS_ACTION, GET_SUBSCRIPTION_PLANS_ACTION, GET_USER_DETAILS_ACTION, GET_USER_ORGANIZATION_ACTION, getOrganizationActionError, getOrganizationActionSuccess, SET_USER_INVOICE_NOTES_ACTION, setUserInvoiceNoteActionSuccess, GET_USER_TRANSACTIONS_ACTION, GET_TRANSACTION_DETAILS_ACTION, getCreditPacksActionSuccess, getSubscriptionPlansActionSuccess, getUserDetailsActionSuccess, getUserTransactionsActionSuccess, getTransactionDetailsActionSuccess, PURCHASE_CREDITS_ACTION, purchaseCreditsActionError, START_SUBSCRIPTION_ACTION, startSubscriptionActionError, startSubscriptionActionSuccess, GET_BILLING_SETTINGS, getBillingSettingsActionSuccess, getBillingSettingsActionError, setUserBillingOrgActionSuccess, SET_BILLING_ORGANIZATION, } from './ducks';
 export function* getUserDetailsActionSaga(action) {
     try {
         const getUserDetailsUrl = `${BILLING_API_URL}/users/${action.userID}`;
@@ -82,7 +82,14 @@ export function* getOrganizationSaga(action) {
         yield put(getOrganizationActionSuccess(response.data));
     }
     catch (error) {
-        yield put(openNotification('error', i18n.t('extensions.billing.feedback.invoiceRetrievalError'), 3000));
+        yield put(openNotification('error', i18n.t('extensions.billing.feedback.orgRetrievalError'), 3000));
+        yield put(getOrganizationActionError({
+            id: 0,
+            subscriptionId: '',
+            credits: 0,
+            invoiceNotes: '',
+            nextPaymentDate: '',
+        }));
     }
 }
 export function* setUserInvoiceNoteActionSaga(action) {

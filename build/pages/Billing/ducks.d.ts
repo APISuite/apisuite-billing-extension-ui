@@ -8,6 +8,7 @@ export declare const GET_SUBSCRIPTION_PLANS_ACTION = "Billing/GET_SUBSCRIPTION_P
 export declare const GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS = "Billing/GET_SUBSCRIPTION_PLANS_ACTION_SUCCESS";
 export declare const GET_USER_ORGANIZATION_ACTION = "Billing/GET_USER_ORGANIZATION_ACTION";
 export declare const GET_USER_ORGANIZATION_ACTION_SUCCESS = "Billing/GET_USER_ORGANIZATION_ACTION_SUCCESS";
+export declare const GET_USER_ORGANIZATION_ACTION_ERROR = "Billing/GET_USER_ORGANIZATION_ACTION_ERROR";
 export declare const SET_USER_INVOICE_NOTES_ACTION = "Billing/SET_USER_INVOICE_NOTES_ACTION";
 export declare const SET_USER_INVOICE_NOTES_ACTION_SUCCESS = "Billing/SET_USER_INVOICE_NOTES_ACTION_SUCCESS";
 export declare const GET_USER_TRANSACTIONS_ACTION = "Billing/GET_USER_TRANSACTIONS_ACTION";
@@ -64,6 +65,10 @@ export declare function getOrganizationAction(orgId: string): {
     orgId: string;
 };
 export declare function getOrganizationActionSuccess(orgData: OrgDetails): {
+    type: string;
+    orgData: OrgDetails;
+};
+export declare function getOrganizationActionError(orgData: OrgDetails): {
     type: string;
     orgData: OrgDetails;
 };
