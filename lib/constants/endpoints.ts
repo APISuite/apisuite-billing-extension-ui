@@ -1,34 +1,12 @@
-/** Endpoints constants */
-
-const { hostname } = window.location
-
-export const IS_CLOUD = hostname.indexOf('.cloud.apisuite.io') >= 0
-
-function buildCloudServiceUrl (service: string) {
-  const client = hostname.substring(0, hostname.indexOf('.'))
-  const apiHostname = hostname.replace(client, `${client}-${service}`)
-  return `https://${apiHostname}`
-}
-/**
- * For when running in the cloud environment.
- * Given the current Portal hostname, get the corresponding domain for another
- * service running in a given subdomain prefix.
- * Ex: ${client}.cloud.apisuite.io -> ${service}.${client}.cloud.apisuite.io
- *
- * @param service
- */
-export function getCloudUrlForSubdomainSuffix(service: string) {
-  if (IS_CLOUD) return buildCloudServiceUrl(service)
-  return null
-}
+import core from '../helpers/core'
 
 function getApiUrl() {
-  if (IS_CLOUD) return buildCloudServiceUrl('api')
+  if (core().IS_CLOUD) return core().buildCloudBackendUrl()
   return process.env.API_URL || ''
 }
 
 function getBillingApiUrl() {
-  if (IS_CLOUD) return buildCloudServiceUrl('billing-api')
+  if (core().IS_CLOUD) return core().buildCloudBackendUrl('ext-billing')
   return process.env.BILLING_API_URL || ''
 }
 
