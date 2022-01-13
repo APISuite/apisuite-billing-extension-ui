@@ -1,3 +1,3 @@
-export declare const API_URL: any;
-export declare const BILLING_API_URL: any;
+export declare function getApiUrl(): any;
+export declare function getBillingApiUrl(): any;
 export declare const INFORM_URL: string;
