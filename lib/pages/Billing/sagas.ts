@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { i18n } from '@apisuite/fe-base'
 
 import { openNotification } from '../../components/NotificationStack/ducks'
-import { BILLING_API_URL } from '../../constants/endpoints'
+import { getBillingApiUrl } from '../../constants/endpoints'
 import request from '../../util/request'
 import {
   CANCEL_SUBSCRIPTION,
@@ -53,7 +53,7 @@ import {
 
 export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
   try {
-    const getUserDetailsUrl = `${BILLING_API_URL}/users/${action.userID}`
+    const getUserDetailsUrl = `${getBillingApiUrl()}/users/${action.userID}`
 
     const response = yield call(request, {
       url: getUserDetailsUrl,
@@ -79,7 +79,7 @@ export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
 
 export function* getCreditPacksActionSaga(action: GetCreditPacksAction) {
   try {
-    const getCreditPacksUrl = `${BILLING_API_URL}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`
+    const getCreditPacksUrl = `${getBillingApiUrl()}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getCreditPacksUrl,
@@ -106,7 +106,7 @@ export function* getSubscriptionPlansActionSaga(
   action: GetSubscriptionPlansAction
 ) {
   try {
-    const getSubscriptionsUrl = `${BILLING_API_URL}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
+    const getSubscriptionsUrl = `${getBillingApiUrl()}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getSubscriptionsUrl,
@@ -132,7 +132,7 @@ export function* getSubscriptionPlansActionSaga(
 
 export function* getOrganizationSaga(action: GetOrganizationAction) {
   try {
-    const getOrganizationActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}`
+    const getOrganizationActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}`
 
     const response: OrgDetailsResponse = yield call(request, {
       url: getOrganizationActionUrl,
@@ -164,7 +164,7 @@ export function* setUserInvoiceNoteActionSaga(
   action: SetUserInvoiceNoteAction
 ) {
   try {
-    const setUserInvoiceNoteActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}`
+    const setUserInvoiceNoteActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}`
 
     const response: OrgDetailsResponse = yield call(request, {
       url: setUserInvoiceNoteActionUrl,
@@ -200,7 +200,7 @@ export function* getUserTransactionsActionSaga(
   action: GetUserTransactionsAction
 ) {
   try {
-    const getTransactionsUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases`
+    const getTransactionsUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases`
 
     const response = yield call(request, {
       url: getTransactionsUrl,
@@ -233,7 +233,7 @@ export function* getTransactionDetailsActionSaga(
   action: GetTransactionDetailsAction
 ) {
   try {
-    const getTransactionDetailsActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/${action.transactionID}`
+    const getTransactionDetailsActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/${action.transactionID}`
 
     const response = yield call(request, {
       url: getTransactionDetailsActionUrl,
@@ -264,7 +264,7 @@ export function* getTransactionDetailsActionSaga(
 
 export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
   try {
-    const purchaseCreditsActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/packages/${action.creditPackID}`
+    const purchaseCreditsActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/packages/${action.creditPackID}`
 
     const response = yield call(request, {
       url: purchaseCreditsActionUrl,
@@ -282,7 +282,7 @@ export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
 
 export function* editPaymentInformationSaga(action: EditPaymentInfoAction) {
   try {
-    const editPaymentInfoUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/method`
+    const editPaymentInfoUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/method`
 
     const response = yield call(request, {
       url: editPaymentInfoUrl,
@@ -303,7 +303,7 @@ export function* editPaymentInformationSaga(action: EditPaymentInfoAction) {
 
 export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
   try {
-    const startSubscriptionActionUrl = `${BILLING_API_URL}/organizations/${action.orgId}/purchases/subscriptions/${action.subscriptionPlanID}`
+    const startSubscriptionActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/subscriptions/${action.subscriptionPlanID}`
 
     const response = yield call(request, {
       url: startSubscriptionActionUrl,
@@ -331,7 +331,7 @@ export function* cancelSubscriptionSaga() {
     const orgId: string = yield select(
       (store) => store.profile.profile.current_org.id
     )
-    const cancelSubscriptionActionUrl = `${BILLING_API_URL}/organizations/${orgId}/subscriptions`
+    const cancelSubscriptionActionUrl = `${getBillingApiUrl()}/organizations/${orgId}/subscriptions`
 
     yield call(request, {
       url: cancelSubscriptionActionUrl,
@@ -346,7 +346,7 @@ export function* cancelSubscriptionSaga() {
 
 export function* getBillingSettingsActionSaga() {
   try {
-    const getBillingSettingUrl = `${BILLING_API_URL}/settings`
+    const getBillingSettingUrl = `${getBillingApiUrl()}/settings`
 
     const response: BillingSettings = yield call(request, {
       url: getBillingSettingUrl,
@@ -364,7 +364,7 @@ export function* getBillingSettingsActionSaga() {
 
 export function* setUserBillingOrgActionSaga(action: SetUserBillingOrgAction) {
   try {
-    const setBillingOrgUrl = `${BILLING_API_URL}/users/${action.userID}/organizations/${action.orgID}`
+    const setBillingOrgUrl = `${getBillingApiUrl()}/users/${action.userID}/organizations/${action.orgID}`
 
     yield call(request, {
       url: setBillingOrgUrl,
@@ -372,7 +372,7 @@ export function* setUserBillingOrgActionSaga(action: SetUserBillingOrgAction) {
     })
 
     const response = yield call(request, {
-      url: `${BILLING_API_URL}/users/${action.userID}`,
+      url: `${getBillingApiUrl()}/users/${action.userID}`,
       method: 'GET',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
