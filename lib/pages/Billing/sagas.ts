@@ -79,7 +79,9 @@ export function* getUserDetailsActionSaga(action: GetUserDetailsAction) {
 
 export function* getCreditPacksActionSaga(action: GetCreditPacksAction) {
   try {
-    const getCreditPacksUrl = `${getBillingApiUrl()}/packages?sort_by=${action.sortBy}&order=${action.orderBy}`
+    const getCreditPacksUrl = `${getBillingApiUrl()}/packages?sort_by=${
+      action.sortBy
+    }&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getCreditPacksUrl,
@@ -106,7 +108,9 @@ export function* getSubscriptionPlansActionSaga(
   action: GetSubscriptionPlansAction
 ) {
   try {
-    const getSubscriptionsUrl = `${getBillingApiUrl()}/subscriptions?sort_by=${action.sortBy}&order=${action.orderBy}`
+    const getSubscriptionsUrl = `${getBillingApiUrl()}/subscriptions?sort_by=${
+      action.sortBy
+    }&order=${action.orderBy}`
 
     const response = yield call(request, {
       url: getSubscriptionsUrl,
@@ -132,7 +136,9 @@ export function* getSubscriptionPlansActionSaga(
 
 export function* getOrganizationSaga(action: GetOrganizationAction) {
   try {
-    const getOrganizationActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}`
+    const getOrganizationActionUrl = `${getBillingApiUrl()}/organizations/${
+      action.orgId
+    }`
 
     const response: OrgDetailsResponse = yield call(request, {
       url: getOrganizationActionUrl,
@@ -164,7 +170,9 @@ export function* setUserInvoiceNoteActionSaga(
   action: SetUserInvoiceNoteAction
 ) {
   try {
-    const setUserInvoiceNoteActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}`
+    const setUserInvoiceNoteActionUrl = `${getBillingApiUrl()}/organizations/${
+      action.orgId
+    }`
 
     const response: OrgDetailsResponse = yield call(request, {
       url: setUserInvoiceNoteActionUrl,
@@ -200,7 +208,9 @@ export function* getUserTransactionsActionSaga(
   action: GetUserTransactionsAction
 ) {
   try {
-    const getTransactionsUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases`
+    const getTransactionsUrl = `${getBillingApiUrl()}/organizations/${
+      action.orgId
+    }/purchases`
 
     const response = yield call(request, {
       url: getTransactionsUrl,
@@ -233,7 +243,9 @@ export function* getTransactionDetailsActionSaga(
   action: GetTransactionDetailsAction
 ) {
   try {
-    const getTransactionDetailsActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/${action.transactionID}`
+    const getTransactionDetailsActionUrl = `${getBillingApiUrl()}/organizations/${
+      action.orgId
+    }/purchases/${action.transactionID}`
 
     const response = yield call(request, {
       url: getTransactionDetailsActionUrl,
@@ -264,7 +276,9 @@ export function* getTransactionDetailsActionSaga(
 
 export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
   try {
-    const purchaseCreditsActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/packages/${action.creditPackID}`
+    const purchaseCreditsActionUrl = `${getBillingApiUrl()}/organizations/${
+      action.orgId
+    }/purchases/packages/${action.creditPackID}`
 
     const response = yield call(request, {
       url: purchaseCreditsActionUrl,
@@ -282,7 +296,9 @@ export function* purchaseCreditsActionSaga(action: PurchaseCreditsAction) {
 
 export function* editPaymentInformationSaga(action: EditPaymentInfoAction) {
   try {
-    const editPaymentInfoUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/method`
+    const editPaymentInfoUrl = `${getBillingApiUrl()}/organizations/${
+      action.orgId
+    }/purchases/method`
 
     const response = yield call(request, {
       url: editPaymentInfoUrl,
@@ -303,7 +319,9 @@ export function* editPaymentInformationSaga(action: EditPaymentInfoAction) {
 
 export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
   try {
-    const startSubscriptionActionUrl = `${getBillingApiUrl()}/organizations/${action.orgId}/purchases/subscriptions/${action.subscriptionPlanID}`
+    const startSubscriptionActionUrl = `${getBillingApiUrl()}/organizations/${
+      action.orgId
+    }/purchases/subscriptions/${action.subscriptionPlanID}`
 
     const response = yield call(request, {
       url: startSubscriptionActionUrl,
@@ -329,7 +347,7 @@ export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
 export function* cancelSubscriptionSaga() {
   try {
     const orgId: string = yield select(
-      (store) => store.profile.profile.current_org.id
+      (store) => store.profile.profile.currentOrg.id
     )
     const cancelSubscriptionActionUrl = `${getBillingApiUrl()}/organizations/${orgId}/subscriptions`
 
@@ -364,7 +382,9 @@ export function* getBillingSettingsActionSaga() {
 
 export function* setUserBillingOrgActionSaga(action: SetUserBillingOrgAction) {
   try {
-    const setBillingOrgUrl = `${getBillingApiUrl()}/users/${action.userID}/organizations/${action.orgID}`
+    const setBillingOrgUrl = `${getBillingApiUrl()}/users/${
+      action.userID
+    }/organizations/${action.orgID}`
 
     yield call(request, {
       url: setBillingOrgUrl,
