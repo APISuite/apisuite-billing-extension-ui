@@ -298,7 +298,7 @@ export function getSubscriptionPlansActionSuccess(
   }
 }
 
-export function getOrganizationAction(orgId: string) {
+export function getOrganizationAction(orgId: number) {
   return { type: GET_USER_ORGANIZATION_ACTION, orgId }
 }
 
@@ -327,7 +327,7 @@ export function setUserInvoiceNoteActionSuccess(invoiceNote: string) {
   }
 }
 
-export function getUserTransactionsAction(orgId: string) {
+export function getUserTransactionsAction(orgId: number) {
   return { type: GET_USER_TRANSACTIONS_ACTION, orgId }
 }
 
@@ -338,7 +338,7 @@ export function getUserTransactionsActionSuccess(
 }
 
 export function getTransactionDetailsAction(
-  orgId: string,
+  orgId: number,
   transactionID: string
 ) {
   return { type: GET_TRANSACTION_DETAILS_ACTION, orgId, transactionID }
@@ -350,7 +350,7 @@ export function getTransactionDetailsActionSuccess(
   return { type: GET_TRANSACTION_DETAILS_ACTION_SUCCESS, transactionDetails }
 }
 
-export function purchaseCreditsAction(orgId: string, creditPackID: number) {
+export function purchaseCreditsAction(orgId: number, creditPackID: number) {
   return { type: PURCHASE_CREDITS_ACTION, creditPackID, orgId }
 }
 
@@ -363,7 +363,7 @@ export function purchaseCreditsActionError(error: string) {
 }
 
 export function startSubscriptionAction(
-  orgId: string,
+  orgId: number,
   subscriptionPlanID: number
 ) {
   return { type: START_SUBSCRIPTION_ACTION, orgId, subscriptionPlanID }
@@ -393,7 +393,7 @@ export function clearSubscriptionInfoAction() {
   return { type: CLEAR_SUBSCRIPTION_INFO }
 }
 
-export function editPaymentInfoAction(orgId: string) {
+export function editPaymentInfoAction(orgId: number) {
   return { type: EDIT_PAYMENT_INFORMATION, orgId }
 }
 

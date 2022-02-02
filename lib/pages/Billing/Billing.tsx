@@ -57,7 +57,7 @@ const Billing: React.FC<BillingProps> = ({
   of all credit packs and subscription plans we presently offer, as well as
   all information we have on a user and his transactions. */
   useEffect(() => {
-    if (orgId) {
+    if (orgId > 0) {
       getCreditPacksAction('price', 'asc')
       getSubscriptionPlansAction('price', 'asc')
       getOrganizationAction(orgId)
@@ -260,7 +260,7 @@ const Billing: React.FC<BillingProps> = ({
   of all information we have on a user and his transactions AFTER the user
   starts or changes his subscription plan. */
   useEffect(() => {
-    if (successfullySubscribedToPlan && orgId) {
+    if (successfullySubscribedToPlan && orgId > 0) {
       getOrganizationAction(orgId)
       getUserTransactionsAction(orgId)
     }
@@ -332,7 +332,7 @@ const Billing: React.FC<BillingProps> = ({
   return (
     <>
       <main className={`page-container ${classes.billingContentContainer}`}>
-        {!orgId && (
+        {orgId <= 0 && (
           <Box
             alignItems="center"
             display="flex"
@@ -342,7 +342,7 @@ const Billing: React.FC<BillingProps> = ({
             <CircularProgress color="secondary" />
           </Box>
         )}
-        {!!orgId && (
+        {orgId > 0 && (
           <Box>
             <Typography variant="h2">{t('title')}</Typography>
 

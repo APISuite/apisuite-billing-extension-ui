@@ -29,7 +29,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
   }
 
   useEffect(() => {
-    if (orgId) {
+    if (orgId > 0) {
       const urlParameters = new URLSearchParams(window.location.search)
       const idOfTransaction = urlParameters.get('id')
 
@@ -39,7 +39,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      {!orgId && (
+      {orgId <= 0 && (
         <Box
           alignItems="center"
           display="flex"
@@ -49,7 +49,7 @@ const TransactionComplete: React.FC<TransactionCompleteProps> = ({
           <CircularProgress color="secondary" />
         </Box>
       )}
-      {!!orgId && (
+      {orgId > 0 && (
         <Box>
           <Typography variant="h1">{t('transactionComplete.title')}</Typography>
 

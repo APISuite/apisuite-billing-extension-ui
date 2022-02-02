@@ -25,7 +25,7 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
   }
 
   useEffect(() => {
-    if (orgId) {
+    if (orgId > 0) {
       const urlParameters = new URLSearchParams(window.location.search)
       const transactionID = urlParameters.get('id')
 
@@ -39,7 +39,7 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
 
   return (
     <main className={`page-container ${classes.pageContentContainer}`}>
-      {!orgId && (
+      {orgId <= 0 && (
         <Box
           alignItems="center"
           display="flex"
@@ -49,7 +49,7 @@ const EditPaymentConfirm: React.FC<EditPaymentConfirmProps> = ({
           <CircularProgress color="secondary" />
         </Box>
       )}
-      {!!orgId && (
+      {orgId > 0 && (
         <Box>
           <Box mb={3}>
             <Typography variant="h2">
