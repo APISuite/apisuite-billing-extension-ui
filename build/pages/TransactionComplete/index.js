@@ -4,7 +4,7 @@ import { getTransactionDetailsAction } from '../Billing/ducks';
 import TransactionComplete from './TransactionComplete';
 export const mapStateToProps = ({ billing, profile }) => ({
     transactionDetails: billing.transactionDetails,
-    orgId: profile.profile.current_org.id,
+    orgId: profile.profile.currentOrg.id,
 });
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
     getTransactionDetailsAction,

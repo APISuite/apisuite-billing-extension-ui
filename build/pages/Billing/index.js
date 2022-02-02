@@ -12,7 +12,7 @@ export const mapStateToProps = ({ billing, profile }) => ({
     hasRetrievedAllSubscriptions: billing.hasRetrievedAllSubscriptions,
     settings: billing.settings,
     successfullySubscribedToPlan: billing.successfullySubscribedToPlan,
-    orgId: profile.profile.current_org.id,
+    orgId: profile.profile.currentOrg.id,
     orgDetails: billing.organizationDetails,
 });
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
