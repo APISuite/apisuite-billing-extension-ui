@@ -4,7 +4,7 @@ export const currencyConverter = (
   currencyString: string
 ) => {
   try {
-    return parseInt(valueString).toLocaleString(languageString, {
+    return parseFloat(valueString).toLocaleString(languageString, {
       style: 'currency',
       currency: currencyString,
     })
