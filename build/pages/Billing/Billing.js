@@ -19,7 +19,7 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
     of all credit packs and subscription plans we presently offer, as well as
     all information we have on a user and his transactions. */
     useEffect(() => {
-        if (orgId) {
+        if (orgId > 0) {
             getCreditPacksAction('price', 'asc');
             getSubscriptionPlansAction('price', 'asc');
             getOrganizationAction(orgId);
@@ -149,7 +149,7 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
     of all information we have on a user and his transactions AFTER the user
     starts or changes his subscription plan. */
     useEffect(() => {
-        if (successfullySubscribedToPlan && orgId) {
+        if (successfullySubscribedToPlan && orgId > 0) {
             getOrganizationAction(orgId);
             getUserTransactionsAction(orgId);
         }
@@ -192,9 +192,9 @@ const Billing = ({ cancelSubscriptionAction, clearSubscriptionInfoAction, credit
     };
     return (React.createElement(React.Fragment, null,
         React.createElement("main", { className: `page-container ${classes.billingContentContainer}` },
-            !orgId && (React.createElement(Box, { alignItems: "center", display: "flex", height: "100vh", justifyContent: "center" },
+            orgId <= 0 && (React.createElement(Box, { alignItems: "center", display: "flex", height: "100vh", justifyContent: "center" },
                 React.createElement(CircularProgress, { color: "secondary" }))),
-            !!orgId && (React.createElement(Box, null,
+            orgId > 0 && (React.createElement(Box, null,
                 React.createElement(Typography, { variant: "h2" }, t('title')),
                 React.createElement(Box, { clone: true, mb: 5 },
                     React.createElement(Typography, { variant: "body1", color: "textSecondary" }, t('subtitle'))),

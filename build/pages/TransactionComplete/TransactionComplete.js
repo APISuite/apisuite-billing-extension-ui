@@ -12,16 +12,16 @@ const TransactionComplete = ({ getTransactionDetailsAction, orgId, transactionDe
         return trans.t(`extensions.billing.${str}`);
     };
     useEffect(() => {
-        if (orgId) {
+        if (orgId > 0) {
             const urlParameters = new URLSearchParams(window.location.search);
             const idOfTransaction = urlParameters.get('id');
             getTransactionDetailsAction(orgId, idOfTransaction);
         }
     }, [orgId]);
     return (React.createElement("main", { className: `page-container ${classes.pageContentContainer}` },
-        !orgId && (React.createElement(Box, { alignItems: "center", display: "flex", height: "100vh", justifyContent: "center" },
+        orgId <= 0 && (React.createElement(Box, { alignItems: "center", display: "flex", height: "100vh", justifyContent: "center" },
             React.createElement(CircularProgress, { color: "secondary" }))),
-        !!orgId && (React.createElement(Box, null,
+        orgId > 0 && (React.createElement(Box, null,
             React.createElement(Typography, { variant: "h1" }, t('transactionComplete.title')),
             React.createElement(Box, { my: 3 },
                 React.createElement(Typography, { variant: "h5" }, t('transactionComplete.subtitle'))),

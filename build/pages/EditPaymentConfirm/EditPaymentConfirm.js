@@ -10,7 +10,7 @@ const EditPaymentConfirm = ({ getTransactionDetailsAction, orgId, transactionDet
         return trans.t(`extensions.billing.${str}`);
     };
     useEffect(() => {
-        if (orgId) {
+        if (orgId > 0) {
             const urlParameters = new URLSearchParams(window.location.search);
             const transactionID = urlParameters.get('id');
             getTransactionDetailsAction(orgId, transactionID);
@@ -20,9 +20,9 @@ const EditPaymentConfirm = ({ getTransactionDetailsAction, orgId, transactionDet
     //   window.print()
     // }
     return (React.createElement("main", { className: `page-container ${classes.pageContentContainer}` },
-        !orgId && (React.createElement(Box, { alignItems: "center", display: "flex", height: "100vh", justifyContent: "center" },
+        orgId <= 0 && (React.createElement(Box, { alignItems: "center", display: "flex", height: "100vh", justifyContent: "center" },
             React.createElement(CircularProgress, { color: "secondary" }))),
-        !!orgId && (React.createElement(Box, null,
+        orgId > 0 && (React.createElement(Box, null,
             React.createElement(Box, { mb: 3 },
                 React.createElement(Typography, { variant: "h2" }, t('editPaymentConfirm.title'))),
             React.createElement(Box, { mb: 5 },

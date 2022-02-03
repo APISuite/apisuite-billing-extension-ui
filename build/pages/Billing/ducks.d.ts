@@ -60,9 +60,9 @@ export declare function getSubscriptionPlansActionSuccess(subscriptions: Subscri
     type: string;
     subscriptions: SubscriptionPlanDetails[];
 };
-export declare function getOrganizationAction(orgId: string): {
+export declare function getOrganizationAction(orgId: number): {
     type: string;
-    orgId: string;
+    orgId: number;
 };
 export declare function getOrganizationActionSuccess(orgData: OrgDetails): {
     type: string;
@@ -81,27 +81,27 @@ export declare function setUserInvoiceNoteActionSuccess(invoiceNote: string): {
     type: string;
     invoiceNote: string;
 };
-export declare function getUserTransactionsAction(orgId: string): {
+export declare function getUserTransactionsAction(orgId: number): {
     type: string;
-    orgId: string;
+    orgId: number;
 };
 export declare function getUserTransactionsActionSuccess(transactions: TransactionDetails[]): {
     type: string;
     transactions: TransactionDetails[];
 };
-export declare function getTransactionDetailsAction(orgId: string, transactionID: string): {
+export declare function getTransactionDetailsAction(orgId: number, transactionID: string): {
     type: string;
-    orgId: string;
+    orgId: number;
     transactionID: string;
 };
 export declare function getTransactionDetailsActionSuccess(transactionDetails: TransactionDetails): {
     type: string;
     transactionDetails: TransactionDetails;
 };
-export declare function purchaseCreditsAction(orgId: string, creditPackID: number): {
+export declare function purchaseCreditsAction(orgId: number, creditPackID: number): {
     type: string;
     creditPackID: number;
-    orgId: string;
+    orgId: number;
 };
 export declare function purchaseCreditsActionSuccess(): {
     type: string;
@@ -110,9 +110,9 @@ export declare function purchaseCreditsActionError(error: string): {
     type: string;
     error: string;
 };
-export declare function startSubscriptionAction(orgId: string, subscriptionPlanID: number): {
+export declare function startSubscriptionAction(orgId: number, subscriptionPlanID: number): {
     type: string;
-    orgId: string;
+    orgId: number;
     subscriptionPlanID: number;
 };
 export declare function startSubscriptionActionError(error: string): {
@@ -135,9 +135,9 @@ export declare function cancelSubscriptionActionSuccess(): {
 export declare function clearSubscriptionInfoAction(): {
     type: string;
 };
-export declare function editPaymentInfoAction(orgId: string): {
+export declare function editPaymentInfoAction(orgId: number): {
     type: string;
-    orgId: string;
+    orgId: number;
 };
 export declare function getBillingSettingsAction(): {
     type: string;

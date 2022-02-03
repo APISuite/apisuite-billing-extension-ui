@@ -31,7 +31,7 @@ export declare function startSubscriptionActionSaga(action: StartSubscriptionAct
 }>, any, unknown>;
 export declare function cancelSubscriptionSaga(): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
-}>, void, string>;
+}>, void, number>;
 export declare function getBillingSettingsActionSaga(): Generator<import("redux-saga/effects").CallEffect<any> | import("redux-saga/effects").PutEffect<{
     type: string;
     payload: BillingSettings;
