@@ -346,7 +346,7 @@ export function* startSubscriptionActionSaga(action: StartSubscriptionAction) {
 
 export function* cancelSubscriptionSaga() {
   try {
-    const orgId: string = yield select(
+    const orgId: number = yield select(
       (store) => store.profile.profile.currentOrg.id
     )
     const cancelSubscriptionActionUrl = `${getBillingApiUrl()}/organizations/${orgId}/subscriptions`
